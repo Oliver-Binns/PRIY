@@ -150,6 +150,10 @@
         <description></description>
         <memory>
           <gpu:variable>
+            <type>int</type>
+            <name>id</name>
+          </gpu:variable>
+          <gpu:variable>
             <type>float</type>
             <name>x</name>
           </gpu:variable>
@@ -193,6 +197,10 @@
       <gpu:xagent>
         <name>LTi</name>
         <memory>
+          <gpu:variable>
+            <type>int</type>
+            <name>id</name>
+          </gpu:variable>
           <gpu:variable>
             <type>float</type>
             <name>x</name>
@@ -240,6 +248,10 @@
       <gpu:xagent>
         <name>LTo</name>
         <memory>
+          <gpu:variable>
+            <type>int</type>
+            <name>id</name>
+          </gpu:variable>
           <gpu:variable>
             <type>float</type>
             <name>x</name>
