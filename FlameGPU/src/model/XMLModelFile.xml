@@ -161,6 +161,10 @@
             <type>float</type>
             <name>y</name>
           </gpu:variable>
+			<gpu:variable>
+				<type>float</type>
+				<name>velocity</name>
+			</gpu:variable>
         </memory>
         <functions>
           <gpu:function>
@@ -209,6 +213,10 @@
             <type>float</type>
             <name>y</name>
           </gpu:variable>
+			<gpu:variable>
+				<type>float</type>
+				<name>velocity</name>
+			</gpu:variable>
         </memory>
         <functions>
           <gpu:function>
@@ -260,6 +268,10 @@
             <type>float</type>
             <name>y</name>
           </gpu:variable>
+			<gpu:variable>
+				<type>float</type>
+				<name>velocity</name>
+			</gpu:variable>
         </memory>
         <!--functions>
         </functions-->

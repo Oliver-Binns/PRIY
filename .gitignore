@@ -4,3 +4,4 @@ Report/*
 !Report/Report.bib
 */Iterations/*
 !*/Iterations/*.py
+!*/Appendix/*

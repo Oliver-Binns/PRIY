@@ -20,6 +20,8 @@
 
 #include <header.h>
 #include <math.h>
+#include <curand.h>
+#include <curand_kernel.h>
 
 inline __device__ float dot(glm::vec2 a, glm::vec2 b)
 {
@@ -80,6 +82,10 @@ __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* xmemory,
                                        xmachine_message_location_list* location_messages){
     
     glm::vec2 agent_position = glm::vec2(xmemory->x, xmemory->y);
+    
+    //Calculate velocity
+    float angle = 0;
+    
     glm::vec2 agent_velocity = glm::vec2(xmemory->x, xmemory->y);
 
     agent_position += agent_velocity;

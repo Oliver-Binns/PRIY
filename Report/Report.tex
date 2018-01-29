@@ -11,7 +11,7 @@
 \supervisor{Dr. Kieran Alden, Dr. Fiona Polack}
 \wordcount{-1}
 
-\abstract{More powerful computers are paving the way for realistic simulations of previously underexplored biological systems. As advancements in computing tend increasingly towards parallelism and distributed systems, these ever more complex simulations must take full advantage of this change in order to be computed in a reasonable time. In this project, we will explore some of the current technologies for doing so and develop new tools for the future.}
+\abstract{More powerful computers are paving the way for realistic simulations of previously underexplored biological systems. As advancements in computing tend increasingly towards parallelism and distributed systems, these ever more complex simulations must take full advantage of this change in order to be computed in a reasonable time. In this project, we will explore some of the current technologies for doing so and propose new tools for the future.}
  
 \begin{document}
 \maketitle
@@ -25,14 +25,17 @@
 This project has been carried out with regard to the set of ethical guidelines set out by the University of York. This project does not involve human participants, so guidelines on informed consent and confidentiality will be met. The simulation of the biological model is for the purpose of developing understanding of applying GPGPU methods to an agent based model. It will not be used to publish results, in its current form and does not simulate a biological process.
 
 
+TALK ABOUT MODELING AND THE DESIRE FOR 
+Faster AND More Accessible Modelling
+
 \section{Ethics}
 No confidential medical data or personal information has been used during the course of the project development.
 This project has involved no animal or human participation.
 
 \section{Report Structure}
-Lorem ipsum dolor.
+..?
 
-\chapter{Literature Review}
+\chapter{Background}
 % Aims are to:
 %
 % Place original work into the context of existing Literature
@@ -45,59 +48,99 @@ Lorem ipsum dolor.
 
 %SPLIT INTO SECTIONS.. Agent Based Modelling, GPUs for Agent Based Modelling, Understanding GPGPUs and CUDA, etc.
 
-\section{Computer Simulation}
-\section{Background}
+\section{Simulation}
 %Background, what are simulations used for generally
 Simulations are used in a wide range of disciplines on applications such as .. nuclear weapons, medical.., video games, product development.
+Within scientific discovery, simulations may be used alongside existing real-world testing or an alternative to it. Often real-world testing may not be feasible for a number of reasons including time, cost, danger (nuclear weapons) or scale. Moral or legal aspects may also play a significant limitation here. %condider phrasing here, can this be cut down to a single, more logical, sentence without too long a list?
 
-Simulations may be used alongside existing real-world testing or an alternative to it.
-The are generally used when extensive real-world testing may not be feasible for a number of reasons including time, cost, danger (nuclear weapons) or scale.
 
-Simulations have even been proposed as a method for exploring a potential set of first principles and mathematics that are specific to biology which could even constitute a new subject- theoretical biology.\cite{rise_article}
+
 
 %ARE THERE ANY CONS?
 %SHOULD simulations be used by everyone?
-
 %Why are they not?
-%Computer Science skills shortage
-%Computers are getting easier to use, users are beginning to expect this even from advanced tools
+There are some significant limitations as to where simulations can be used.
+\\
+\textbf{Bugs}
+\\
 
-\section{Existing Simulations}
+\textbf{Skills Shortage}
+\label{skills_shortage}
+Significant skills shortages in Computer Science, across the world%citation NEEDED, Local Government Organisation, UK... US??
+, significantly limit the possibility for cross-disciplinary work to utilise 
+%Computers are getting easier to use, users are beginning to expect this even from advanced tools
+\\
+
+\textbf{Insignificant Domain Knowledge}
+%domain abstractions invalidate model
+%incorrect theories about domain
+\\
+
+\textbf{Compute Power}
+%abstractions, described above are required for computer simulations, too few abstractions will require too much compute power
+%only get data on variables that have been modelled, whole system is likely not modelled, see TWA Flight 800...:
+%The NTSB deemed a physical simulation appropriate as they were not convinced an available computer model would confirm the true cause of the accident.
+
+%Talk about the need to speed up
+
+\section{Biological Simulations}
+
+Simulations have even been proposed as a method for exploring a potential set of first principles and mathematics that are specific to biology which could even constitute a new subject- theoretical biology\cite{rise_article}.
+
+\subsection{Existing Simulations}
 %Previous implementations of simulations and their problems:
 %In order to achieve mass-market userbase, they must be:
 %EASIER TO MAKE - less technical users can work on them
 %FASTER TO RUN. - more feasible, to use in experiments, more complex sims can be made
 
+\subsection{Cell Dynamics}
 
-%Talk about Kieran's original thesis and how long it took to run, and to develop the results, etc.
-A solution to the speed problem that has been proposed recently is to use machine learning on a small set of results to produce 
-%Kieran Machine Learning
-This has problems in that...
-Standard Machine Learning issues? Bias? Overfitting?
-
+\subsection{PPSim}
 %Section on what we need to support complex simulations
 As these simulations becoming more and more prevalent: tools need developing to allow less technical users to create these simulations easier and run faster...
 
 
 This project focuses on simulation as a tool for exploring biological systems at cell level. It uses the existing simulation of Peyer's Patch\cite{kieran_thesis} and attempts to use parallel computer architectures in order to speed this simulation up. Finally, I will propose a new tool, which builds on existing work in order to make this power available to non-technical users?
 
-\section{Parallelism}
+\chapter{Improving Simulations}
+\section{Ease of Creation}
+Ease of creation (and maintenance) is an important feature for future simulation particularly due to the aforementioned computer science skills shortage (Section \ref{skills_shortage}).
+
+\subsection{Flexible Modelling}
+Flexible Modelling tools could be a good avenue for \cite{Paige2017}
+
+\section{Speed Up}
+\subsection{Machine Learning}
+%Talk about Kieran's original thesis and how long it took to run, and to develop the results, etc.
+A solution to the speed problem that has been proposed recently is to use machine learning on a small set of results to produce 
+%Kieran Machine Learning
+This has problems in that...
+Standard Machine Learning issues? Bias? Overfitting?
+
+
+\subsection{Parallelism}
 Parallelism fundamentally changes the game and allows computers to keep following Moore's law even has engineers are struggling to make transisters ever smaller and smaller.[citation needed]
 
 As modern computers tend further towards parallelism to keep providing the speed-ups that have been inherent in the industry over recent years, new parallel algorithms need developing in order to take full advantage of the computing power available. 
 
+%CPUs vs GPUs
+We are building on a previous project\cite{phil_diss} which layed the groudwork for this.
+This previous project justified the difference between CPU and GPU parallelism and outlines the justification for using GPUs- simplisitically put, this is due to the significantly greater speed ups that can be achieved.
+
+%MENTION DIFFICULTY GETTING ACCESS TO A GPU FOR TESTING!
+
+\subsection{Understanding GPGPUs and CUDA}
 
 
-\section{Understanding GPGPUs and CUDA}
-
-\section{Agent Based Modelling}
+\subsection{Agent Based Modelling}
 Mention Flame (traditional) is a start..
 
-\section{ABM for GPUs}
+\subsection{ABM for GPUs}
 %WHY USE GPUs?
 
 %Pros/Cons
 %Talk about the difficulty getting access to particular hardware needed
+\subsection{FlameGPU}
 
 \chapter{The Experiment}
 \section{The Domain Model}
@@ -105,11 +148,23 @@ The domain model is taken from an existing simulation...
 
 \section{The Platform Model}
 OPTIONS:
+
 Custom Code?\cite{phil_diss}
+not well tested
+less easy to update to support new tools and hardware, new CUDA GPUs
+
+
 model based -> FlameGPU\cite{flame_keratinocyte}
+
+\subsection{Testing}
+Talk about how the model was tested to ensure correctness\\
+missing link in model from Kieran's paper 
 
 \chapter{Results and Evaluation}
 \section{Findings}
+\cite{statistical_tests} could be important for evaluating the performance of FlameGPU against original PPSim
+
+
 \section{Conclusion}
 
 \section{Further Work}
@@ -128,6 +183,8 @@ model based -> FlameGPU\cite{flame_keratinocyte}
 
 \chapter{Appendix}
 \section{Simulation Parameters}
+
+
 \section{Cell Data Structures}
  
 \end{document}
