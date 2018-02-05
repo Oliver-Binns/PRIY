@@ -13,7 +13,7 @@
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
 \wordcount{-1}
 
-\abstract{More powerful computers are paving the way for realistic simulations of previously underexplored biological systems. As advancements in computing tend increasingly towards parallelism and distributed systems, these ever more complex simulations must take full advantage of this change in order to be computed in a reasonable time. In this project, we will explore some of the current technologies for doing so and propose new tools for the future.}
+\abstract{More powerful computers are paving the way for realistic simulations of previously underexplored complex biological systems. As advancements in computing tend towards parallelism and distributed systems, increasingly realistic simulations must take full advantage of this change in order to be computed in a reasonable time period. In this project, we will explore some of the current technologies for doing so and propose new tools for the future.}
  
 \begin{document}
 \maketitle
@@ -25,18 +25,26 @@
 \chapter{Introduction}
 \section{Project Overview}
 TALK ABOUT MODELING AND THE DESIRE FOR 
-
-Faster AND More Accessible Modelling
+\\
+Faster AND More Accessible Simulation
 
 \section{Motivation}
 %What can be gained from better modelling.. particularly biology..?
 %Presentation- see justification slides!
+The motivation for this project stems mainly from the new knowledge that could be gained from the ability to create efficient parallel biological simulations more easily.
+
+If hypotheses for *drug testing* can be more easily and extensively tested in silico, this could significantly improve the process by which drugs are developed.
+New drugs and cures could be developed more quickly, allowing these to be available more quickly.
+The financial burden of drug development (approximately \$2.5bn[citation needed]) could be reduced, freeing up heavily contested funds for additional research.
+The use of animal testing could be reduced, and potentially eliminated completely in the long term.
+
+%outside of drug testing, new understanding can..?
 
 \section{Project Aims}
 In summary, the aims of this project are to
 \begin{enumerate}
-	\item Aim 1
-	\item Develop a parallel implementation of an existing Peyer's Patch simulation and explore any speed increases that can be produced using General Purpose GPU programming.
+	\item Provide a thorough review of the use of simulations as part of Computational Biology, the advantages they provide and the problems that must be overcome for their mass adoption.
+	\item Develop a parallel implementation of an existing simulation of Peyer's Patch development and explore any speed increases that can be produced using General Purpose GPU programming.
 	\item Establish a firm grounding for the future development of new tools to allow fast, parallel simulations of biological systems to be easily created by non-technical users.
 	\begin{enumerate}
 		\item Explore the findings of the new implementation and discuss how these can be generalised to new simulations.
@@ -46,7 +54,7 @@ In summary, the aims of this project are to
 
 \section{Statement of Ethics}
 This project was conducted in accordance with the University of York's code of practice on ethics.
-This project does not involve human participants, so guidelines on informed consent and confidentiality will be met. No confidential medical data or personal information has been used during the course of the project development. This project has involved no animal participation. 
+This project does not involve human participants, so guidelines on informed consent and confidentiality will be met. No confidential medical data or personal information has been used during the course of the project development. This project has involved no direct animal participation. 
 
 [Where did the data come from?!]
 The simulation of the biological model is for the purpose of developing understanding of applying GPGPU methods to an agent based model of a biological system. It will not be used its current form to publish novel biological findings and does not fully simulate a biological process.%WAIT, is this true?
@@ -60,7 +68,7 @@ This report details the work done throughout the project and
 
 Chapter \ref{background} gives a general overview of simulations and the benefits and limitations of their use particularly with regard to computational biology.
 
-Chapter \ref{improvements} explores the limitations of simulations in more detail and proposes future solutions for these.
+Chapter \ref{improvements} explores some of the limitations of simulations in additional detail and proposes future solutions for these.
 
 Chapter \ref{methods} details the development of an improved, inherently parallel, implementation of PPSim.
 
@@ -77,8 +85,6 @@ Chapter \ref{methods} details the development of an improved, inherently paralle
 % Determine which literature makes a significant contribution to your understanding of the topic
 % Point your way to further research on your topic
 
-%SPLIT INTO SECTIONS.. Agent Based Modelling, GPUs for Agent Based Modelling, Understanding GPGPUs and CUDA, etc.
-
 \section{Simulation}
 %What are simulations
 	%an imitation of a system
@@ -86,27 +92,39 @@ Chapter \ref{methods} details the development of an improved, inherently paralle
 	%features key characteristics and behaviours
 	%may aim to remove some complexity from the original system (compute times)
 	%may aim to be as accurate as possible (video games)
+		%realism has been shown to produce a higher level of immersion in gamers\cite{realism_immersion}
 
 	%mention speculation that we live in a simulation? - simulation hypothesis, The Matrix, Elon Musk
 
 %Background, what are simulations used for generally
-Computer simulations are used in a wide range of disciplines on applications such as video games, medicine, product development and even nuclear weapons.
+Computer simulations are used in a wide range of disciplines on applications such as video games, medicine, product development and even nuclear weapons. This chapter will explain the benefits and current limitations of using simulations and how these have affected this project.
 
 \subsection{Benefits}
 \subsubsection{Feasibility}
-Exploring computer simulations is often far more feasible than exploring a real world environment. Video games allow players to experience scenarios that they may not otherwise get the opportunity to encounter. For example, car racing games are significantly cheaper and safer than real life racing.
+Exploring computer simulations is often far more feasible than exploring a real world environment. Video games are simulations which may allow players to experience scenarios that they may not otherwise get the opportunity to encounter. For example, car racing games are significantly cheaper and safer than real life racing.
 %video games, clearly easier/cheaper/safe for someone to play a war/car simulation than experience this in real life
-Within scientific discovery, simulations may be used as an alternative to real-world testing or to complement it.
 
-Often real-world scientific testing may not be feasible for a number of reasons. Simulating the aerodynamics of a car virtually is far quicker and cheaper than creating multiple different prototypes for physical tests. Morality may be a factor, animal testing for cosmetic products or medicine is a good example of this. With nuclear weapons, legality is a key issue, as weapon testing is banned under a number of global treaties. Finally, these real-world tests may be too dangerous to perform, such as in the case of invasive medical examinations.
+Within scientific discovery, simulations may be used as an alternative to real-world testing or to complement it. Often real-world scientific testing may not be feasible for a number of reasons. Simulating the aerodynamics of new car designs virtually is far quicker and cheaper than creating multiple different prototypes for physical tests. Morality may be a factor, animal testing for cosmetic products or medicine is a good example of this. With nuclear weapons, legality is a key issue, as weapon testing is banned under a number of global treaties. Finally, these real-world tests may be too dangerous to perform, such as in the case of invasive medical examinations.
 
 %SO WHAT?
 %POINT, EVIDENCE, EXPLANATION
 
 %can scale be a factor?
 
-\subsubsection{Accurate Results}
+
+\subsubsection{Reducing Complexity}
+Reducing complexity through abstraction allows better knowledge of the system to be gained as the complexity may initially be overwhelming
+%Removing complexity can help with understanding by not 
+
+\subsubsection{Environmental Control}
+Computer simulations allow for the environment to be more easily controlled. The ability to adjust external factors and independent variables that may affect the system on demand can be particularly useful. This ability can be used for illustrating why different variables in system processes are important.
+
+Time can be manipulated to show system processes at more reasonable time scales. A chemical process that takes a fraction of a second can be slowed down to ensure that it can be seen.
+%speed up, reverse the simulation
+
 %easier to measure?
+
+%can add additional tests in later if desired, and re-run the simulation
 
 %clearly simulations may be more feasible but
 %WHY are they a good alternative to real world testing?!
@@ -114,7 +132,12 @@ Often real-world scientific testing may not be feasible for a number of reasons.
 	%when is this the case? always? when sufficient knowledge is known?
 	%relate this to laws of Physics, theoretical biology?
 
-%Augmented/Virtual reality is a big talking point- allows for more immersive simulations
+\subsubsection{Visualisation}
+One of the biggest benefits of simulation is the ability to graphically visualise a system or its constituent parts. Using simulation for visualisation has number of benefits over attempting to demonstrate real world systems. Several of these benefits translate from the previous two sections- they are often more feasible to explore than a real world environment and featuring a reduced complexity often allows the key concepts to be understood without overwhelming the user.
+
+Simulation can be particularly useful for visualising concepts for education. 
+
+Particularly immersive visualisations can also be produced using virtual and augmented reality. The Virtuali-Tee is an educational tool that uses simulation and augmented reality to provide a view at the body's internal organs\cite{curiscope}. Little Journey aims to reduce kids' anxiety about surgery by providing a realistic tour of their hospital ward given by animated cartoon characters\cite{little_journey}.
 
 \subsection{Limitations and Constraints}
 %ARE THERE ANY CONS?
@@ -129,7 +152,12 @@ A simulation is based on a model of a system. A model is an abstraction from rea
 For complex systems, having too many abstractions from the original domain may invalidate the model and produce incorect results[CITATION NEEDED].
 
 \subsubsection{Compute Power}
-Complex models with too few abstractions from their domain may require significant computing power to simulate. Additional abstractions may not be possible as they may invalidate the model. In this case, cutting edge hardware will be needed for the simulation to be run in an acceptable time. Powerful hardware is expensive to access, so this may be a significant constraint on the ability to simulate.
+Complex models with too few abstractions from their domain may require significant computing power to simulate. Additional abstractions may not be possible as they may invalidate the model. In these cases, cutting edge hardware may be needed for the simulation to be run in an acceptable time. 
+
+
+Powerful hardware is expensive to access, so this may be a significant constraint on the ability to simulate.
+
+%Agent-Based Modelling, which will be introduced in detail in Section \ref{abm}, models the system as a number of autonomous individuals. This technique requires significantly more compute power than the traditional top-down simulations.
 
 %Talk about the need to speed up
 %evidence behind this--!
@@ -137,23 +165,13 @@ Complex models with too few abstractions from their domain may require significa
 	%video games, better graphics and more detail
 	%other examples?
 
-%efficient parallel programs require experienced programmers to produce
-
 %only get data on variables that have been modelled, whole system is likely not modelled, see TWA Flight 800...:
 %The NTSB deemed a physical simulation appropriate as they were not convinced an available computer model would confirm the true cause of the accident.
 
 
-
-\subsubsection{Bugs}
-As with any form of computer program, mistakes can be made causing bugs to be present in the simulation code. Bugs may cause the simulation to be incorrect meaning any hypotheses and results are based on incorrect data.
-
-This is linked to, but not the same as, having insufficent domain knowledge (as discussed above). Both of these limitations will cause the simulations fail silently, produce incorrect results with no immediately obvious failure[CITE]. However, while these problems are specific to simulation, they are not dissimilar from the issues that can occur from poorly designed real-world testing. %as such, these limitations are no reason to dismiss simulation by themselves
-
-If the simulation needs to be safety-critical, developing it using formal methods and refinement may be a good way to ensure that no bugs are present in the code.
-
 \subsubsection{Skills Shortage}
 \label{skills_shortage}
-Advanced hardware alone will not necessarily allow a simulation to compute in a reasonable amount of time. Often, and particularly with the increasingly parallel modern architectures, the simulation code must be tailored to take advantage of the computing power available. Significant computer science skills shortages, across the world, significantly limit the possibility for cross-disciplinary work to utilise fast advanced simulations.
+The previous section discussed reliance that complex simulations have on advanced hardware. However, advanced hardware alone will not necessarily allow a simulation to compute in a reasonable amount of time. Often, and particularly with the increasingly parallel modern architectures, the simulation code must be tailored to take advantage of the computing power available. Efficient parallel programs that do this rely on the availability of experienced programmers. Significant computer science skills shortages, across the world, significantly limit the possibility for cross-disciplinary work to utilise fast advanced simulations.
 
 %Computer science degrees, and related courses and apprenticeships, are proving less popular in recent years
 %These are worrying trends considering the demand for digital skills by employers
@@ -168,18 +186,28 @@ Advanced hardware alone will not necessarily allow a simulation to compute in a 
 %As computers are getting easier to use, users are beginning to expect this even from advanced tools
 %some tools exist for non-technical users-
 	%FlameGPU - simplifies parallisation but still requires indepth programming knowledge
-	%Other ongoing project (GUI tool?)
+	%Other ongoing project under Kieran's supervision (GUI tool?)
 
+\subsubsection{Bugs}
+As with any form of computer program, mistakes can be made causing bugs to be present in the simulation code. Bugs may cause the simulation to be incorrect meaning any hypotheses and results are based on incorrect data.
 
-\subsection{Agent Based Modelling}
+This is linked to, but not the same as, having insufficent domain knowledge. Both of these limitations will cause the simulations fail silently, produce incorrect results with no immediately obvious failure[CITE]. However, while these problems are specific to simulation, they are not dissimilar from the issues that can occur from poorly designed real-world testing. %as such, these limitations are no reason to dismiss simulation by themselves
+
+If the simulation needs to be safety-critical, developing it using formal methods and refinement may be a good way to ensure that no bugs are present in the code.
+
+\subsection{Agent-Based Modelling}
+\label{abm}
 %discuss types of simulation..
 %What is ABM?
 %WHY IS AGENT BASED MODELLING THE MOST RELEVANT FOR THIS PROJECT
 
-\section{Biological Simulations}
-required as an alternative to invasive medical testing/animal testing
+%particularly well suited for these cell-based simulations as can be visualised..
 
-%Computational Biology is based around this concept.
+\section{Biological Simulations}
+Computational Biology is a relatively new field of study that has been growing signficantly over the last decade[CITATION NEEDED].
+
+Within Biology, simulation is often required as an alternative to invasive medical testing/animal testing
+
 
 Simulations have even been proposed as a method for exploring a potential set of first principles and mathematics that are specific to biology which could even constitute a new subject- theoretical biology\cite{rise_article}.
 
@@ -189,17 +217,23 @@ Simulations have even been proposed as a method for exploring a potential set of
 %EASIER TO MAKE - less technical users can work on them
 %FASTER TO RUN. - more feasible, to use in experiments, more complex sims can be made
 
-\subsection{Cell Dynamics}
+\subsubsection{Cell Dynamics}
 
 
 \subsection{PPSim}
-This project focuses on simulation as a tool for exploring biological systems at cell level. It uses the existing simulation of Peyer's Patch\cite{kieran_thesis} and attempts to use parallel computer architectures in order to speed this simulation up.
+\label{ppsim}
+This project focuses on simulation as a tool for exploring biological systems at cell level. It uses the existing simulation of Peyer's Patch\cite{kieran_thesis} and attempts to use parallel computer architectures in order to speed this simulation up. %proof of concept- what new knowledge has PPSim created so far?
 
 Finally, I will propose a new tool, which builds on existing work in order to make this power available to non-technical users? or will I, probably not enough time for this!
 
 \chapter{Improving Simulations}
 \label{improvements}
 %Section on what we need to support complex simulations
+%link this to the previous chapter- discussion on current constraints on simulation:
+Significant constraints on when simulations can be used were discussed in the previous chapter. In order for simulations to become more widely adopted, some of these constraints must be overcome.
+%In particular, this project will focus on overcoming the problems provided by the current computing skills shortage and the requirement to take maximum advantage of the available computing power.
+%The skills shortage can be overcome by providing tools that allow non-technical users to create advanced simulations.
+
 As these simulations becoming more and more prevalent: tools need developing to allow less technical users to create these simulations easier and run faster...
 
 \section{Ease of Creation}
@@ -226,6 +260,8 @@ A solution to the speed problem that has been proposed recently is to use machin
 This has problems in that...
 likely affected by Standard Machine Learning issues? Bias? Overfitting?
 
+Already an ongoing area of research.. 
+
 
 \subsection{Parallelism}
 %Trade-off, Peak Performance vs Programming Ease, this can be related to the previous section
@@ -233,12 +269,11 @@ likely affected by Standard Machine Learning issues? Bias? Overfitting?
 	%Radius of the agent messages, data transfer cost is HIGH
 	%Mindful of multi-thread data manipulation
 
-Parallelism fundamentally changes the game and allows computers to keep following Moore's law even has engineers are struggling to make transisters ever smaller and smaller.[citation needed]
-
-As modern computers tend further towards parallelism to keep providing the speed-ups that have been inherent in the industry over recent years, new parallel algorithms need developing in order to take full advantage of the computing power available. 
+Parallelism fundamentally changes the game and allows computers to keep following Moore's law even has engineers are struggling to make transisters ever smaller and smaller[citation needed]. As modern computers tend further towards parallelism to keep providing the speed-ups that have been inherent in the industry over recent years, new parallel algorithms need developing in order to take full advantage of the computing power available.
 
 %CPUs vs GPUs
 \subsubsection{CPU vs GPU}
+Modern computers provide two main methods for parallelising code.
 We are building on a previous project\cite{phil_diss} which layed the groudwork for this.
 This previous project outlined the choice between CPU and GPU parallelism and makes the case for exploring GPUs- simplisitically put, this is due to the significantly greater speed ups that can be achieved.
 
@@ -256,20 +291,30 @@ Agent Based Modelling is particularly well suited to parallelism as each agent m
 Communication between agents may be a problem here!
 
 
-Mention Flame (traditional) is a start..
+Mention Flame (traditional) is an attempt to make simulations more accessible via ABM.
 %Flexible Large Scale Agent Modelling Environment
 %http://flame.ac.uk
 
-\subsection{FlameGPU}
+\subsection{FLAME GPU}
+FLAME GPU is an extension of the original version of FLAME, where the simulations that are created are compiled down to CUDA code. This means the simulation can take full advantage of the significant power of modern NVIDIA GPUs.
 %overview of FlameGPU
 %http://www.flamegpu.com
 
 %x-machine, etc.
+%flame is built on top of CUDA, why?
+
+%using a framework like FLAME
+	%relies on FLAME being supported into the future
+		%the framework is open source, so hopefully this shouldn't be an issue
+	%simulations can always be certain of taking advantage of the latest hardware and portability features that FLAME provides
+		%As flame is updated, existing simulations may get faster, taking advantage of newer hardware
+		%simulations do not need to be reimplemented to do this
+
 
 \chapter{Methods}
 \label{methods}
 \section{The Domain Model}
-The domain model is taken from an existing simulation...
+The domain model is taken from the existing sequential simulation of Peyer's Patch development described in Section \ref{ppsim}.
 
 \section{The Platform Model}
 OPTIONS:
