@@ -2,8 +2,7 @@ Report/*
 !Report/Report.pdf
 !Report/Report.tex
 !Report/Report.bib
-*/Iterations/*
-!*/Iterations/*.py
+*/iterations/*.xml
 !*/Appendix/*
 */src/dynamic/*
 *.o
