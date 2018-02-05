@@ -161,10 +161,10 @@
             <type>float</type>
             <name>y</name>
           </gpu:variable>
-			<gpu:variable>
-				<type>float</type>
-				<name>velocity</name>
-			</gpu:variable>
+          <gpu:variable>
+    				<type>float</type>
+     				<name>velocity</name>
+    			</gpu:variable>
         </memory>
         <functions>
           <gpu:function>
@@ -178,7 +178,7 @@
               </gpu:output>
             </outputs>
             <gpu:reallocate>false</gpu:reallocate>
-            <gpu:RNG>false</gpu:RNG>
+            <gpu:RNG>true</gpu:RNG>
           </gpu:function>
         </functions>
         <states>
@@ -213,10 +213,10 @@
             <type>float</type>
             <name>y</name>
           </gpu:variable>
-			<gpu:variable>
-				<type>float</type>
-				<name>velocity</name>
-			</gpu:variable>
+    			<gpu:variable>
+    				<type>float</type>
+    				<name>velocity</name>
+    			</gpu:variable>
         </memory>
         <functions>
           <gpu:function>
@@ -230,7 +230,7 @@
               </gpu:output>
             </outputs>
             <gpu:reallocate>false</gpu:reallocate>
-            <gpu:RNG>false</gpu:RNG>
+            <gpu:RNG>true</gpu:RNG>
           </gpu:function>
         </functions>
         <states>
@@ -268,10 +268,6 @@
             <type>float</type>
             <name>y</name>
           </gpu:variable>
-			<gpu:variable>
-				<type>float</type>
-				<name>velocity</name>
-			</gpu:variable>
         </memory>
         <!--functions>
         </functions-->

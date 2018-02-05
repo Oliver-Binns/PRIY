@@ -5,3 +5,5 @@ Report/*
 */Iterations/*
 !*/Iterations/*.py
 !*/Appendix/*
+*/src/dynamic/*
+*.o

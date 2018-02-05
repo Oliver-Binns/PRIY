@@ -2,6 +2,7 @@
 # This code can be migrated to C/Cuda for speed-ups later in the project.
 
 from lxml import etree
+import random
 
 LTin = 1
 LTi = 1
@@ -44,7 +45,8 @@ for i in range(LTin):
 		'name': 'LTin',
 		'id': i,
 		'x': 0,
-		'y': 0
+		'y': 0,
+		'velocity': random.random()
 	}))
 
 for i in range(LTi):
@@ -52,7 +54,8 @@ for i in range(LTi):
 		'name': 'LTi',
 		'id': i,
 		'x': 0,
-		'y': 0
+		'y': 0,
+		'velocity': random.random()
 	}))
 
 for i in range(LTo):

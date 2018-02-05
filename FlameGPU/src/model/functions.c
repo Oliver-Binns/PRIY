@@ -45,10 +45,6 @@ inline __device__ float chemokineLevel(float distanceToLTo){
     return 1 / value;
 }
 
-__FLAME_GPU_INIT_FUNC__ void setConstants(){
-    printf("%d", LTI_CELL_SIZE);
-}
-
 /**
  * Ensure that the agent is within the boundaries of the gut area.
  *
@@ -79,14 +75,17 @@ __FLAME_GPU_FUNC__ glm::vec2 boundPosition(glm::vec2 agent_position){
  * @return Return type is always int. 0 means the agent does NOT die.
  */
 __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* xmemory,
-                                       xmachine_message_location_list* location_messages){
-    
+									   xmachine_message_location_list* location_messages,
+                                       RNG_rand48* rand48)
+{
     glm::vec2 agent_position = glm::vec2(xmemory->x, xmemory->y);
     
     //Calculate velocity
-    float angle = 0;
-    
-    glm::vec2 agent_velocity = glm::vec2(xmemory->x, xmemory->y);
+    float angle = 2 * M_PI *  rnd<CONTINUOUS>(rand48);
+    float x_move = xmemory->x * sinf(angle);
+    float y_move = xmemory->y * cosf(angle);
+
+    glm::vec2 agent_velocity = glm::vec2(x_move, y_move);
 
     agent_position += agent_velocity;
     agent_position = boundPosition(agent_position);
@@ -98,13 +97,18 @@ __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* xmemory,
 }
 
 __FLAME_GPU_FUNC__ int ltin_random_move(xmachine_memory_LTin* xmemory,
-                                        xmachine_message_location_list* location_messages)
+                                        xmachine_message_location_list* location_messages,
+                                        RNG_rand48* rand48)
 {
     glm::vec2 agent_position = glm::vec2(xmemory->x, xmemory->y);
-    glm::vec2 agent_velocity = glm::vec2(xmemory->x, xmemory->y);
     
-    agent_position += agent_velocity;
-    agent_position = boundPosition(agent_position);
+    //Calculate velocity
+    float angle = 2 * M_PI *  rnd<CONTINUOUS>(rand48);
+    float x_move = xmemory->x * sinf(angle);
+    float y_move = xmemory->y * cosf(angle);
+
+    glm::vec2 agent_velocity = glm::vec2(x_move, y_move);
+	agent_position = boundPosition(agent_position);
     
     xmemory->x = agent_position.x;
     xmemory->y = agent_position.y;
