@@ -5,6 +5,26 @@
 
 	<gpu:environment>
 		<gpu:constants>
+			<!--Enumeration of Cell Types-->
+			<gpu:variable>
+				<type>int</type>
+				<name>LTI_AGENT_TYPE</name>
+				<description>Int ID as enum for LTi cells</description>
+				<defaultValue>0</defaultValue>
+			</gpu:variable>
+			<gpu:variable>
+				<type>int</type>
+				<name>LTIN_AGENT_TYPE</name>
+				<description>Int ID as enum for LTin cells</description>
+				<defaultValue>1</defaultValue>
+			</gpu:variable>
+			<gpu:variable>
+				<type>int</type>
+				<name>LTO_AGENT_TYPE</name>
+				<description>Int ID as enum for LTo cells</description>
+				<defaultValue>2</defaultValue>
+			</gpu:variable>
+			<!-- Cell Sizes -->
 			<gpu:variable>
 				<type>int</type>
 				<name>LTI_CELL_SIZE</name>
@@ -135,8 +155,6 @@
         	<description>Percentage of area occupied by LTi cells at E15.5</description>
         	<defaultValue>0.37</defaultValue>
         </gpu:variable>
-
-
     </gpu:constants>
     <gpu:functionFiles>
     	<file>functions.c</file>
@@ -171,161 +189,166 @@
 				<name>ltin_random_move</name>
 				<currentState>ltin_random_movement</currentState>
 				<nextState>ltin_random_movement</nextState>
-				<outputs>
-					<gpu:output>
-						<messageName>location</messageName>
-						<gpu:type>single_message</gpu:type>
-					</gpu:output>
-				</outputs>
-				<gpu:reallocate>false</gpu:reallocate>
 				<gpu:RNG>true</gpu:RNG>
 			</gpu:function>
-		</functions>
-		<states>
-			<gpu:state>
-				<name>ltin_random_movement</name>
-			</gpu:state>
-			<gpu:state>
-				<name>stable_contact</name>
-			</gpu:state>
-			<gpu:state>
-				<name>localised_movement</name>
-			</gpu:state>
-			<initialState>ltin_random_movement</initialState>
-		</states>
-		<gpu:type>continuous</gpu:type>
-		<gpu:bufferSize>1024</gpu:bufferSize>
-	</gpu:xagent>
 
-	<!-- LTi Cells -->
-	<gpu:xagent>
-		<name>LTi</name>
-		<memory>
-			<gpu:variable>
-				<type>int</type>
-				<name>id</name>
-			</gpu:variable>
-			<gpu:variable>
-				<type>float</type>
-				<name>x</name>
-			</gpu:variable>
-			<gpu:variable>
-				<type>float</type>
-				<name>y</name>
-			</gpu:variable>
-			<gpu:variable>
-				<type>float</type>
-				<name>velocity</name>
-			</gpu:variable>
-		</memory>
-		<functions>
 			<gpu:function>
+			</functions>
+			<states>
+				<gpu:state>
+					<name>ltin_random_movement</name>
+				</gpu:state>
+				<gpu:state>
+					<name>stable_contact</name>
+				</gpu:state>
+				<gpu:state>
+					<name>localised_movement</name>
+				</gpu:state>
+				<initialState>ltin_random_movement</initialState>
+			</states>
+			<gpu:type>continuous</gpu:type>
+			<gpu:bufferSize>1024</gpu:bufferSize>
+		</gpu:xagent>
+
+		<!-- LTi Cells -->
+		<gpu:xagent>
+			<name>LTi</name>
+			<memory>
+				<gpu:variable>
+					<type>int</type>
+					<name>id</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>float</type>
+					<name>x</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>float</type>
+					<name>y</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>float</type>
+					<name>velocity</name>
+				</gpu:variable>
+			</memory>
+			<functions>
+				<gpu:function>
+					<name>lti_random_move</name>
+					<currentState>lti_random_movement</currentState>
+					<nextState>lti_random_movement</nextState>
+					<gpu:RNG>true</gpu:RNG>
+				</gpu:function>
+			</functions>
+			<states>
+				<gpu:state>
+					<name>lti_random_movement</name>
+				</gpu:state>
+				<gpu:state>
+					<name>responding</name>
+				</gpu:state>
+				<gpu:state>
+					<name>contact</name>
+				</gpu:state>
+				<gpu:state>
+					<name>adhesion</name>
+				</gpu:state>
+				<initialState>lti_random_movement</initialState>
+			</states>
+			<gpu:type>continuous</gpu:type>
+			<gpu:bufferSize>1024</gpu:bufferSize>
+		</gpu:xagent>
+
+		<!-- LTo Cells -->
+		<gpu:xagent>
+			<name>LTo</name>
+			<memory>
+				<gpu:variable>
+					<type>int</type>
+					<name>id</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>float</type>
+					<name>x</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>float</type>
+					<name>y</name>
+				</gpu:variable>
+			</memory>
+			<functions>
+				<gpu:function>
+					<name>express</name>
+					<currentState>expression</currentState>
+					<nextState>expression</nextState>
+					<outputs>
+						<gpu:output>
+							<messageName>location</messageName>
+							<gpu:type>single_message</gpu:type>
+						</gpu:output>
+					</outputs>
+				</gpu:function>
+			</functions>
+			<states>
+				<gpu:state>
+					<name>no_expression</name>
+				</gpu:state>
+				<gpu:state>
+					<name>expression</name>
+				</gpu:state>
+				<gpu:state>
+					<name>adhesion_upregulation</name>
+				</gpu:state>
+				<gpu:state>
+					<name>chemokine_upregulation</name>
+				</gpu:state>
+				<gpu:state>
+					<name>mature</name>
+				</gpu:state>
+				<gpu:state>
+					<name>downregulated</name>
+				</gpu:state>
+				<!-- may be either expression or NO expression??? -->
+				<initialState>no_expression</initialState>
+			</states>
+			<gpu:type>continuous</gpu:type>
+			<gpu:bufferSize>1024</gpu:bufferSize>
+		</gpu:xagent>
+	</xagents>
+
+	<messages>
+		<gpu:message>
+			<name>location</name>
+			<variables>
+				<gpu:variable>
+					<type>int</type>
+					<name>cell_type</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>float</type>
+					<name>x</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>float</type>
+					<name>y</name>
+				</gpu:variable>
+			</variables>
+			<gpu:partitioningDiscrete>
+				<gpu:radius>4</gpu:radius>
+			</gpu:partitioningDiscrete>
+			<gpu:bufferSize>1024</gpu:bufferSize>
+		</gpu:message>
+	</messages>
+
+	<layers>
+		<layer>
+			<gpu:layerFunction>
 				<name>lti_random_move</name>
-				<currentState>lti_random_movement</currentState>
-				<nextState>lti_random_movement</nextState>
-				<outputs>
-					<gpu:output>
-						<messageName>location</messageName>
-						<gpu:type>single_message</gpu:type>
-					</gpu:output>
-				</outputs>
-				<gpu:reallocate>false</gpu:reallocate>
-				<gpu:RNG>true</gpu:RNG>
-			</gpu:function>
-		</functions>
-		<states>
-			<gpu:state>
-				<name>lti_random_movement</name>
-			</gpu:state>
-			<gpu:state>
-				<name>responding</name>
-			</gpu:state>
-			<gpu:state>
-				<name>contact</name>
-			</gpu:state>
-			<gpu:state>
-				<name>adhesion</name>
-			</gpu:state>
-			<initialState>lti_random_movement</initialState>
-		</states>
-		<gpu:type>continuous</gpu:type>
-		<gpu:bufferSize>1024</gpu:bufferSize>
-	</gpu:xagent>
-
-	<!-- LTo Cells -->
-	<gpu:xagent>
-		<name>LTo</name>
-		<memory>
-			<gpu:variable>
-				<type>int</type>
-				<name>id</name>
-			</gpu:variable>
-			<gpu:variable>
-				<type>float</type>
-				<name>x</name>
-			</gpu:variable>
-			<gpu:variable>
-				<type>float</type>
-				<name>y</name>
-			</gpu:variable>
-		</memory>
-        <!--functions>
-    </functions-->
-    <states>
-    	<gpu:state>
-    		<name>no_expression</name>
-    	</gpu:state>
-    	<gpu:state>
-    		<name>expression</name>
-    	</gpu:state>
-    	<gpu:state>
-    		<name>adhesion_upregulation</name>
-    	</gpu:state>
-    	<gpu:state>
-    		<name>chemokine_upregulation</name>
-    	</gpu:state>
-    	<gpu:state>
-    		<name>mature</name>
-    	</gpu:state>
-    	<gpu:state>
-    		<name>downregulated</name>
-    	</gpu:state>
-    	<!-- may be either expression or NO expression??? -->
-    	<initialState>no_expression</initialState>
-    </states>
-    <gpu:type>continuous</gpu:type>
-    <gpu:bufferSize>1024</gpu:bufferSize>
-</gpu:xagent>
-</xagents>
-
-<messages>
-	<gpu:message>
-		<name>location</name>
-		<variables>
-			<gpu:variable>
-				<type>float</type>
-				<name>x</name>
-			</gpu:variable>
-			<gpu:variable>
-				<type>float</type>
-				<name>y</name>
-			</gpu:variable>
-		</variables>
-		<gpu:partitioningNone></gpu:partitioningNone>
-		<gpu:bufferSize>1024</gpu:bufferSize>
-	</gpu:message>
-</messages>
-
-<layers>
-	<layer>
-		<gpu:layerFunction>
-			<name>lti_random_move</name>
-		</gpu:layerFunction>
-		<gpu:layerFunction>
-			<name>ltin_random_move</name>
-		</gpu:layerFunction>
-	</layer>
-</layers>
+			</gpu:layerFunction>
+			<gpu:layerFunction>
+				<name>ltin_random_move</name>
+			</gpu:layerFunction>
+		</layer>
+	</layers>
 
 </gpu:xmodel>
 

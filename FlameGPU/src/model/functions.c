@@ -1,17 +1,9 @@
 
 /*
- * Copyright 2011 University of Sheffield.
- * Author: Dr Paul Richmond 
- * Contact: p.richmond@sheffield.ac.uk (http://www.paulrichmond.staff.shef.ac.uk)
+ * Copyright 2018 University of York.
+ * Author: Oliver Binns
+ * Contact: ob601@york.ac.uk (mail@oliverbinns.co.uk)
  *
- * University of Sheffield retain all intellectual property and 
- * proprietary rights in and to this software and related documentation. 
- * Any use, reproduction, disclosure, or distribution of this software 
- * and related documentation without an express license agreement from
- * University of Sheffield is strictly prohibited.
- *
- * For terms of licence agreement please attached licence or view licence 
- * on www.flamegpu.com website.
  * 
  */
 
@@ -65,17 +57,33 @@ __FLAME_GPU_FUNC__ glm::vec2 boundPosition(glm::vec2 agent_position){
     return agent_position;
 }
 
+/*
+ * Movement function, calculates the new position for an agent travelling at the given velocity in a random direction.
+ */
+__FLAME_GPU_FUNC__ glm::vec2 random_move(glm::vec2 position, float velocity, RNG_rand48* rand48)
+{
+	//Calculate velocity
+	float angle = 2 * M_PI *  rnd<CONTINUOUS>(rand48);
+
+	float x_move = velocity * sinf(angle);
+	float y_move = velocity * cosf(angle);
+	glm::vec2 agent_velocity = glm::vec2(x_move, y_move);
+
+	position += agent_velocity;
+	
+	return boundPosition(position);
+}
+
 /**
  * random_move FLAMEGPU Agent Function
  * This method is responsible for the agent moving randomly around the plane.
  *
- * @param agent Pointer to an LTi or LTin agent. This represents a single agent instance and can be modified directly.
- * @param example_message_messages Pointer to output message list of type xmachine_message_example_message_list.
+ * @param agent Pointer to an LTi agent. This represents a single agent instance and can be modified directly.
+ * @param location_messages Pointer to output message list of type xmachine_message_example_message_list.
  * 
  * @return Return type is always int. 0 means the agent does NOT die.
  */
 __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* xmemory,
-    xmachine_message_location_list* location_messages,
     RNG_rand48* rand48)
 {
     glm::vec2 init_position = glm::vec2(xmemory->x, xmemory->y);
@@ -88,7 +96,6 @@ __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* xmemory,
 }
 
 __FLAME_GPU_FUNC__ int ltin_random_move(xmachine_memory_LTin* xmemory,
-    xmachine_message_location_list* location_messages,
     RNG_rand48* rand48)
 {
     glm::vec2 init_position = glm::vec2(xmemory->x, xmemory->y);
@@ -98,6 +105,12 @@ __FLAME_GPU_FUNC__ int ltin_random_move(xmachine_memory_LTin* xmemory,
     xmemory->y = new_position.y;
     
     return 0;
+}
+
+__FLAME_GPU_FUNC__ int express(xmachine_memory_LTo* xmemory
+							   xmachine_message_location_list* location_messages)
+{
+	add_location_message(location_messages, LTO_AGENT_TYPE, xmemory->x, xmemory->y)
 }
 
 #endif //_FLAMEGPU_FUNCTIONS
