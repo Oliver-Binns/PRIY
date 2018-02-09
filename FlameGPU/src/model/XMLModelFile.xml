@@ -43,156 +43,162 @@
 				<description>(lti_cell_size + lto_cell_size) / 2 : Used for calculating the distance between cells to determine adhesion</description>
 				<defaultValue>4</defaultValue>
 			</gpu:variable>
-  		<!--
-            Calibrated Values:
-            MODELLING CHEMOKINES
-        -->
-        <gpu:variable>
-        	<type>float</type>
-        	<name>CHEMO_THRESHOLD</name>
-        	<description>Chemokine Threshold, must be in the range 0-1</description>
-        	<defaultValue>0.3</defaultValue>
-        </gpu:variable>
-        <gpu:variable>
-        	<type>int</type>
-        	<name>CHEMO_CURVE_ADJUST</name>
-        	<description>Sigmoid Curve Adjustment</description>
-        	<defaultValue>3</defaultValue>
-        </gpu:variable>
-        <gpu:variable>
-        	<type>float</type>
-        	<name>CHEMO_UPPER_ADJUST</name>
-        	<description>Initial Curve Value</description>
-        	<defaultValue>0.2</defaultValue>
-        </gpu:variable>
-        <gpu:variable>
-        	<type>float</type>
-        	<name>CHEMO_LOWER_ADJUST</name>
-        	<description>Lower Curve Value</description>
-        	<defaultValue>0.04</defaultValue>
-        </gpu:variable>
-        <gpu:variable>
-        	<type>float</type>
-        	<name>INCREASE_CHEMO_EXPRESSION</name>
-        	<description>Increase in expression with stable contact</description>
-        	<defaultValue>0.005</defaultValue>
-        </gpu:variable>
-        <!-- 
-            MODELLING ADHESION
-        -->
-        <gpu:variable>
-        	<type>float</type>
-        	<name>INITIAL_ADHESION</name>
-        	<description>Initial expression of Adhesion Factors</description>
-        	<defaultValue>0</defaultValue>
-        </gpu:variable>
-        <gpu:variable>
-        	<type>float</type>
-        	<name>ADHESION_SLOPE</name>
-        	<description>Linear Equation Slope</description>
-        	<defaultValue>1</defaultValue>
-        </gpu:variable>
-        <gpu:variable>
-        	<type>float</type>
-        	<name>ADHESION_INCREMENT</name>
-        	<description>Increase in Adhesion with each stable contact</description>
-        	<defaultValue>0.05</defaultValue>
-        </gpu:variable>
-        <gpu:variable>
-        	<type>float</type>
-        	<name>MAX_ADHESION_PROBABILITY</name>
-        	<description>Adhesion Level Threshold</description>
-        	<defaultValue>0.65</defaultValue>
-        </gpu:variable>
-        <!--
-            MODELLING ENVIRONMENT
-        -->
-        <gpu:variable>
-        	<type>int</type>
-        	<name>INITIAL_CIRCUMFERENCE</name>
-        	<description>Initial Circumference of the Gut</description>
-        	<defaultValue>244<!-- Pixels --></defaultValue>
-        </gpu:variable>
-        <gpu:variable>
-        	<type>int</type>
-        	<name>MAXIMUM_CIRCUMFERENCE</name>
-        	<description>Maximum Circumference of the Gut</description>
-        	<defaultValue>254</defaultValue>
-        </gpu:variable>
-        <gpu:variable>
-        	<type>int</type>
-        	<name>INITIAL_LENGTH</name>
-        	<description>Initial Length of the Gut</description>
-        	<defaultValue>7203<!-- Pixels --></defaultValue>
-        </gpu:variable>
-        <gpu:variable>
-        	<type>int</type>
-        	<name>MAXIMUM_LENGTH</name>
-        	<description>Maximum Length of the Gut</description>
-        	<defaultValue>7303</defaultValue>
-        </gpu:variable>
-        <gpu:variable>
-        	<type>float</type>
-        	<name>STROMAL_CELL_DENSITY</name>
-        	<description>..?</description>
-        	<defaultValue>0.2</defaultValue>
-        </gpu:variable>
-        <gpu:variable>
-        	<type>int</type>
-        	<name>GROWTH_TIME</name>
-        	<description>Intestinal Growth Time (hours)</description>
-        	<defaultValue>72</defaultValue>
-        </gpu:variable>
-        <gpu:variable>
-        	<type>float</type>
-        	<name>PERCENT_LTIN_FROM_FACS</name>
-        	<description>Percentage of area occupied by LTin cells at E15.5</description>
-        	<defaultValue>0.45</defaultValue>
-        </gpu:variable>
-        <gpu:variable>
-        	<type>float</type>
-        	<name>PERCENT_LTI_FROM_FACS</name>
-        	<description>Percentage of area occupied by LTi cells at E15.5</description>
-        	<defaultValue>0.37</defaultValue>
-        </gpu:variable>
-    </gpu:constants>
-    <gpu:functionFiles>
-    	<file>functions.c</file>
-    </gpu:functionFiles>
-</gpu:environment>
+	  		<!--
+	            Calibrated Values:
+	            MODELLING CHEMOKINES
+	        -->
+	        <gpu:variable>
+	        	<type>float</type>
+	        	<name>CHEMO_THRESHOLD</name>
+	        	<description>Chemokine Threshold, must be in the range 0-1</description>
+	        	<defaultValue>0.3</defaultValue>
+	        </gpu:variable>
+	        <gpu:variable>
+	        	<type>int</type>
+	        	<name>CHEMO_CURVE_ADJUST</name>
+	        	<description>Sigmoid Curve Adjustment</description>
+	        	<defaultValue>3</defaultValue>
+	        </gpu:variable>
+	        <gpu:variable>
+	        	<type>float</type>
+	        	<name>CHEMO_UPPER_ADJUST</name>
+	        	<description>Initial Curve Value</description>
+	        	<defaultValue>0.2</defaultValue>
+	        </gpu:variable>
+	        <gpu:variable>
+	        	<type>float</type>
+	        	<name>CHEMO_LOWER_ADJUST</name>
+	        	<description>Lower Curve Value</description>
+	        	<defaultValue>0.04</defaultValue>
+	        </gpu:variable>
+	        <gpu:variable>
+	        	<type>float</type>
+	        	<name>INCREASE_CHEMO_EXPRESSION</name>
+	        	<description>Increase in expression with stable contact</description>
+	        	<defaultValue>0.005</defaultValue>
+	        </gpu:variable>
+	        <!-- 
+	            MODELLING ADHESION
+	        -->
+	        <gpu:variable>
+	        	<type>float</type>
+	        	<name>INITIAL_ADHESION</name>
+	        	<description>Initial expression of Adhesion Factors</description>
+	        	<defaultValue>0</defaultValue>
+	        </gpu:variable>
+	        <gpu:variable>
+	        	<type>float</type>
+	        	<name>ADHESION_SLOPE</name>
+	        	<description>Linear Equation Slope</description>
+	        	<defaultValue>1</defaultValue>
+	        </gpu:variable>
+	        <gpu:variable>
+	        	<type>float</type>
+	        	<name>ADHESION_INCREMENT</name>
+	        	<description>Increase in Adhesion with each stable contact</description>
+	        	<defaultValue>0.05</defaultValue>
+	        </gpu:variable>
+	        <gpu:variable>
+	        	<type>float</type>
+	        	<name>MAX_ADHESION_PROBABILITY</name>
+	        	<description>Adhesion Level Threshold</description>
+	        	<defaultValue>0.65</defaultValue>
+	        </gpu:variable>
+	        <!--
+	            MODELLING ENVIRONMENT
+	        -->
+	        <gpu:variable>
+	        	<type>int</type>
+	        	<name>MAX_CELL_SPEED</name>
+	        	<description>The maximum number of pixels that a cell can move in a single iteration</description>
+	        	<defaultValue>10</defaultValue>
+	        </gpu:variable>
+	        <gpu:variable>
+	        	<type>int</type>
+	        	<name>INITIAL_CIRCUMFERENCE</name>
+	        	<description>Initial Circumference of the Gut</description>
+	        	<defaultValue>244<!-- Pixels --></defaultValue>
+	        </gpu:variable>
+	        <gpu:variable>
+	        	<type>int</type>
+	        	<name>MAXIMUM_CIRCUMFERENCE</name>
+	        	<description>Maximum Circumference of the Gut</description>
+	        	<defaultValue>254</defaultValue>
+	        </gpu:variable>
+	        <gpu:variable>
+	        	<type>int</type>
+	        	<name>INITIAL_LENGTH</name>
+	        	<description>Initial Length of the Gut</description>
+	        	<defaultValue>7203<!-- Pixels --></defaultValue>
+	        </gpu:variable>
+	        <gpu:variable>
+	        	<type>int</type>
+	        	<name>MAXIMUM_LENGTH</name>
+	        	<description>Maximum Length of the Gut</description>
+	        	<defaultValue>7303</defaultValue>
+	        </gpu:variable>
+	        <gpu:variable>
+	        	<type>float</type>
+	        	<name>STROMAL_CELL_DENSITY</name>
+	        	<description>..?</description>
+	        	<defaultValue>0.2</defaultValue>
+	        </gpu:variable>
+	        <gpu:variable>
+	        	<type>int</type>
+	        	<name>GROWTH_TIME</name>
+	        	<description>Intestinal Growth Time (hours)</description>
+	        	<defaultValue>72</defaultValue>
+	        </gpu:variable>
+	        <gpu:variable>
+	        	<type>float</type>
+	        	<name>PERCENT_LTIN_FROM_FACS</name>
+	        	<description>Percentage of area occupied by LTin cells at E15.5</description>
+	        	<defaultValue>0.45</defaultValue>
+	        </gpu:variable>
+	        <gpu:variable>
+	        	<type>float</type>
+	        	<name>PERCENT_LTI_FROM_FACS</name>
+	        	<description>Percentage of area occupied by LTi cells at E15.5</description>
+	        	<defaultValue>0.37</defaultValue>
+	        </gpu:variable>
+	    </gpu:constants>
 
-<xagents>
-	<!-- LTin Cells -->
-	<gpu:xagent>
-		<name>LTin</name>
-		<description></description>
-		<memory>
-			<gpu:variable>
-				<type>int</type>
-				<name>id</name>
-			</gpu:variable>
-			<gpu:variable>
-				<type>float</type>
-				<name>x</name>
-			</gpu:variable>
-			<gpu:variable>
-				<type>float</type>
-				<name>y</name>
-			</gpu:variable>
-			<gpu:variable>
-				<type>float</type>
-				<name>velocity</name>
-			</gpu:variable>
-		</memory>
-		<functions>
-			<gpu:function>
-				<name>ltin_random_move</name>
-				<currentState>ltin_random_movement</currentState>
-				<nextState>ltin_random_movement</nextState>
-				<gpu:RNG>true</gpu:RNG>
-			</gpu:function>
+	    <gpu:functionFiles>
+	    	<file>functions.c</file>
+	    </gpu:functionFiles>
+	</gpu:environment>
 
-			<gpu:function>
+	<xagents>
+		<!-- LTin Cells -->
+		<gpu:xagent>
+			<name>LTin</name>
+			<description></description>
+			<memory>
+				<gpu:variable>
+					<type>int</type>
+					<name>id</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>int</type>
+					<name>x</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>int</type>
+					<name>y</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>float</type>
+					<name>velocity</name>
+				</gpu:variable>
+			</memory>
+			<functions>
+				<gpu:function>
+					<name>ltin_random_move</name>
+					<currentState>ltin_random_movement</currentState>
+					<nextState>ltin_random_movement</nextState>
+					<gpu:reallocate>false</gpu:reallocate>
+					<gpu:RNG>true</gpu:RNG>
+				</gpu:function>
 			</functions>
 			<states>
 				<gpu:state>
@@ -219,11 +225,11 @@
 					<name>id</name>
 				</gpu:variable>
 				<gpu:variable>
-					<type>float</type>
+					<type>int</type>
 					<name>x</name>
 				</gpu:variable>
 				<gpu:variable>
-					<type>float</type>
+					<type>int</type>
 					<name>y</name>
 				</gpu:variable>
 				<gpu:variable>
@@ -236,6 +242,7 @@
 					<name>lti_random_move</name>
 					<currentState>lti_random_movement</currentState>
 					<nextState>lti_random_movement</nextState>
+					<gpu:reallocate>false</gpu:reallocate>
 					<gpu:RNG>true</gpu:RNG>
 				</gpu:function>
 			</functions>
@@ -267,11 +274,11 @@
 					<name>id</name>
 				</gpu:variable>
 				<gpu:variable>
-					<type>float</type>
+					<type>int</type>
 					<name>x</name>
 				</gpu:variable>
 				<gpu:variable>
-					<type>float</type>
+					<type>int</type>
 					<name>y</name>
 				</gpu:variable>
 			</memory>
@@ -286,6 +293,8 @@
 							<gpu:type>single_message</gpu:type>
 						</gpu:output>
 					</outputs>
+					<gpu:reallocate>false</gpu:reallocate>
+					<gpu:RNG>false</gpu:RNG>
 				</gpu:function>
 			</functions>
 			<states>
@@ -318,24 +327,26 @@
 	<messages>
 		<gpu:message>
 			<name>location</name>
+			<description>A message holding the type and location of a cell</description>
 			<variables>
+				<gpu:variable>
+					<type>int</type>
+					<name>x</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>int</type>
+					<name>y</name>
+				</gpu:variable>
 				<gpu:variable>
 					<type>int</type>
 					<name>cell_type</name>
 				</gpu:variable>
-				<gpu:variable>
-					<type>float</type>
-					<name>x</name>
-				</gpu:variable>
-				<gpu:variable>
-					<type>float</type>
-					<name>y</name>
-				</gpu:variable>
 			</variables>
-			<gpu:partitioningDiscrete>
+			<gpu:partitioningNone/>
+			<!--gpu:partitioningDiscrete>
 				<gpu:radius>4</gpu:radius>
-			</gpu:partitioningDiscrete>
-			<gpu:bufferSize>1024</gpu:bufferSize>
+			</gpu:partitioningDiscrete-->
+            <gpu:bufferSize>65536</gpu:bufferSize>
 		</gpu:message>
 	</messages>
 
@@ -346,6 +357,11 @@
 			</gpu:layerFunction>
 			<gpu:layerFunction>
 				<name>ltin_random_move</name>
+			</gpu:layerFunction>
+		</layer>
+		<layer>
+			<gpu:layerFunction>
+				<name>express</name>
 			</gpu:layerFunction>
 		</layer>
 	</layers>

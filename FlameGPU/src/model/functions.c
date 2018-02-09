@@ -10,10 +10,7 @@
 #ifndef _FLAMEGPU_FUNCTIONS
 #define _FLAMEGPU_FUNCTIONS
 
-#include <header.h>
-#include <math.h>
-#include <curand.h>
-#include <curand_kernel.h>
+#include "header.h"
 
 inline __device__ float dot(glm::vec2 a, glm::vec2 b)
 {
@@ -60,18 +57,22 @@ __FLAME_GPU_FUNC__ glm::vec2 boundPosition(glm::vec2 agent_position){
 /*
  * Movement function, calculates the new position for an agent travelling at the given velocity in a random direction.
  */
-__FLAME_GPU_FUNC__ glm::vec2 random_move(glm::vec2 position, float velocity, RNG_rand48* rand48)
+__FLAME_GPU_FUNC__ glm::vec2 random_move(glm::vec2 position,
+                                         float velocity,
+                                         RNG_rand48* rand48)
 {
+    printf("Max Speed: %i\n", MAX_CELL_SPEED);
 	//Calculate velocity
 	float angle = 2 * M_PI *  rnd<CONTINUOUS>(rand48);
 
-	float x_move = velocity * sinf(angle);
-	float y_move = velocity * cosf(angle);
-	glm::vec2 agent_velocity = glm::vec2(x_move, y_move);
+	float x_move = 10 * velocity * sinf(angle);
+	float y_move = 10 * velocity * cosf(angle);
+
+	glm::vec2 agent_velocity = glm::vec2(int(x_move + 0.5), int(y_move + 0.5));
 
 	position += agent_velocity;
 	
-	return boundPosition(position);
+	return position;
 }
 
 /**
@@ -84,7 +85,7 @@ __FLAME_GPU_FUNC__ glm::vec2 random_move(glm::vec2 position, float velocity, RNG
  * @return Return type is always int. 0 means the agent does NOT die.
  */
 __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* xmemory,
-    RNG_rand48* rand48)
+                                       RNG_rand48* rand48)
 {
     glm::vec2 init_position = glm::vec2(xmemory->x, xmemory->y);
     glm::vec2 new_position = random_move(init_position, xmemory->velocity, rand48);
@@ -96,7 +97,7 @@ __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* xmemory,
 }
 
 __FLAME_GPU_FUNC__ int ltin_random_move(xmachine_memory_LTin* xmemory,
-    RNG_rand48* rand48)
+                                        RNG_rand48* rand48)
 {
     glm::vec2 init_position = glm::vec2(xmemory->x, xmemory->y);
     glm::vec2 new_position = random_move(init_position, xmemory->velocity, rand48);
@@ -107,10 +108,14 @@ __FLAME_GPU_FUNC__ int ltin_random_move(xmachine_memory_LTin* xmemory,
     return 0;
 }
 
-__FLAME_GPU_FUNC__ int express(xmachine_memory_LTo* xmemory
+__FLAME_GPU_FUNC__ int express(xmachine_memory_LTo* xmemory,
 							   xmachine_message_location_list* location_messages)
 {
-	add_location_message(location_messages, LTO_AGENT_TYPE, xmemory->x, xmemory->y)
+	int x = xmemory->x;
+	int y = xmemory->y;
+	add_location_message(location_messages, x, y, 0);
+    
+    return 0;
 }
 
 #endif //_FLAMEGPU_FUNCTIONS

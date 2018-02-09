@@ -4,9 +4,9 @@
 from lxml import etree
 import random
 
-LTin = 1
-LTi = 1
-LTo = 1
+LTin = 5
+LTi = 5
+LTo = 5
 
 #Create XML
 root = etree.Element('states')
