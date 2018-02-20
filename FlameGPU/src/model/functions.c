@@ -12,6 +12,64 @@
 
 #include "header.h"
 
+__FLAME_GPU_INIT_FUNC__ void setConstants(){
+	int LTI_AGENT_TYPE = 0;
+	set_LTI_AGENT_TYPE(&LTI_AGENT_TYPE);
+	int LTIN_AGENT_TYPE = 1;
+	set_LTIN_AGENT_TYPE(&LTIN_AGENT_TYPE);
+	int LTO_AGENT_TYPE = 2;
+	set_LTO_AGENT_TYPE(&LTO_AGENT_TYPE);
+
+	int LTI_CELL_SIZE = 6;
+	set_LTI_CELL_SIZE(&LTI_CELL_SIZE);
+	int LTO_CELL_SIZE = 2;
+	set_LTO_CELL_SIZE(&LTO_CELL_SIZE);
+
+	int ADHESION_DISTANCE_THRESHOLD = (LTI_CELL_SIZE + LTO_CELL_SIZE) / 2;
+	set_ADHESION_DISTANCE_THRESHOLD(&ADHESION_DISTANCE_THRESHOLD);
+
+	//Modelling Chemokines
+	float CHEMO_THRESHOLD = 0.3f;
+	set_CHEMO_THRESHOLD(&CHEMO_THRESHOLD);
+	int CHEMO_CURVE_ADJUST = 3;
+	set_CHEMO_CURVE_ADJUST(&CHEMO_CURVE_ADJUST);
+	float CHEMO_LOWER_ADJUST = 0.04f;
+	set_CHEMO_LOWER_ADJUST(&CHEMO_LOWER_ADJUST);
+	float CHEMO_UPPER_ADJUST = 0.2f;
+	set_CHEMO_UPPER_ADJUST(&CHEMO_UPPER_ADJUST);
+	float INCREASE_CHEMO_EXPRESSION = 0.005f;
+	set_INCREASE_CHEMO_EXPRESSION(&INCREASE_CHEMO_EXPRESSION);
+
+	//Modelling Adhesion
+	float INITIAL_ADHESION = 0;
+	set_INITIAL_ADHESION(&INITIAL_ADHESION);
+	float ADHESION_SLOPE = 1;
+	set_ADHESION_SLOPE(&ADHESION_SLOPE);
+	float ADHESION_INCREMENT = 0.05f;
+	set_ADHESION_INCREMENT(&ADHESION_INCREMENT);
+	float MAX_ADHESION_PROBABILITY = 0.65f;
+	set_MAX_ADHESION_PROBABILITY(&MAX_ADHESION_PROBABILITY);
+
+	int MAX_CELL_SPEED = 10;
+	set_MAX_CELL_SPEED(&MAX_CELL_SPEED);
+	int INITIAL_CIRCUMFERENCE = 244;
+	set_INITIAL_CIRCUMFERENCE(&INITIAL_CIRCUMFERENCE);
+	int MAXIMUM_CIRCUMFERENCE = 254;
+	set_MAXIMUM_CIRCUMFERENCE(&MAXIMUM_CIRCUMFERENCE);
+	int INITIAL_LENGTH = 7203;
+	set_INITIAL_LENGTH(&INITIAL_LENGTH);
+	int MAXIMUM_LENGTH = 7303;
+	set_MAXIMUM_LENGTH(&MAXIMUM_LENGTH);
+	float STROMAL_CELL_DENSITY = 0.2;
+	set_STROMAL_CELL_DENSITY(&STROMAL_CELL_DENSITY);
+	int GROWTH_TIME = 72;
+	set_GROWTH_TIME(&GROWTH_TIME);
+	float PERCENT_LTIN_FROM_FACS = 0.45f;
+	set_PERCENT_LTIN_FROM_FACS(&PERCENT_LTIN_FROM_FACS);
+	float PERCENT_LTI_FROM_FACS = 0.37;
+	set_PERCENT_LTI_FROM_FACS(&PERCENT_LTI_FROM_FACS);	
+}
+
 inline __device__ float dot(glm::vec2 a, glm::vec2 b)
 {
     return a.x * b.x + a.y * b.y;
@@ -45,11 +103,11 @@ __FLAME_GPU_FUNC__ glm::vec2 boundPosition(glm::vec2 agent_position){
     //TODO, fix this to move correct number of coordinates, rather than to exact min/max pos
     agent_position.x = (agent_position.x < 0) ? MAXIMUM_LENGTH: agent_position.x;
     agent_position.x = (agent_position.x > MAXIMUM_LENGTH) ? 0: agent_position.x;
-    
+    //agent_position.x = agent_position.x / MAXIMUM_LENGTH;
     
     //TODO: AGENT SHOULD DIE if it goes outside Y direction
-    //agent_position.y = (agent_position.y < 0)? MAX_POSITION: agent_position.y;
-    //agent_position.y = (agent_position.y > MAX_POSITION)? MIN_POSITION: agent_position.y;
+    agent_position.y = (agent_position.y < 0)? MAXIMUM_CIRCUMFERENCE: agent_position.y;
+    agent_position.y = (agent_position.y > MAXIMUM_CIRCUMFERENCE)? MAXIMUM_CIRCUMFERENCE: agent_position.y;
 
     return agent_position;
 }
@@ -61,7 +119,6 @@ __FLAME_GPU_FUNC__ glm::vec2 random_move(glm::vec2 position,
                                          float velocity,
                                          RNG_rand48* rand48)
 {
-    printf("Max Speed: %i\n", MAX_CELL_SPEED);
 	//Calculate velocity
 	float angle = 2 * M_PI *  rnd<CONTINUOUS>(rand48);
 
@@ -72,7 +129,7 @@ __FLAME_GPU_FUNC__ glm::vec2 random_move(glm::vec2 position,
 
 	position += agent_velocity;
 	
-	return position;
+	return boundPosition(position);
 }
 
 /**
@@ -113,7 +170,7 @@ __FLAME_GPU_FUNC__ int express(xmachine_memory_LTo* xmemory,
 {
 	int x = xmemory->x;
 	int y = xmemory->y;
-	add_location_message(location_messages, x, y, 0);
+	add_location_message<DISCRETE_2D>(location_messages, x, y, 0);
     
     return 0;
 }

@@ -39,9 +39,8 @@
 			</gpu:variable>
 			<gpu:variable>
 				<type>int</type>
-				<name>adhesion_distance_threshold</name>
+				<name>ADHESION_DISTANCE_THRESHOLD</name>
 				<description>(lti_cell_size + lto_cell_size) / 2 : Used for calculating the distance between cells to determine adhesion</description>
-				<defaultValue>4</defaultValue>
 			</gpu:variable>
 	  		<!--
 	            Calibrated Values:
@@ -166,6 +165,11 @@
 	    <gpu:functionFiles>
 	    	<file>functions.c</file>
 	    </gpu:functionFiles>
+	    <gpu:initFunctions>
+	    	<gpu:initFunction>
+	    		<gpu:name>setConstants</gpu:name>
+	    	</gpu:initFunction>
+	    </gpu:initFunctions>
 	</gpu:environment>
 
 	<xagents>
@@ -212,7 +216,7 @@
 				</gpu:state>
 				<initialState>ltin_random_movement</initialState>
 			</states>
-			<gpu:type>continuous</gpu:type>
+			<gpu:type>discrete</gpu:type>
 			<gpu:bufferSize>1024</gpu:bufferSize>
 		</gpu:xagent>
 
@@ -261,7 +265,7 @@
 				</gpu:state>
 				<initialState>lti_random_movement</initialState>
 			</states>
-			<gpu:type>continuous</gpu:type>
+			<gpu:type>discrete</gpu:type>
 			<gpu:bufferSize>1024</gpu:bufferSize>
 		</gpu:xagent>
 
@@ -319,7 +323,7 @@
 				<!-- may be either expression or NO expression??? -->
 				<initialState>no_expression</initialState>
 			</states>
-			<gpu:type>continuous</gpu:type>
+			<gpu:type>discrete</gpu:type>
 			<gpu:bufferSize>1024</gpu:bufferSize>
 		</gpu:xagent>
 	</xagents>
@@ -342,10 +346,10 @@
 					<name>cell_type</name>
 				</gpu:variable>
 			</variables>
-			<gpu:partitioningNone/>
-			<!--gpu:partitioningDiscrete>
+			<!--gpu:partitioningNone/-->
+			<gpu:partitioningDiscrete>
 				<gpu:radius>4</gpu:radius>
-			</gpu:partitioningDiscrete-->
+			</gpu:partitioningDiscrete>
             <gpu:bufferSize>65536</gpu:bufferSize>
 		</gpu:message>
 	</messages>
