@@ -65,7 +65,7 @@ XSLTPREP:
 ################################################################################
 
 # Location of the CUDA Toolkit
-#CUDA_PATH ?= /usr/local/cuda
+CUDA_PATH ?= /usr/local/cuda
 
 # architecture
 HOST_ARCH   := $(shell uname -m)
@@ -123,7 +123,7 @@ else ifneq ($(TARGET_ARCH),$(HOST_ARCH))
     endif
 endif
 HOST_COMPILER ?= g++
-NVCC          := nvcc -ccbin $(HOST_COMPILER)
+NVCC          := $(CUDA_PATH)/bin/nvcc -ccbin $(HOST_COMPILER)
 
 # internal flags
 NVCCFLAGS   := -m${TARGET_SIZE}
@@ -189,7 +189,7 @@ LIBRARIES :=
 SAMPLE_ENABLED := 1
 
 # Gencode arguments
-SMS ?= 20 30 35 37 50 52
+SMS ?= 30 35 37 50 52
 
 ifeq ($(SMS),)
 $(info >>> WARNING - no SM architectures have been specified - waiving sample <<<)

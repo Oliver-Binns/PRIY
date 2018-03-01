@@ -25,8 +25,8 @@ __FLAME_GPU_INIT_FUNC__ void setConstants(){
 	int LTO_CELL_SIZE = 2;
 	set_LTO_CELL_SIZE(&LTO_CELL_SIZE);
 
-	int ADHESION_DISTANCE_THRESHOLD = (LTI_CELL_SIZE + LTO_CELL_SIZE) / 2;
-	set_ADHESION_DISTANCE_THRESHOLD(&ADHESION_DISTANCE_THRESHOLD);
+	//int ADHESION_DISTANCE_THRESHOLD = (LTI_CELL_SIZE + LTO_CELL_SIZE) / 2;
+	//set_ADHESION_DISTANCE_THRESHOLD(&ADHESION_DISTANCE_THRESHOLD);
 
 	//Modelling Chemokines
 	float CHEMO_THRESHOLD = 0.3f;
@@ -60,7 +60,7 @@ __FLAME_GPU_INIT_FUNC__ void setConstants(){
 	set_INITIAL_LENGTH(&INITIAL_LENGTH);
 	int MAXIMUM_LENGTH = 7303;
 	set_MAXIMUM_LENGTH(&MAXIMUM_LENGTH);
-	float STROMAL_CELL_DENSITY = 0.2;
+	float STROMAL_CELL_DENSITY = 0.2f;
 	set_STROMAL_CELL_DENSITY(&STROMAL_CELL_DENSITY);
 	int GROWTH_TIME = 72;
 	set_GROWTH_TIME(&GROWTH_TIME);
@@ -100,14 +100,10 @@ inline __device__ float chemokineLevel(float distanceToLTo){
  */
 __FLAME_GPU_FUNC__ glm::vec2 boundPosition(glm::vec2 agent_position){
     //Wrap around to min/max values if OUTSIDE range
-    //TODO, fix this to move correct number of coordinates, rather than to exact min/max pos
-    agent_position.x = (agent_position.x < 0) ? MAXIMUM_LENGTH: agent_position.x;
-    agent_position.x = (agent_position.x > MAXIMUM_LENGTH) ? 0: agent_position.x;
-    //agent_position.x = agent_position.x / MAXIMUM_LENGTH;
+    agent_position.x = fmod(agent_position.x, float(MAXIMUM_LENGTH));
     
     //TODO: AGENT SHOULD DIE if it goes outside Y direction
-    agent_position.y = (agent_position.y < 0)? MAXIMUM_CIRCUMFERENCE: agent_position.y;
-    agent_position.y = (agent_position.y > MAXIMUM_CIRCUMFERENCE)? MAXIMUM_CIRCUMFERENCE: agent_position.y;
+    agent_position.y = fmod(agent_position.y, float(MAXIMUM_CIRCUMFERENCE));
 
     return agent_position;
 }
@@ -125,7 +121,7 @@ __FLAME_GPU_FUNC__ glm::vec2 random_move(glm::vec2 position,
 	float x_move = 10 * velocity * sinf(angle);
 	float y_move = 10 * velocity * cosf(angle);
 
-	glm::vec2 agent_velocity = glm::vec2(int(x_move + 0.5), int(y_move + 0.5));
+	glm::vec2 agent_velocity = glm::vec2(x_move, y_move);
 
 	position += agent_velocity;
 	
@@ -170,10 +166,9 @@ __FLAME_GPU_FUNC__ int express(xmachine_memory_LTo* xmemory,
 {
 	int x = xmemory->x;
 	int y = xmemory->y;
-	add_location_message<DISCRETE_2D>(location_messages, x, y, 0);
+	add_location_message(location_messages, x, y, 0, 0);
     
     return 0;
 }
 
 #endif //_FLAMEGPU_FUNCTIONS
-

@@ -183,11 +183,11 @@
 					<name>id</name>
 				</gpu:variable>
 				<gpu:variable>
-					<type>int</type>
+					<type>float</type>
 					<name>x</name>
 				</gpu:variable>
 				<gpu:variable>
-					<type>int</type>
+					<type>float</type>
 					<name>y</name>
 				</gpu:variable>
 				<gpu:variable>
@@ -216,7 +216,7 @@
 				</gpu:state>
 				<initialState>ltin_random_movement</initialState>
 			</states>
-			<gpu:type>discrete</gpu:type>
+			<gpu:type>continuous</gpu:type>
 			<gpu:bufferSize>1024</gpu:bufferSize>
 		</gpu:xagent>
 
@@ -229,11 +229,11 @@
 					<name>id</name>
 				</gpu:variable>
 				<gpu:variable>
-					<type>int</type>
+					<type>float</type>
 					<name>x</name>
 				</gpu:variable>
 				<gpu:variable>
-					<type>int</type>
+					<type>float</type>
 					<name>y</name>
 				</gpu:variable>
 				<gpu:variable>
@@ -265,7 +265,7 @@
 				</gpu:state>
 				<initialState>lti_random_movement</initialState>
 			</states>
-			<gpu:type>discrete</gpu:type>
+			<gpu:type>continuous</gpu:type>
 			<gpu:bufferSize>1024</gpu:bufferSize>
 		</gpu:xagent>
 
@@ -278,11 +278,11 @@
 					<name>id</name>
 				</gpu:variable>
 				<gpu:variable>
-					<type>int</type>
+					<type>float</type>
 					<name>x</name>
 				</gpu:variable>
 				<gpu:variable>
-					<type>int</type>
+					<type>float</type>
 					<name>y</name>
 				</gpu:variable>
 			</memory>
@@ -323,7 +323,7 @@
 				<!-- may be either expression or NO expression??? -->
 				<initialState>no_expression</initialState>
 			</states>
-			<gpu:type>discrete</gpu:type>
+			<gpu:type>continuous</gpu:type>
 			<gpu:bufferSize>1024</gpu:bufferSize>
 		</gpu:xagent>
 	</xagents>
@@ -334,23 +334,32 @@
 			<description>A message holding the type and location of a cell</description>
 			<variables>
 				<gpu:variable>
-					<type>int</type>
+					<type>float</type>
 					<name>x</name>
 				</gpu:variable>
 				<gpu:variable>
-					<type>int</type>
+					<type>float</type>
 					<name>y</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>float</type>
+					<name>z</name>
 				</gpu:variable>
 				<gpu:variable>
 					<type>int</type>
 					<name>cell_type</name>
 				</gpu:variable>
 			</variables>
-			<!--gpu:partitioningNone/-->
-			<gpu:partitioningDiscrete>
+			<gpu:partitioningSpatial>
 				<gpu:radius>4</gpu:radius>
-			</gpu:partitioningDiscrete>
-            <gpu:bufferSize>65536</gpu:bufferSize>
+				<gpu:xmin>0</gpu:xmin>
+				<gpu:xmax>7304</gpu:xmax>
+				<gpu:ymin>0</gpu:ymin>
+				<gpu:ymax>256</gpu:ymax>
+				<gpu:zmin>0</gpu:zmin>
+				<gpu:zmax>4</gpu:zmax>
+			</gpu:partitioningSpatial>
+            <gpu:bufferSize>1024</gpu:bufferSize>
 		</gpu:message>
 	</messages>
 

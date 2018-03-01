@@ -24,7 +24,7 @@ for k, v in variables.items():
 	variable.text = v
 	environment.append(variable)
 
-root.append(environment)
+#root.append(environment)
 
 def instantiateCell(variables):
 	agent = etree.Element('xagent')
@@ -38,33 +38,38 @@ def instantiateCell(variables):
 
 	return agent
 
+pos = 0
+
 # Unsure whether these agents should be identified by type, or have a global id
 # currently they are identified by type
 for i in range(LTin):
 	root.append(instantiateCell({
 		'name': 'LTin',
 		'id': i,
-		'x': 0,
+		'x': pos,
 		'y': 0,
-		'velocity': random.random()
+		'velocity': round(random.random(), 5)
 	}))
+	pos += 1
 
 for i in range(LTi):
 	root.append(instantiateCell({
 		'name': 'LTi',
 		'id': i,
-		'x': 0,
+		'x': pos,
 		'y': 0,
-		'velocity': random.random()
+		'velocity': round(random.random(), 5)
 	}))
+	pos += 1
 
 for i in range(LTo):
 	root.append(instantiateCell({
 		'name': 'LTo',
 		'id': i,
-		'x': 0,
+		'x': pos,
 		'y': 0
 	}))
+	pos += 1
 
 tree = etree.ElementTree(root)
 tree.write('0.xml')

@@ -16,11 +16,11 @@
 #ifndef __VISUALISATION_H
 #define __VISUALISATION_H
 
-#define SIMULATION_DELAY 1
+#define SIMULATION_DELAY 5
 
 // constants
-const unsigned int WINDOW_WIDTH = 1280;
-const unsigned int WINDOW_HEIGHT = 720;
+const unsigned int WINDOW_WIDTH = 7304;
+const unsigned int WINDOW_HEIGHT = 254;
 
 //frustrum
 const double NEAR_CLIP = 0.1;
