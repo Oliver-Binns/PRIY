@@ -54,9 +54,9 @@ In summary, the aims of this project are to
 
 \section{Statement of Ethics}
 This project was conducted in accordance with the University of York's code of practice on ethics.
-This project does not involve human participants, so guidelines on informed consent and confidentiality will be met. No confidential medical data or personal information has been used during the course of the project development. This project has involved no direct animal participation. 
+This project does not involve human participants, so guidelines on informed consent and confidentiality will be met. No confidential medical data or personal information has been used during the course of the project development. This project has involved no direct animal participation.
+%[Where did the data come from?!], how was the original model created, should this be mentioned?
 
-[Where did the data come from?!]
 The simulation of the biological model is for the purpose of developing understanding of applying GPGPU methods to an agent based model of a biological system. It will not be used its current form to publish novel biological findings and does not fully simulate a biological process.%WAIT, is this true?
 %Software used and licences? FlameGPU is freely available / open source
 %Cuda is proprietary but freely available..
@@ -86,34 +86,27 @@ Chapter \ref{methods} details the development of an improved, inherently paralle
 % Point your way to further research on your topic
 
 \section{Simulation}
-%What are simulations
-	%an imitation of a system
-	%based on a model of the system
-	%features key characteristics and behaviours
-	%may aim to remove some complexity from the original system (compute times)
-	%may aim to be as accurate as possible (video games)
-		%realism has been shown to produce a higher level of immersion in gamers\cite{realism_immersion}
-
-	%mention speculation that we live in a simulation? - simulation hypothesis, The Matrix, Elon Musk
-
 %Background, what are simulations used for generally
-Computer simulations are used in a wide range of disciplines on applications such as video games, medicine, product development and even nuclear weapons. This chapter will explain the benefits and current limitations of using simulations and how these have affected this project.
+Simulations are model-based imitations of a system which feature its key characteristics and behaviours. Computer simulations are used in a wide range of disciplines on applications such as video games, medicine, product development and even nuclear weapons.
+
+The models of systems used in simulations may have a varying amounts of abstraction. Simulations used for teaching will likely have models which remove significant amounts of complexity from the system. Simulations used for video games tend to be as realistic as possible as realism has been shown to produce a higher level of immersion\cite{realism_immersion}, a highly desirable attribute of games.%may aim to remove some complexity from the original system (compute times)
+
+%mention speculation that we live in a simulation? - simulation hypothesis, The Matrix, Elon Musk
+
+This chapter will explain the benefits and current limitations of using simulations and how these have affected this project.
 
 \subsection{Benefits}
 \subsubsection{Feasibility}
 Exploring computer simulations is often far more feasible than exploring a real world environment. Video games are simulations which may allow players to experience scenarios that they may not otherwise get the opportunity to encounter. For example, car racing games are significantly cheaper and safer than real life racing.
 %video games, clearly easier/cheaper/safe for someone to play a war/car simulation than experience this in real life
 
-Within scientific discovery, simulations may be used as an alternative to real-world testing or to complement it. Often real-world scientific testing may not be feasible for a number of reasons. Simulating the aerodynamics of new car designs virtually is far quicker and cheaper than creating multiple different prototypes for physical tests. Morality may be a factor, animal testing for cosmetic products or medicine is a good example of this. With nuclear weapons, legality is a key issue, as weapon testing is banned under a number of global treaties. Finally, these real-world tests may be too dangerous to perform, such as in the case of invasive medical examinations.
-
-%SO WHAT?
-%POINT, EVIDENCE, EXPLANATION
-
-%can scale be a factor?
+Within scientific discovery, simulations may be used as an alternative to real-world testing or to complement it. Often real-world scientific testing may not be feasible for a number of reasons. Simulating the aerodynamics of new car designs virtually is far quicker and cheaper than creating multiple different prototypes for physical tests. Morality may be a factor, animal testing for cosmetic products or medicine is a good example of this. With nuclear weapons, legality is a key issue, as weapon testing is banned under a number of global treaties\cite{partial_nuclear_test_ban_treaty, threshold_test_ban_treaty, comprehensive_nuclear_test_ban_treaty}. Finally, these real-world tests may be too dangerous to perform, such as in the case of invasive medical examinations. %SO WHAT? %POINT, EVIDENCE, EXPLANATION
+%In all of these examples, simulation can be used instead of or in order to reduce the amount of testing required.
+%can scale be a factor? simulations can quickly model across numerous independent variables - see environmental control
 
 
 \subsubsection{Reducing Complexity}
-Reducing complexity through abstraction allows better knowledge of the system to be gained as the complexity may initially be overwhelming
+Reducing complexity through abstraction allows better understanding of the system to be gained as the complexity may initially be overwhelming.
 %Removing complexity can help with understanding by not 
 
 \subsubsection{Environmental Control}
@@ -171,7 +164,9 @@ Powerful hardware is expensive to access, so this may be a significant constrain
 
 \subsubsection{Skills Shortage}
 \label{skills_shortage}
-The previous section discussed reliance that complex simulations have on advanced hardware. However, advanced hardware alone will not necessarily allow a simulation to compute in a reasonable amount of time. Often, and particularly with the increasingly parallel modern architectures, the simulation code must be tailored to take advantage of the computing power available. Efficient parallel programs that do this rely on the availability of experienced programmers. Significant computer science skills shortages, across the world, significantly limit the possibility for cross-disciplinary work to utilise fast advanced simulations.
+The previous section discussed reliance that complex simulations have on advanced hardware. However, advanced hardware alone will not necessarily allow a simulation to compute in a reasonable amount of time. 
+%mention the concurrency- free lunch is over article findings
+Often, and particularly with the increasingly parallel modern architectures, the simulation code must be tailored to take advantage of the computing power available. Efficient parallel programs that do this rely on the availability of experienced programmers. May recent studies have highlighted the existance of significant computer science skills shortages, across the world\cite{digital_skills_uk, microsoft_blog}. These skills shortages may be significantly limiting the possibility for cross-disciplinary work to utilise fast, advanced simulations.
 
 %Computer science degrees, and related courses and apprenticeships, are proving less popular in recent years
 %These are worrying trends considering the demand for digital skills by employers
@@ -243,6 +238,8 @@ Ease of creation (and maintenance) is an important feature for future simulation
 
 %person-centric healthcare, custom simulations may be needed
 
+%biocellion
+
 \subsection{Flexible Modelling}
 Flexible Modelling tools could be a good method for allowing new simulations to be created more easily. Using flexible modelling, non-technical users would be able to create sketches which can be automatically processed by tools into formal models and prototype metamodels\cite{Paige2017}. FlexiSketch is a good example of this and provides a good tool for creating models and metamodels for software development\cite{flexisketch}.
 
@@ -269,7 +266,7 @@ Already an ongoing area of research..
 	%Radius of the agent messages, data transfer cost is HIGH
 	%Mindful of multi-thread data manipulation
 
-Parallelism fundamentally changes the game and allows computers to keep following Moore's law even has engineers are struggling to make transisters ever smaller and smaller[citation needed]. As modern computers tend further towards parallelism to keep providing the speed-ups that have been inherent in the industry over recent years, new parallel algorithms need developing in order to take full advantage of the computing power available.
+Parallelism fundamentally changes the game and allows computers to keep following Moore's law even has engineers are struggling to make transisters ever smaller and smaller\cite{concurrency_revolution}. As modern computers tend further towards parallelism to keep providing the speed-ups that have been inherent in the industry over recent years, new parallel algorithms need developing in order to take full advantage of the computing power available.
 
 %CPUs vs GPUs
 \subsubsection{CPU vs GPU}
@@ -287,8 +284,8 @@ A previous project compared OpenGL and CUDA
 
 
 \subsubsection{Agent Based Modelling}
-Agent Based Modelling is particularly well suited to parallelism as each agent makes its own decisions.
-Communication between agents may be a problem here!
+ABM is particularly well suited to parallelism as each agent makes its own decisions.
+Communication between individual agents can be difficult to implement in parallel but parallel communication is by no means limited to ABM.
 
 
 Mention Flame (traditional) is an attempt to make simulations more accessible via ABM.
@@ -332,6 +329,11 @@ model based -> FlameGPU\cite{flame_keratinocyte}
 \subsection{Testing}
 Talk about how the model was tested to ensure correctness\\
 Mention missing link in (incorrect) model from Kieran's paper 
+
+\section{Tools}
+%what tools were used?
+release 1.5 of FLAME GPU- not yet released
+mention VCS- git not good for XML model files as it doesn't understand the model syntax
 
 \chapter{Results and Evaluation}
 \section{Findings}
