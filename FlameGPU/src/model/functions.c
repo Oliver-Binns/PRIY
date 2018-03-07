@@ -25,8 +25,8 @@ __FLAME_GPU_INIT_FUNC__ void setConstants(){
 	int LTO_CELL_SIZE = 2;
 	set_LTO_CELL_SIZE(&LTO_CELL_SIZE);
 
-	//int ADHESION_DISTANCE_THRESHOLD = (LTI_CELL_SIZE + LTO_CELL_SIZE) / 2;
-	//set_ADHESION_DISTANCE_THRESHOLD(&ADHESION_DISTANCE_THRESHOLD);
+	int ADHESION_DISTANCE_THRESHOLD = (LTI_CELL_SIZE + LTO_CELL_SIZE) / 2;
+	set_ADHESION_DISTANCE_THRESHOLD(&ADHESION_DISTANCE_THRESHOLD);
 
 	//Modelling Chemokines
 	float CHEMO_THRESHOLD = 0.3f;
@@ -166,9 +166,25 @@ __FLAME_GPU_FUNC__ int express(xmachine_memory_LTo* xmemory,
 {
 	int x = xmemory->x;
 	int y = xmemory->y;
-	add_location_message(location_messages, x, y, 0, 0);
+	add_location_message(location_messages, x, y, 0, LTO_AGENT_TYPE);
     
     return 0;
+}
+
+
+__FLAME_GPU_FUNC__ int create_cells(xmachine_memory_MigrationManager* xmemory,
+									xmachine_memory_LTi* LTi_agents,
+									xmachine_memory_LTin* LTin_agents)
+{
+	for(int i = 0; i < LTI_MIGRATION_RATE; i++){
+		int id;
+		float x, y, velocity;
+
+		add_LTi_agent(LTi_agents, id, x, y, velocity);
+		//add_LTin_agent(LTin_agents, id, x, y, velocity);
+	}
+
+	return 0;
 }
 
 #endif //_FLAMEGPU_FUNCTIONS
