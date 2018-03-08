@@ -93,12 +93,12 @@ inline __device__ float chemokineLevel(float distanceToLTo){
 }
 
 __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
-	printf("Population before step function: %u\n", get_agent_LTi_lti_random_movement_count());
+
+	//CREATE LTis:
 	// Can create upto h_agent_AoS_MAX agents in a single pass (the number allocated for) but the full amount does not have to be created.
 	unsigned int lti_migration_rate = 5;
 	// It is sensible to check if it is possible to create new agents, and if so how many.
 	unsigned int agent_remaining = get_agent_LTi_MAX_count() - get_agent_LTi_lti_random_movement_count();
-
 	if (agent_remaining > 0) {
 		unsigned int count = (lti_migration_rate > agent_remaining) ? agent_remaining: lti_migration_rate;
 		// Populate data as required
@@ -107,15 +107,34 @@ __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
 			//Initialise agent variables:
 			h_agent->x = 0;
 			h_agent->y = 0;
+			h_agent->colour = 0;
 			h_agent->velocity = 0.5;//random
-			printf("New agent");
 
 			h_add_agent_LTi_lti_random_movement(h_agent);
 			h_free_agent_LTi(&h_agent);
 		}
 	}
 
-	printf("Population after step function: %u\n", get_agent_LTi_lti_random_movement_count());
+	//Create LTins:
+	// Can create upto h_agent_AoS_MAX agents in a single pass (the number allocated for) but the full amount does not have to be created.
+	unsigned int ltin_migration_rate = 5;
+	// It is sensible to check if it is possible to create new agents, and if so how many.
+	agent_remaining = get_agent_LTin_MAX_count() - get_agent_LTin_ltin_random_movement_count();
+	if (agent_remaining > 0) {
+		unsigned int count = (ltin_migration_rate > agent_remaining) ? agent_remaining: ltin_migration_rate;
+		// Populate data as required
+		for (unsigned int i = 0; i < count; i++) {
+			xmachine_memory_LTin * h_agent = h_allocate_agent_LTin();
+			//Initialise agent variables:
+			h_agent->x = 0;
+			h_agent->y = 0;
+			h_agent->colour = 1;
+			h_agent->velocity = 0.5;//random
+
+			h_add_agent_LTin_ltin_random_movement(h_agent);
+			h_free_agent_LTin(&h_agent);
+		}
+	}
 }
 
 /*

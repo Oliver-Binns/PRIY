@@ -4,9 +4,13 @@
 from lxml import etree
 import random
 
+LTi_TYPE = 0;
+LTin_TYPE= 1;
+LTo_TYPE = 2;
+
+LTi  = 5
 LTin = 5
-LTi = 5
-LTo = 5
+LTo  = 5
 
 #Create XML
 root = etree.Element('states')
@@ -48,6 +52,7 @@ for i in range(LTin):
 		'id': i,
 		'x': pos,
 		'y': 0,
+		'colour': LTin_TYPE,
 		'velocity': round(random.random(), 5)
 	}))
 	pos += 1
@@ -58,6 +63,7 @@ for i in range(LTi):
 		'id': i,
 		'x': pos,
 		'y': 0,
+		'colour': LTi_TYPE,
 		'velocity': round(random.random(), 5)
 	}))
 	pos += 1
@@ -67,7 +73,8 @@ for i in range(LTo):
 		'name': 'LTo',
 		'id': i,
 		'x': pos,
-		'y': 0
+		'y': 0,
+		'colour': LTo_TYPE
 	}))
 	pos += 1
 
