@@ -170,6 +170,11 @@
 	    		<gpu:name>setConstants</gpu:name>
 	    	</gpu:initFunction>
 	    </gpu:initFunctions>
+	    <gpu:stepFunctions>
+	    	<gpu:stepFunction>
+	    		<gpu:name>migrateNewCells</gpu:name>
+	    	</gpu:stepFunction>
+	    </gpu:stepFunctions>
 	</gpu:environment>
 
 	<xagents>

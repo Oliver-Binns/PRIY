@@ -92,6 +92,32 @@ inline __device__ float chemokineLevel(float distanceToLTo){
     return 1 / value;
 }
 
+__FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
+	printf("Population before step function: %u\n", get_agent_Agent_default_count());
+	// Can create upto h_agent_AoS_MAX agents in a single pass (the number allocated for) but the full amount does not have to be created.
+	unsigned int lti_migration_rate = 32;
+	// It is sensible to check if it is possible to create new agents, and if so how many.
+	unsigned int agent_remaining = xmachine_memory_LTi_MAX - get_agent_LTi_default_count();
+
+	if (agent_remaining > 0) {
+		int count = (lti_migration_rate > agent_remaining) ? agent_remaining: lti_migration_rate;
+		// Populate data as required
+		for (unsigned int i = 0; i < count; i++) {
+			xmachine_memory_LTi * h_agent = h_allocate_LTi_Agent();
+			//Initialise agent variables:
+			h_agent->x = 0;
+			h_agent->y = 0;
+			h_agent->velocity = 0.5;//random
+
+
+			h_add_LTi_Agent_default(h_agent);
+			h_free_LTi_agent(&h_agent);
+		}
+	}
+
+	printf("Population after step function: %u\n", get_agent_Agent_default_count());
+}
+
 /**
  * Ensure that the agent is within the boundaries of the gut area.
  *
