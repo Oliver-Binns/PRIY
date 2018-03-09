@@ -4,13 +4,7 @@
 from lxml import etree
 import random
 
-LTi_TYPE = 0;
-LTin_TYPE= 1;
 LTo_TYPE = 2;
-
-LTi  = 5
-LTin = 5
-LTo  = 5
 
 #Create XML
 root = etree.Element('states')
@@ -42,41 +36,15 @@ def instantiateCell(variables):
 
 	return agent
 
-pos = 0
 
-# Unsure whether these agents should be identified by type, or have a global id
-# currently they are identified by type
-for i in range(LTin):
-	root.append(instantiateCell({
-		'name': 'LTin',
-		'id': i,
-		'x': pos,
-		'y': 0,
-		'colour': LTin_TYPE,
-		'velocity': round(random.random(), 5)
-	}))
-	pos += 1
-
-for i in range(LTi):
-	root.append(instantiateCell({
-		'name': 'LTi',
-		'id': i,
-		'x': pos,
-		'y': 0,
-		'colour': LTi_TYPE,
-		'velocity': round(random.random(), 5)
-	}))
-	pos += 1
-
-for i in range(LTo):
+for i in range(1):
 	root.append(instantiateCell({
 		'name': 'LTo',
 		'id': i,
-		'x': pos,
-		'y': 0,
+		'x': 7303 / 2,
+		'y': 254 / 2,
 		'colour': LTo_TYPE
 	}))
-	pos += 1
 
 tree = etree.ElementTree(root)
 tree.write('0.xml')
