@@ -92,20 +92,49 @@ inline __device__ float chemokineLevel(float distanceToLTo){
     return 1 / value;
 }
 
-/**
- * Ensure that the agent is within the boundaries of the gut area.
- *
- * TODO: If it goes outside of y direction, the agent should die as it has migrated
- * If it goes outside the x direction, it wraps around 
- */
-__FLAME_GPU_FUNC__ glm::vec2 boundPosition(glm::vec2 agent_position){
-    //Wrap around to min/max values if OUTSIDE range
-    agent_position.x = fmod(agent_position.x, float(MAXIMUM_LENGTH));
-    
-    //TODO: AGENT SHOULD DIE if it goes outside Y direction
-    agent_position.y = fmod(agent_position.y, float(MAXIMUM_CIRCUMFERENCE));
+__FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
 
-    return agent_position;
+	//CREATE LTis:
+	// Can create upto h_agent_AoS_MAX agents in a single pass (the number allocated for) but the full amount does not have to be created.
+	unsigned int lti_migration_rate = 5;
+	// It is sensible to check if it is possible to create new agents, and if so how many.
+	unsigned int agent_remaining = get_agent_LTi_MAX_count() - get_agent_LTi_lti_random_movement_count();
+	if (agent_remaining > 0) {
+		unsigned int count = (lti_migration_rate > agent_remaining) ? agent_remaining: lti_migration_rate;
+		// Populate data as required
+		for (unsigned int i = 0; i < count; i++) {
+			xmachine_memory_LTi * h_agent = h_allocate_agent_LTi();
+			//Initialise agent variables:
+			h_agent->x = 0;
+			h_agent->y = 0;
+			h_agent->colour = 0;
+			h_agent->velocity = 0.5;//random
+
+			h_add_agent_LTi_lti_random_movement(h_agent);
+			h_free_agent_LTi(&h_agent);
+		}
+	}
+
+	//Create LTins:
+	// Can create upto h_agent_AoS_MAX agents in a single pass (the number allocated for) but the full amount does not have to be created.
+	unsigned int ltin_migration_rate = 5;
+	// It is sensible to check if it is possible to create new agents, and if so how many.
+	agent_remaining = get_agent_LTin_MAX_count() - get_agent_LTin_ltin_random_movement_count();
+	if (agent_remaining > 0) {
+		unsigned int count = (ltin_migration_rate > agent_remaining) ? agent_remaining: ltin_migration_rate;
+		// Populate data as required
+		for (unsigned int i = 0; i < count; i++) {
+			xmachine_memory_LTin * h_agent = h_allocate_agent_LTin();
+			//Initialise agent variables:
+			h_agent->x = 0;
+			h_agent->y = 0;
+			h_agent->colour = 1;
+			h_agent->velocity = 0.5;//random
+
+			h_add_agent_LTin_ltin_random_movement(h_agent);
+			h_free_agent_LTin(&h_agent);
+		}
+	}
 }
 
 /*
@@ -124,8 +153,16 @@ __FLAME_GPU_FUNC__ glm::vec2 random_move(glm::vec2 position,
 	glm::vec2 agent_velocity = glm::vec2(x_move, y_move);
 
 	position += agent_velocity;
+
+	//agent should die if it goes outside area of the x direction
+	if(position.x < 0 || MAXIMUM_LENGTH < position.x){
+		position.x = NULL;
+	}
+
+	//Y position should wrap
+	position.y = fmod(position.y, float(MAXIMUM_CIRCUMFERENCE));
 	
-	return boundPosition(position);
+	return position;
 }
 
 /**
@@ -142,6 +179,11 @@ __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* xmemory,
 {
     glm::vec2 init_position = glm::vec2(xmemory->x, xmemory->y);
     glm::vec2 new_position = random_move(init_position, xmemory->velocity, rand48);
+
+    //Agent DIES
+    if(new_position.x == NULL){
+    	return -1;
+    }
     
     xmemory->x = new_position.x;
     xmemory->y = new_position.y;
@@ -154,6 +196,11 @@ __FLAME_GPU_FUNC__ int ltin_random_move(xmachine_memory_LTin* xmemory,
 {
     glm::vec2 init_position = glm::vec2(xmemory->x, xmemory->y);
     glm::vec2 new_position = random_move(init_position, xmemory->velocity, rand48);
+
+    //Agent DIES
+    if(new_position.x == NULL){
+    	return -1;
+    }
     
     xmemory->x = new_position.x;
     xmemory->y = new_position.y;

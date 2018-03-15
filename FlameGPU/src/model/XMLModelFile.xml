@@ -170,6 +170,11 @@
 	    		<gpu:name>setConstants</gpu:name>
 	    	</gpu:initFunction>
 	    </gpu:initFunctions>
+	    <gpu:stepFunctions>
+	    	<gpu:stepFunction>
+	    		<gpu:name>migrateNewCells</gpu:name>
+	    	</gpu:stepFunction>
+	    </gpu:stepFunctions>
 	</gpu:environment>
 
 	<xagents>
@@ -230,6 +235,10 @@
 					<type>float</type>
 					<name>velocity</name>
 				</gpu:variable>
+				<gpu:variable>
+					<type>int</type>
+					<name>colour</name>
+				</gpu:variable>
 			</memory>
 			<functions>
 				<gpu:function>
@@ -276,6 +285,10 @@
 					<type>float</type>
 					<name>velocity</name>
 				</gpu:variable>
+				<gpu:variable>
+					<type>int</type>
+					<name>colour</name>
+				</gpu:variable>
 			</memory>
 			<functions>
 				<gpu:function>
@@ -320,6 +333,10 @@
 				<gpu:variable>
 					<type>float</type>
 					<name>y</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>int</type>
+					<name>colour</name>
 				</gpu:variable>
 			</memory>
 			<functions>
