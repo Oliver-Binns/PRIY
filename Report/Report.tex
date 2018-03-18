@@ -11,10 +11,21 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{-1}
+\wordcount{3718}
 
-\abstract{More powerful computers are paving the way for realistic simulations of previously underexplored complex biological systems. As advancements in computing tend towards parallelism and distributed systems, increasingly realistic simulations must take full advantage of this change in order to be computed in a reasonable time period. In this project, we will explore some of the current technologies for doing so and propose new tools for the future.}
- 
+%Approx 500 Words
+\abstract{
+More powerful computers are paving the way for realistic simulations of previously underexplored complex biological systems.
+As advancements in computing tend towards parallelism and distributed systems, increasingly realistic simulations must take full advantage of this change in order to be computed in a reasonable time period.
+%briefly mention that parallelism makes programming more difficult
+
+Some significant problems, including a significant computer science skills shortage, are slowing down the rate of progress in this area.
+
+In this project, I will propose model-driven engineering (MDE) as a solution to several of these problems, explore some of the current MDE technologies for creating simulations and propose further advancements to these tools for the future.
+}
+
+\acknowledgements{I would like to my supervisors, Fiona Polack and Kieran Alden for their support and guidance throughout this project. I would also like to thank the Sheffield FlameGPU development team for their help in utilising the latest and pre-released features of Flame.}
+
 \begin{document}
 \maketitle
 \listoffigures
@@ -22,6 +33,7 @@
 \renewcommand*{\lstlistlistingname}{List of Listings}
 \lstlistoflistings
 
+%Approx 1000 words
 \chapter{Introduction}
 \section{Project Overview}
 TALK ABOUT MODELING AND THE DESIRE FOR 
@@ -66,15 +78,14 @@ The simulation of the biological model is for the purpose of developing understa
 \section{Report Structure}
 This report details the work done throughout the project and 
 
-Chapter \ref{background} gives a general overview of simulations and the benefits and limitations of their use particularly with regard to computational biology.
+Chapter \ref{simulation} gives a general overview of simulations and the benefits and limitations of their use particularly with regard to computational biology.
 
 Chapter \ref{improvements} explores some of the limitations of simulations in additional detail and proposes future solutions for these.
 
 Chapter \ref{methods} details the development of an improved, inherently parallel, implementation of PPSim.
 
-
-\chapter{Background}
-\label{background}
+%Approx 3000 words for literature review
+\chapter{Literature Review}
 % Aims are to:
 %
 % Place original work into the context of existing Literature
@@ -86,6 +97,7 @@ Chapter \ref{methods} details the development of an improved, inherently paralle
 % Point your way to further research on your topic
 
 \section{Simulation}
+\label{simulation}
 %Background, what are simulations used for generally
 Simulations are model-based imitations of a system which feature its key characteristics and behaviours. Computer simulations are used in a wide range of disciplines on applications such as video games, medicine, product development and even nuclear weapons.
 
@@ -131,6 +143,7 @@ One of the biggest benefits of simulation is the ability to graphically visualis
 Simulation can be particularly useful for visualising concepts for education. 
 
 Particularly immersive visualisations can also be produced using virtual and augmented reality. The Virtuali-Tee is an educational tool that uses simulation and augmented reality to provide a view at the body's internal organs\cite{curiscope}. Little Journey aims to reduce kids' anxiety about surgery by providing a realistic tour of their hospital ward given by animated cartoon characters\cite{little_journey}.
+%use a paper to show that these are actually "immersive"
 
 \subsection{Limitations and Constraints}
 %ARE THERE ANY CONS?
@@ -190,48 +203,24 @@ This is linked to, but not the same as, having insufficent domain knowledge. Bot
 
 If the simulation needs to be safety-critical, developing it using formal methods and refinement may be a good way to ensure that no bugs are present in the code.
 
-\subsection{Agent-Based Modelling}
-\label{abm}
-%discuss types of simulation..
-%What is ABM?
-%WHY IS AGENT BASED MODELLING THE MOST RELEVANT FOR THIS PROJECT
-
-%particularly well suited for these cell-based simulations as can be visualised..
-
-\section{Biological Simulations}
-Computational Biology is a relatively new field of study that has been growing signficantly over the last decade[CITATION NEEDED].
-
-Within Biology, simulation is often required as an alternative to invasive medical testing/animal testing
-
-
-Simulations have even been proposed as a method for exploring a potential set of first principles and mathematics that are specific to biology which could even constitute a new subject- theoretical biology\cite{rise_article}.
-
-\subsection{Existing Simulations}
-%Previous implementations of simulations and their problems:
-%In order to achieve mass-market userbase, they must be:
-%EASIER TO MAKE - less technical users can work on them
-%FASTER TO RUN. - more feasible, to use in experiments, more complex sims can be made
-
-\subsubsection{Cell Dynamics}
-
-
-\subsection{PPSim}
-\label{ppsim}
-This project focuses on simulation as a tool for exploring biological systems at cell level. It uses the existing simulation of Peyer's Patch\cite{kieran_thesis} and attempts to use parallel computer architectures in order to speed this simulation up. %proof of concept- what new knowledge has PPSim created so far?
-
-Finally, I will propose a new tool, which builds on existing work in order to make this power available to non-technical users? or will I, probably not enough time for this!
-
-\chapter{Improving Simulations}
+\section{Improving Simulations}
 \label{improvements}
 %Section on what we need to support complex simulations
 %link this to the previous chapter- discussion on current constraints on simulation:
-Significant constraints on when simulations can be used were discussed in the previous chapter. In order for simulations to become more widely adopted, some of these constraints must be overcome.
-%In particular, this project will focus on overcoming the problems provided by the current computing skills shortage and the requirement to take maximum advantage of the available computing power.
-%The skills shortage can be overcome by providing tools that allow non-technical users to create advanced simulations.
+Significant constraints on when simulations can be used were discussed in the previous chapter. In order for simulations to become more widely adopted, some of these constraints must be overcome. 
+In particular, this project will focus on two particular sections of which I believe will have the biggest immediate impact.
 
-As these simulations becoming more and more prevalent: tools need developing to allow less technical users to create these simulations easier and run faster...
+Firstly, attempting to overcome the problems provided by the current computing skills shortage. 
+Initial work to help overcome the skills shortage will likely come by providing tools that can automate work done by technical users in order to increase their productivity.
+Eventually, if this technical work can be fully automated, non-technical users will be able to easily create advanced simulations.
+%As these simulations becoming more and more prevalent: tools need developing to allow less technical users to create these simulations easier and run faster...
 
-\section{Ease of Creation}
+Secondly, simulations need to be able to generate results in a realistic amount of time. As many biological simulations include significant elements of randomness, they must be run a large number of times in order to produce reliable results. This can often take 
+
+This chapter will discuss the potential solutions to each of these problems.
+%which I believe is model-driven engineering
+
+\subsection{Ease of Creation}
 Ease of creation (and maintenance) is an important feature for future simulation particularly due to the aforementioned computer science skills shortage (Section \ref{skills_shortage}).
 
 %difficult to create a framework that allows for easy modelling of BOTH state and interaction between agents[CITE NEEDED?, no but seriously]
@@ -239,20 +228,25 @@ Ease of creation (and maintenance) is an important feature for future simulation
 %person-centric healthcare, custom simulations may be needed
 
 %biocellion
+Biocellion is 
+%freely-available for non-profit use.
+%unfortunately, technical to understand- took several weeks to even install, how to cite conversation? CITE Jeff's report?
+%still requires basic proficiency with the Linux OS and C++ programming as well as familiarity with mathematical modeling concepts
+%has industry support- Procter and Gamble
 
-\subsection{Flexible Modelling}
+\subsubsection{Flexible Modelling}
 Flexible Modelling tools could be a good method for allowing new simulations to be created more easily. Using flexible modelling, non-technical users would be able to create sketches which can be automatically processed by tools into formal models and prototype metamodels\cite{Paige2017}. FlexiSketch is a good example of this and provides a good tool for creating models and metamodels for software development\cite{flexisketch}.
 
-\section{Speed Up}
+\subsection{Speed Up}
 %discussed compute power above, relate this specifically to biology now!
 %this speed up is needed to keep pace with the additional complexity required.
 %more complexity = more realistic = more data to process and more statistical analyses to evaluate = longer to run
 %additional complexity:
 	%person centric healthcare- simulations must be customisable [machine learning paper]
 
-\subsection{Machine Learning}
+\subsubsection{Machine Learning}
 %Talk about Kieran's original thesis and how long it took to run, and to develop the results, etc.
-A solution to the speed problem that has been proposed recently is to use machine learning on a small set of results to produce 
+A solution to the speed problem that has been proposed recently is to use machine learning on a small set of results to produce\cite{kieran_machine_learning}
 %Kieran Machine Learning
 This has problems in that...
 likely affected by Standard Machine Learning issues? Bias? Overfitting?
@@ -260,7 +254,7 @@ likely affected by Standard Machine Learning issues? Bias? Overfitting?
 Already an ongoing area of research.. 
 
 
-\subsection{Parallelism}
+\subsubsection{Parallelism}
 %Trade-off, Peak Performance vs Programming Ease, this can be related to the previous section
 %Complex to program, need to bear in mind:
 	%Radius of the agent messages, data transfer cost is HIGH
@@ -268,23 +262,31 @@ Already an ongoing area of research..
 
 Parallelism fundamentally changes the game and allows computers to keep following Moore's law even has engineers are struggling to make transisters ever smaller and smaller\cite{concurrency_revolution}. As modern computers tend further towards parallelism to keep providing the speed-ups that have been inherent in the industry over recent years, new parallel algorithms need developing in order to take full advantage of the computing power available.
 
+\paragraph{Distributed Systems}
+%MAPREDUCE for distributed systems could be mentioned
+
 %CPUs vs GPUs
-\subsubsection{CPU vs GPU}
+\paragraph{CPU vs GPU}
+
 Modern computers provide two main methods for parallelising code.
 We are building on a previous project\cite{phil_diss} which layed the groudwork for this.
 This previous project outlined the choice between CPU and GPU parallelism and makes the case for exploring GPUs- simplisitically put, this is due to the significantly greater speed ups that can be achieved.
 
 %MENTION DIFFICULTY GETTING ACCESS TO A GPU FOR TESTING!
 
+
 %partitioning is particularly effective if the vast majority of space is unpopulated
+%otherwise nah?
 
 %compare speed ups that can be gained, reference Phil's project for more details
 
-\subsubsection{OpenGL vs CUDA}
+\paragraph{OpenGL vs CUDA}
+
 A previous project compared OpenGL and CUDA
 
 
-\subsubsection{Agent Based Modelling}
+\paragraph{Agent Based Modelling}
+
 ABM is particularly well suited to parallelism as each agent makes its own decisions.
 Communication between individual agents can be difficult to implement in parallel but parallel communication is by no means limited to ABM.
 
@@ -293,22 +295,66 @@ Mention Flame (traditional) is an attempt to make simulations more accessible vi
 %Flexible Large Scale Agent Modelling Environment
 %http://flame.ac.uk
 
-\subsection{FLAME GPU}
-FLAME GPU is an extension of the original version of FLAME, where the simulations that are created are compiled down to CUDA code. This means the simulation can take full advantage of the significant power of modern NVIDIA GPUs.
-%overview of FlameGPU
-%http://www.flamegpu.com
+\paragraph{FLAME GPU}
 
-%x-machine, etc.
+FLAME (Flexible Large-Scale Agent Modelling Environment) GPU is an extension of the original version of FLAME, where the simulations that are created are compiled down to parallelised CUDA code. This means the simulation can take full advantage of the significant power of modern NVIDIA GPUs.
 %flame is built on top of CUDA, why?
 
-%using a framework like FLAME
-	%relies on FLAME being supported into the future
-		%the framework is open source, so hopefully this shouldn't be an issue
-	%simulations can always be certain of taking advantage of the latest hardware and portability features that FLAME provides
-		%As flame is updated, existing simulations may get faster, taking advantage of newer hardware
-		%simulations do not need to be reimplemented to do this
+Relying on a framework such as FLAME
+Fortunately, as FLAME GPU is an open source project this should be less of an issue.
+
+This framework brings its own advantages. As FLAME maps a model to simulation code, it brings with it many of the advantages of model-driven engineering.
+%all the advantages of model driven engineering
+	%gives non-technical users the ability to view diagrams
+	%artifact auto-generation, lowers boundary to programming entry
+The implementations can always be certain of taking advantage of the latest hardware optimisations and portability features that FLAME provides.
+%As flame is updated, existing simulations may get faster, taking advantage of newer hardware
+As FLAME is updated to support new hardware advances, such as *multiple CUDA cores*, existing simulation models may all get faster without requiring major code changes.
 
 
+%overview of FlameGPU
+%http://www.flamegpu.com
+FLAME GPU takes input in the form of an XMML model which defines the types of agents that feature in the simulation and their interactions%read XMML paper!
+%x-machine, etc.
+
+\section{Existing Simulations}
+%Previous implementations of simulations and their problems:
+%In order to achieve mass-market userbase, they must be:
+%EASIER TO MAKE - less technical users can work on them
+%FASTER TO RUN. - more feasible, to use in experiments, more complex sims can be made
+
+\subsection{Agent-Based Modelling}
+\label{abm}
+%discuss types of simulation..
+%What is ABM?
+%WHY IS AGENT BASED MODELLING THE MOST RELEVANT FOR THIS PROJECT
+MASON is a multi-agent simulation library for Java.
+%particularly well suited for these cell-based simulations as can be visualised..
+
+\subsection{Biological Simulations}
+Computational Biology is a relatively new field of study that has been growing signficantly over the last decade[CITATION NEEDED].
+
+Within Biology, simulation is often required as an alternative to invasive medical testing/animal testing
+
+
+Simulations have even been proposed as a method for exploring a potential set of first principles and mathematics that are specific to biology which could even constitute a new subject- theoretical biology\cite{rise_article}.
+
+\subsubsection{Genome}
+
+%Katherine Denby, etc.
+
+\subsubsection{Cell Dynamics}
+
+
+\subsection{PPSim}
+\label{ppsim}
+This project focuses on simulation as a tool for exploring biological systems at cell level. It uses the existing simulation of Peyer's Patch\cite{kieran_thesis} and attempts to use parallel computer architectures in order to speed this simulation up. %proof of concept- what new knowledge has PPSim created so far?
+
+Finally, I will propose a new tool, which builds on existing work in order to make this power available to non-technical users.
+%or will I, probably not enough time for this!
+
+%Approx 1500 words for problem description and analysis
+%Approx 2500 words for design and implementation
 \chapter{Methods}
 \label{methods}
 \section{The Domain Model}
@@ -338,14 +384,18 @@ Mention missing link in (incorrect) model from Kieran's paper
 
 \section{Tools}
 %what tools were used?
-release 1.5 of FLAME GPU- not yet released
-mention VCS- git not good for XML model files as it doesn't understand the model syntax
+In order to produce a working simulation of Peyer's Patch formation, I have used an unreleased version (1.5) of FLAME GPU.
+As FLAME GPU is developed openly, this version is freely available online\cite{flame_github}.
 
+Git versioning has been used for this project to aid development.
+%mention VCS- git not good for XML model files as it doesn't understand the model syntax
+
+%Approx 2500 words for results and evalution
 \chapter{Results and Evaluation}
 \section{Findings}
 \cite{statistical_tests} could be important for evaluating the performance of FlameGPU against original PPSim
 
-
+%Approx 1000 words
 \section{Conclusion}
 
 \section{Further Work}
@@ -362,7 +412,6 @@ mention VCS- git not good for XML model files as it doesn't understand the model
 
 
 \printbibliography
-
 \chapter{Appendix}
 \section{Simulation Parameters}
 
