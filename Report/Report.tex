@@ -24,7 +24,7 @@ Some significant problems, including a significant computer science skills short
 In this project, I will propose model-driven engineering (MDE) as a solution to several of these problems, explore some of the current MDE technologies for creating simulations and propose further advancements to these tools for the future.
 }
 
-\acknowledgements{I would like to my supervisors, Fiona Polack and Kieran Alden for their support and guidance throughout this project. I would also like to thank the Sheffield FlameGPU development team for their help in utilising the latest and pre-released features of Flame.}
+\acknowledgements{I would like to my supervisors, Fiona Polack and Kieran Alden for their support and guidance throughout this project. I would also like to thank the Sheffield FLAME GPU development team for their help in utilising the latest and pre-released features of FLAME GPU.}
 
 \begin{document}
 \maketitle
@@ -47,7 +47,7 @@ The motivation for this project stems mainly from the new knowledge that could b
 
 If hypotheses for *drug testing* can be more easily and extensively tested in silico, this could significantly improve the process by which drugs are developed.
 New drugs and cures could be developed more quickly, allowing these to be available more quickly.
-The financial burden of drug development (approximately \$2.5bn[citation needed]) could be reduced, freeing up heavily contested funds for additional research.
+The significant financial burden of drug development, which is estimated to be around \$2.9bn\cite{drug_cost}, could be reduced, freeing up heavily contested funds for additional research.
 The use of animal testing could be reduced, and potentially eliminated completely in the long term.
 
 %outside of drug testing, new understanding can..?
@@ -112,24 +112,24 @@ This chapter will explain the benefits and current limitations of using simulati
 Exploring computer simulations is often far more feasible than exploring a real world environment. Video games are simulations which may allow players to experience scenarios that they may not otherwise get the opportunity to encounter. For example, car racing games are significantly cheaper and safer than real life racing.
 %video games, clearly easier/cheaper/safe for someone to play a war/car simulation than experience this in real life
 
-Within scientific discovery, simulations may be used as an alternative to real-world testing or to complement it. Often real-world scientific testing may not be feasible for a number of reasons. Simulating the aerodynamics of new car designs virtually is far quicker and cheaper than creating multiple different prototypes for physical tests. Morality may be a factor, animal testing for cosmetic products or medicine is a good example of this. With nuclear weapons, legality is a key issue, as weapon testing is banned under a number of global treaties\cite{partial_nuclear_test_ban_treaty, threshold_test_ban_treaty, comprehensive_nuclear_test_ban_treaty}. Finally, these real-world tests may be too dangerous to perform, such as in the case of invasive medical examinations. %SO WHAT? %POINT, EVIDENCE, EXPLANATION
-%In all of these examples, simulation can be used instead of or in order to reduce the amount of testing required.
+Often real-world scientific testing may not be feasible for a number of reasons. Simulating the aerodynamics of new car designs virtually is far quicker and cheaper than creating multiple different prototypes for physical tests. Morality may be a factor, animal testing for cosmetic products or medicine is a good example of this. With nuclear weapons, legality is a key issue, as some weapon testing is banned under a number of global treaties\cite{partial_nuclear_test_ban_treaty, threshold_test_ban_treaty}. Finally, some real-world tests may be too dangerous to perform, such as in the case of invasive medical examinations. %SO WHAT? %POINT, EVIDENCE, EXPLANATION
+In all of these examples, computer simulation is often used to reduce or replace real-world testing.
 %can scale be a factor? simulations can quickly model across numerous independent variables - see environmental control
 
 
 \subsubsection{Reducing Complexity}
 Reducing complexity through abstraction allows better understanding of the system to be gained as the complexity may initially be overwhelming.
-%Removing complexity can help with understanding by not 
+%Removing complexity can help with understanding by removing aspects of the system that are not absolutely essential to the functionality being demonstrated.
 
 \subsubsection{Environmental Control}
 Computer simulations allow for the environment to be more easily controlled. The ability to adjust external factors and independent variables that may affect the system on demand can be particularly useful. This ability can be used for illustrating why different variables in system processes are important.
 
-Time can be manipulated to show system processes at more reasonable time scales. A chemical process that takes a fraction of a second can be slowed down to ensure that it can be seen.
+Time can be manipulated to show system processes at more reasonable time scales. A chemical process that takes a fraction of a second can be slowed down to ensure that it can be seen. 
 %speed up, reverse the simulation
 
 %easier to measure?
 
-%can add additional tests in later if desired, and re-run the simulation
+Simulations allow for additional tests to be easily added at a later date. If the researcher wants to discover how an additional variable is related to system behaviour, it can be added and the simulation can be easily re-run.%this is not the case with scientific experimentation, which may need to be fully-re-run
 
 %clearly simulations may be more feasible but
 %WHY are they a good alternative to real world testing?!
@@ -228,7 +228,7 @@ Ease of creation (and maintenance) is an important feature for future simulation
 %person-centric healthcare, custom simulations may be needed
 
 %biocellion
-Biocellion is 
+%Biocellion is 
 %freely-available for non-profit use.
 %unfortunately, technical to understand- took several weeks to even install, how to cite conversation? CITE Jeff's report?
 %still requires basic proficiency with the Linux OS and C++ programming as well as familiarity with mathematical modeling concepts
@@ -267,13 +267,14 @@ Parallelism fundamentally changes the game and allows computers to keep followin
 
 %CPUs vs GPUs
 \paragraph{CPU vs GPU}
-
 Modern computers provide two main methods for parallelising code.
 We are building on a previous project\cite{phil_diss} which layed the groudwork for this.
 This previous project outlined the choice between CPU and GPU parallelism and makes the case for exploring GPUs- simplisitically put, this is due to the significantly greater speed ups that can be achieved.
 
 %MENTION DIFFICULTY GETTING ACCESS TO A GPU FOR TESTING!
-
+Multiple CPU cores are now commonplace in modern computers, including smartphones.
+GPU often only found in gaming PCs and consoles
+This is changing, Apple now includes a custom GPU in many of its mobile devices- metal
 
 %partitioning is particularly effective if the vast majority of space is unpopulated
 %otherwise nah?
@@ -283,6 +284,8 @@ This previous project outlined the choice between CPU and GPU parallelism and ma
 \paragraph{OpenGL vs CUDA}
 
 A previous project compared OpenGL and CUDA
+%OpenGL runs on a wider number of devices, including mobile (iOS)
+%frameworks, such as Apple's Metal allow significant simulations to be run, even on mobile devices
 
 
 \paragraph{Agent Based Modelling}
