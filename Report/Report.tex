@@ -11,7 +11,7 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{3718}
+\wordcount{4043}
 
 %Approx 500 Words
 \abstract{
@@ -189,8 +189,6 @@ Often, and particularly with the increasingly parallel modern architectures, the
 %Despite the growing importance of computer science, it is only taught in a small percentage of U.S. schools. 
 	%Microsoft Corporate Blogs, https://blogs.microsoft.com/on-the-issues/2012/12/12/investing-in-american-innovation-and-the-next-generation/
 
-
-
 %As computers are getting easier to use, users are beginning to expect this even from advanced tools
 %some tools exist for non-technical users-
 	%FlameGPU - simplifies parallisation but still requires indepth programming knowledge
@@ -224,6 +222,14 @@ This chapter will discuss the potential solutions to each of these problems.
 Ease of creation (and maintenance) is an important feature for future simulation particularly due to the aforementioned computer science skills shortage (Section \ref{skills_shortage}).
 
 %difficult to create a framework that allows for easy modelling of BOTH state and interaction between agents[CITE NEEDED?, no but seriously]
+
+%initiatives are being rolled out
+	%computing as part of the national curriculum
+	%Swift Playgrounds, Apple Education Event
+	%will likely take a number of years to yield results
+
+	%but should eventually mean that many people have a basic grasp of code, even if they do not take Computer Science
+		%could mean biologist have a better grasp of programming?
 
 %person-centric healthcare, custom simulations may be needed
 
@@ -264,12 +270,13 @@ Parallelism fundamentally changes the game and allows computers to keep followin
 
 \paragraph{Distributed Systems}
 %MAPREDUCE for distributed systems could be mentioned
+MapReduce is a programming model that is often used for processing big data in parallel using distributed systems.
 
 %CPUs vs GPUs
 \paragraph{CPU vs GPU}
 Modern computers provide two main methods for parallelising code.
 We are building on a previous project\cite{phil_diss} which layed the groudwork for this.
-This previous project outlined the choice between CPU and GPU parallelism and makes the case for exploring GPUs- simplisitically put, this is due to the significantly greater speed ups that can be achieved.
+This previous project outlined the choice between CPU and GPU parallelism and makes the case for exploring GPUs- simplisitically put, this is due to the significantly greater speed ups that can be achieved. Indeed it has been shown that GPU simulation on a standard desktop computer can easily produce performance rates that are better than those of a high-performance computing cluster\cite{flame_simulation}.
 
 %MENTION DIFFICULTY GETTING ACCESS TO A GPU FOR TESTING!
 Multiple CPU cores are now commonplace in modern computers, including smartphones.
@@ -282,43 +289,9 @@ This is changing, Apple now includes a custom GPU in many of its mobile devices-
 %compare speed ups that can be gained, reference Phil's project for more details
 
 \paragraph{OpenGL vs CUDA}
-
-A previous project compared OpenGL and CUDA
+A previous project compared OpenGL and CUDA in detail.
 %OpenGL runs on a wider number of devices, including mobile (iOS)
 %frameworks, such as Apple's Metal allow significant simulations to be run, even on mobile devices
-
-
-\paragraph{Agent Based Modelling}
-
-ABM is particularly well suited to parallelism as each agent makes its own decisions.
-Communication between individual agents can be difficult to implement in parallel but parallel communication is by no means limited to ABM.
-
-
-Mention Flame (traditional) is an attempt to make simulations more accessible via ABM.
-%Flexible Large Scale Agent Modelling Environment
-%http://flame.ac.uk
-
-\paragraph{FLAME GPU}
-
-FLAME (Flexible Large-Scale Agent Modelling Environment) GPU is an extension of the original version of FLAME, where the simulations that are created are compiled down to parallelised CUDA code. This means the simulation can take full advantage of the significant power of modern NVIDIA GPUs.
-%flame is built on top of CUDA, why?
-
-Relying on a framework such as FLAME
-Fortunately, as FLAME GPU is an open source project this should be less of an issue.
-
-This framework brings its own advantages. As FLAME maps a model to simulation code, it brings with it many of the advantages of model-driven engineering.
-%all the advantages of model driven engineering
-	%gives non-technical users the ability to view diagrams
-	%artifact auto-generation, lowers boundary to programming entry
-The implementations can always be certain of taking advantage of the latest hardware optimisations and portability features that FLAME provides.
-%As flame is updated, existing simulations may get faster, taking advantage of newer hardware
-As FLAME is updated to support new hardware advances, such as *multiple CUDA cores*, existing simulation models may all get faster without requiring major code changes.
-
-
-%overview of FlameGPU
-%http://www.flamegpu.com
-FLAME GPU takes input in the form of an XMML model which defines the types of agents that feature in the simulation and their interactions%read XMML paper!
-%x-machine, etc.
 
 \section{Existing Simulations}
 %Previous implementations of simulations and their problems:
@@ -328,11 +301,51 @@ FLAME GPU takes input in the form of an XMML model which defines the types of ag
 
 \subsection{Agent-Based Modelling}
 \label{abm}
-%discuss types of simulation..
 %What is ABM?
+Agent-based modelling is a modelling technique that simulates the autonomous behaviour and interaction between a number of agents. The aim of this is often to show how the individuals' behaviours 
 %WHY IS AGENT BASED MODELLING THE MOST RELEVANT FOR THIS PROJECT
+While, agent-based modelling is more computationally expensive than top-down mathematical modelling, it is also more natural to model and intuitive to parallelise\cite{flame_simulation}.
+Communication between individual agents can be difficult to implement in parallel but parallel communication is by no means limited to ABM.
+
+
+Mention Flame (traditional) is an attempt to make simulations more accessible via ABM.
+%Flexible Large Scale Agent Modelling Environment
+%http://flame.ac.uk
+
+%discuss types (and existing) simulations..
+
+\subsubsection{MASON}
+%mason usage
 MASON is a multi-agent simulation library for Java.
+%peyers patch?
+
+%flame usage
+%keratinocyte?
+
 %particularly well suited for these cell-based simulations as can be visualised..
+
+\subsubsection{FLAME GPU}
+FLAME (Flexible Large-Scale Agent Modelling Environment) GPU is an extension of the original version of FLAME, where the simulations that are created are compiled down to parallelised CUDA code. This means the simulation can take full advantage of the significant power of modern NVIDIA GPUs.
+%flame is built on top of CUDA, why?
+As its name suggests, FLAME GPU uses agent-based modelling to implement simulations.
+
+%Disadvantages
+While relying on a framework such as FLAME GPU can cause problems if support is stopped, FLAME GPU is an open source project, so this should slightly be less of a concern.
+
+%Advantages
+The FLAME GPU framework brings its own advantages.
+As it maps a model to simulation code, it brings with it many of the advantages of model-driven engineering.
+In particular, it gives domain experts with limited programming knowledge the ability to understand and help design models.
+Additionally, the auto-generation of artifacts, such as simulation code templates, significantly lowers the boundary to entry to less advanced programmers.
+Finally, As FLAME is continuously updated to support new hardware advances, such as multicore GPU architectures\cite{flame_simulation}, the implementations can always be certain of taking advantage of the latest hardware optimisations and portability features that FLAME provides. Existing simulation models that are implemented on top of FLAME GPU may receive these performance improvements without major code changes.
+
+%overview of FlameGPU
+%http://www.flamegpu.com
+FLAME GPU takes input in the form of an XMML model which defines the types of agents that feature in the simulation and their interactions%read XMML paper!
+%x-machine, etc.
+
+FLAME also provides a message passing interface which abstracts away from the underlying agent communication.
+This means that programmers need not be concerned with communication between threads which is one of the most difficult tasks in parallel programming.
 
 \subsection{Biological Simulations}
 Computational Biology is a relatively new field of study that has been growing signficantly over the last decade[CITATION NEEDED].
