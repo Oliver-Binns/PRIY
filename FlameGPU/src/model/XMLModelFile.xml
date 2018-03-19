@@ -356,9 +356,6 @@
 			</functions>
 			<states>
 				<gpu:state>
-					<name>no_expression</name>
-				</gpu:state>
-				<gpu:state>
 					<name>expression</name>
 				</gpu:state>
 				<gpu:state>
@@ -373,8 +370,7 @@
 				<gpu:state>
 					<name>downregulated</name>
 				</gpu:state>
-				<!-- may be either expression or NO expression??? -->
-				<initialState>no_expression</initialState>
+				<initialState>expression</initialState>
 			</states>
 			<gpu:type>continuous</gpu:type>
 			<gpu:bufferSize>1024</gpu:bufferSize>
