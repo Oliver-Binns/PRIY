@@ -178,42 +178,6 @@
 	</gpu:environment>
 
 	<xagents>
-		<!-- Migration Manager -->
-		<gpu:xagent>
-			<name>MigrationManager</name>
-			<description>Creates new LTi and LTin cells to migrate into environment.</description>
-			<memory>
-			</memory>
-			<functions>
-				<gpu:function>
-					<name>create_cells</name>
-					<currentState>create_cells</currentState>
-					<nextState>create_cells</nextState>
-					<xagentOutputs>
-						<gpu:xagentOutput>
-							<xagentName>LTi</xagentName>
-							<state>lti_random_movement</state>
-						</gpu:xagentOutput>
-						<gpu:xagentOutput>
-							<xagentName>LTin</xagentName>
-							<state>ltin_random_movement</state>
-						</gpu:xagentOutput>
-					</xagentOutputs>
-					<gpu:reallocate>false</gpu:reallocate>
-					<gpu:RNG>true</gpu:RNG>
-				</gpu:function>
-			</functions>
-			<states>
-				<gpu:state>
-					<name>create_cells</name>
-				</gpu:state>
-				<gpu:state>
-					<name>finished</name>
-				</gpu:state>
-			</states>
-			<gpu:type>continuous</gpu:type>
-			<gpu:bufferSize>1024</gpu:bufferSize>
-		</gpu:xagent>
 		<!-- LTin Cells -->
 		<gpu:xagent>
 			<name>LTin</name>

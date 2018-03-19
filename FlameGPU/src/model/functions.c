@@ -218,20 +218,4 @@ __FLAME_GPU_FUNC__ int express(xmachine_memory_LTo* xmemory,
     return 0;
 }
 
-
-__FLAME_GPU_FUNC__ int create_cells(xmachine_memory_MigrationManager* xmemory,
-									xmachine_memory_LTi* LTi_agents,
-									xmachine_memory_LTin* LTin_agents)
-{
-	for(int i = 0; i < LTI_MIGRATION_RATE; i++){
-		int id;
-		float x, y, velocity;
-
-		add_LTi_agent(LTi_agents, id, x, y, velocity);
-		//add_LTin_agent(LTin_agents, id, x, y, velocity);
-	}
-
-	return 0;
-}
-
 #endif //_FLAMEGPU_FUNCTIONS
