@@ -13,11 +13,11 @@
 #include "header.h"
 
 __FLAME_GPU_INIT_FUNC__ void setConstants(){
-	int LTI_AGENT_TYPE = 0;
+	int LTI_AGENT_TYPE = 1;
 	set_LTI_AGENT_TYPE(&LTI_AGENT_TYPE);
-	int LTIN_AGENT_TYPE = 1;
+	int LTIN_AGENT_TYPE = 7;
 	set_LTIN_AGENT_TYPE(&LTIN_AGENT_TYPE);
-	int LTO_AGENT_TYPE = 2;
+	int LTO_AGENT_TYPE = 0;
 	set_LTO_AGENT_TYPE(&LTO_AGENT_TYPE);
 
 	int LTI_CELL_SIZE = 6;
@@ -92,8 +92,11 @@ inline __device__ float chemokineLevel(float distanceToLTo){
     return 1 / value;
 }
 
-__FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
+float randPC(){
+	return (float)rand() / (float)RAND_MAX;
+}
 
+__FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
 	//CREATE LTis:
 	// Can create upto h_agent_AoS_MAX agents in a single pass (the number allocated for) but the full amount does not have to be created.
 	unsigned int lti_migration_rate = 5;
@@ -105,9 +108,9 @@ __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
 		for (unsigned int i = 0; i < count; i++) {
 			xmachine_memory_LTi * h_agent = h_allocate_agent_LTi();
 			//Initialise agent variables:
-			h_agent->x = 0;
-			h_agent->y = 0;
-			h_agent->colour = 0;
+			h_agent->x = randPC() * 7203;
+			h_agent->y = randPC() * 254;
+			h_agent->colour = 1;
 			h_agent->velocity = 0.5;//random
 
 			h_add_agent_LTi_lti_random_movement(h_agent);
@@ -126,9 +129,9 @@ __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
 		for (unsigned int i = 0; i < count; i++) {
 			xmachine_memory_LTin * h_agent = h_allocate_agent_LTin();
 			//Initialise agent variables:
-			h_agent->x = 0;
-			h_agent->y = 0;
-			h_agent->colour = 1;
+			h_agent->x = randPC() * 7203;
+			h_agent->y = randPC() * 254;
+			h_agent->colour = 7;
 			h_agent->velocity = 0.5;//random
 
 			h_add_agent_LTin_ltin_random_movement(h_agent);
@@ -175,11 +178,30 @@ __FLAME_GPU_FUNC__ glm::vec2 random_move(glm::vec2 position,
  * @return Return type is always int. 0 means the agent does NOT die.
  */
 __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* xmemory,
+                                       xmachine_message_location_list* location_messages,
+                                       xmachine_message_location_PBM* partition_matrix, 
                                        RNG_rand48* rand48)
 {
-    glm::vec2 init_position = glm::vec2(xmemory->x, xmemory->y);
-    glm::vec2 new_position = random_move(init_position, xmemory->velocity, rand48);
+    float x = xmemory->x;
+    float y = xmemory->y;
 
+    xmachine_message_location* message = get_first_location_message(location_messages, partition_matrix,
+    	x, y, 0.0);
+
+    if(3647.0 < x && x < 3655.0){
+    	if(123.0 < y && y < 131.0){
+    		printf("\nShould Receive Message!");
+    		xmemory->colour = 2;
+    	}
+    }
+    while(message){
+   		printf("Message Received");
+   		xmemory->colour = 3;
+    	message = get_next_location_message(message, location_messages, partition_matrix);
+    }
+
+	glm::vec2 init_position = glm::vec2(x, y);
+    glm::vec2 new_position = random_move(init_position, xmemory->velocity, rand48);
     //Agent DIES
     if(new_position.x == NULL){
     	return -1;
@@ -192,11 +214,30 @@ __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* xmemory,
 }
 
 __FLAME_GPU_FUNC__ int ltin_random_move(xmachine_memory_LTin* xmemory,
+                                        xmachine_message_location_list* location_messages,
+                                        xmachine_message_location_PBM* partition_matrix, 
                                         RNG_rand48* rand48)
 {
-    glm::vec2 init_position = glm::vec2(xmemory->x, xmemory->y);
-    glm::vec2 new_position = random_move(init_position, xmemory->velocity, rand48);
+	float x = xmemory->x;
+    float y = xmemory->y;
 
+    xmachine_message_location* message = get_first_location_message(location_messages, partition_matrix,
+    	x, y, 0.0);
+
+    if(3647.0 < x && x < 3655.0){
+    	if(123.0 < y && y < 131.0){
+    		printf("\nShould Receive Message!");
+    		xmemory->colour = 2;
+    	}
+    }
+    while(message){
+   		printf("Message Received");
+   		xmemory->colour = 3;
+    	message = get_next_location_message(message, location_messages, partition_matrix);
+    }
+
+	glm::vec2 init_position = glm::vec2(x, y);
+    glm::vec2 new_position = random_move(init_position, xmemory->velocity, rand48);
     //Agent DIES
     if(new_position.x == NULL){
     	return -1;
@@ -211,9 +252,9 @@ __FLAME_GPU_FUNC__ int ltin_random_move(xmachine_memory_LTin* xmemory,
 __FLAME_GPU_FUNC__ int express(xmachine_memory_LTo* xmemory,
 							   xmachine_message_location_list* location_messages)
 {
-	int x = xmemory->x;
-	int y = xmemory->y;
-	add_location_message(location_messages, x, y, 0, LTO_AGENT_TYPE);
+	float x = xmemory->x;
+	float y = xmemory->y;
+	add_location_message(location_messages, x, y, 0.0, LTO_AGENT_TYPE);
     
     return 0;
 }

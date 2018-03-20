@@ -4,7 +4,7 @@
 from lxml import etree
 import random
 
-LTo_TYPE = 2;
+LTo_TYPE = 0;
 
 #Create XML
 root = etree.Element('states')

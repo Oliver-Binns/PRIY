@@ -10,19 +10,19 @@
 				<type>int</type>
 				<name>LTI_AGENT_TYPE</name>
 				<description>Int ID as enum for LTi cells</description>
-				<defaultValue>0</defaultValue>
+				<defaultValue>1</defaultValue>
 			</gpu:variable>
 			<gpu:variable>
 				<type>int</type>
 				<name>LTIN_AGENT_TYPE</name>
 				<description>Int ID as enum for LTin cells</description>
-				<defaultValue>1</defaultValue>
+				<defaultValue>7</defaultValue>
 			</gpu:variable>
 			<gpu:variable>
 				<type>int</type>
 				<name>LTO_AGENT_TYPE</name>
 				<description>Int ID as enum for LTo cells</description>
-				<defaultValue>2</defaultValue>
+				<defaultValue>0</defaultValue>
 			</gpu:variable>
 			<!-- Cell Sizes -->
 			<gpu:variable>
@@ -209,7 +209,12 @@
 					<name>ltin_random_move</name>
 					<currentState>ltin_random_movement</currentState>
 					<nextState>ltin_random_movement</nextState>
-					<gpu:reallocate>false</gpu:reallocate>
+					<inputs>
+						<gpu:input>
+							<messageName>location</messageName>
+						</gpu:input>
+					</inputs>
+					<gpu:reallocate>true</gpu:reallocate>
 					<gpu:RNG>true</gpu:RNG>
 				</gpu:function>
 			</functions>
@@ -259,7 +264,12 @@
 					<name>lti_random_move</name>
 					<currentState>lti_random_movement</currentState>
 					<nextState>lti_random_movement</nextState>
-					<gpu:reallocate>false</gpu:reallocate>
+					<inputs>
+						<gpu:input>
+							<messageName>location</messageName>
+						</gpu:input>
+					</inputs>
+					<gpu:reallocate>true</gpu:reallocate>
 					<gpu:RNG>true</gpu:RNG>
 				</gpu:function>
 			</functions>
@@ -377,11 +387,6 @@
 	</messages>
 
 	<layers>
-		<layer>
-			<gpu:layerFunction>
-				<name>create_cells</name>
-			</gpu:layerFunction>
-		</layer>
 		<layer>
 			<gpu:layerFunction>
 				<name>lti_random_move</name>
