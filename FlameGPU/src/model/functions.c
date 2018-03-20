@@ -178,19 +178,11 @@ __FLAME_GPU_FUNC__ glm::vec2 random_move(glm::vec2 position,
  * @return Return type is always int. 0 means the agent does NOT die.
  */
 __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* xmemory,
-                                       xmachine_message_location_list* location_messages,
-                                       xmachine_message_location_PBM* partition_matrix, 
                                        RNG_rand48* rand48)
 {
-    xmachine_message_location* message = get_first_location_message(location_messages, partition_matrix,
-    	xmemory->x, xmemory->y, 0);
-    while(message){
-   		xmemory->colour = 3;
-    	message = get_next_location_message(message, location_messages, partition_matrix);
-    }
-
 	glm::vec2 init_position = glm::vec2(xmemory->x, xmemory->y);
     glm::vec2 new_position = random_move(init_position, xmemory->velocity, rand48);
+
     //Agent DIES
     if(new_position.x == NULL){
     	return -1;
@@ -211,6 +203,12 @@ __FLAME_GPU_FUNC__ int ltin_random_move(xmachine_memory_LTin* xmemory,
     	xmemory->x, xmemory->y, 0.0);
     while(message){
    		xmemory->colour = 3;
+   		if(false){//Check if BIND is SUFFICIENT
+   			//Transition to STABLE CONTACT
+   			xmemory->stable_contact = 1;
+   		}
+
+
     	message = get_next_location_message(message, location_messages, partition_matrix);
     }
 

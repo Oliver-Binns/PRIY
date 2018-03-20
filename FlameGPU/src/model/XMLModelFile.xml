@@ -203,6 +203,10 @@
 					<type>int</type>
 					<name>colour</name>
 				</gpu:variable>
+				<gpu:variable>
+					<type>int</type>
+					<name>stable_contact</name>
+				</gpu:variable>
 			</memory>
 			<functions>
 				<gpu:function>
@@ -221,9 +225,6 @@
 			<states>
 				<gpu:state>
 					<name>ltin_random_movement</name>
-				</gpu:state>
-				<gpu:state>
-					<name>stable_contact</name>
 				</gpu:state>
 				<gpu:state>
 					<name>localised_movement</name>
@@ -264,11 +265,6 @@
 					<name>lti_random_move</name>
 					<currentState>lti_random_movement</currentState>
 					<nextState>lti_random_movement</nextState>
-					<inputs>
-						<gpu:input>
-							<messageName>location</messageName>
-						</gpu:input>
-					</inputs>
 					<gpu:reallocate>true</gpu:reallocate>
 					<gpu:RNG>true</gpu:RNG>
 				</gpu:function>
@@ -391,7 +387,6 @@
 			<gpu:layerFunction>
 				<name>express</name>
 			</gpu:layerFunction>
-
 		</layer>
 		<layer>
 			<gpu:layerFunction>
