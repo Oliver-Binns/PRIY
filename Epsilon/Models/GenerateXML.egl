@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gpu:xmodel xmlns:gpu="http://www.dcs.shef.ac.uk/~paul/XMMLGPU" xmlns="http://www.dcs.shef.ac.uk/~paul/XMML">
+	<name>[%=flame.name%]</name>
+	
+	<gpu:environment>
+		<gpu:constants>
+			[%for (variable in flame.variables){%]
+			<gpu:variable>
+				<type>[%=variable.type.toString().toLowerCase()%]</type>
+				<name>[%=variable.name%]</name>
+				<description>[%=variable.description%]</description>
+			</gpu:variable>
+			[%}%]
+		</gpu:constants>
+		<gpu:functionFiles>
+			[%for (file in flame.functionFiles){%]
+				<file>[%=file%]</file>
+			[%}%]
+		</gpu:functionFiles>
+		<gpu:initFunctions>
+			[%for (func in flame.initFunctions){%]
+				<gpu:name>[%=func%]</gpu:name>
+			[%}%]
+		</gpu:initFunctions>
+		<gpu:stepFunctions>
+			[%for (func in flame.stepFunctions){%]
+				<gpu:name>[%=func%]</gpu:name>
+			[%}%]
+		</gpu:stepFunctions>
+	</gpu:environment>
+	
+	<xagents>
+		[%for (agent in flame.agents){%]
+		<gpu:xagent>
+			<name>[%=agent.name%]</name>
+			<description>[%=agent.description%]</description>
+			<memory>
+				[%for (variable in agent.memory){%]
+				<gpu:variable>
+					<type>[%=variable.type.toString().toLowerCase()%]</type>
+					<name>[%=variable.name%]</name>
+				</gpu:variable>
+				[%}%]
+			</memory>
+			<functions>
+				[%for (state in agent.states){%]
+				[%for (transition in state.transitions){%]
+				<gpu:function>
+					<name>[%=transition.name%]</name>
+					<currentState>[%=transition.initialState.name%]</currentState>
+					<nextState>[%=transition.nextState.name%]</nextState>
+					[%if (not transition.inputs.isEmpty()){%]
+					<inputs>
+						[%for (input in transition.inputs){%]
+						<gpu:input>
+							<messageName>[%=input.name%]</messageName>
+						</gpu:input>
+						[%}%]
+					</inputs>
+					[%}%]
+					[%if (not transition.outputs.isEmpty()){%]
+					<outputs>
+						[%for (output in transition.outputs){%]
+						<gpu:output>
+							<messageName>[%=output.name%]</messageName>
+							<gpu:type>single_message</gpu:type>
+						</gpu:output>
+						[%}%]
+					</outputs>
+					[%}%]
+					<gpu:reallocate>[%=transition.reallocate%]</gpu:reallocate>
+					<gpu:RNG>[%=transition.randomGenerator%]</gpu:RNG>
+				</gpu:function>
+				[%}%]
+				[%}%]
+			</functions>
+			<states>
+				[%for (state in agent.states){%]
+				<gpu:state>
+					<name>[%=state.name%]</name>
+				</gpu:state>
+				[%}%]
+				<initialState>[%=agent.initialState.name%]</initialState>
+			</states>
+			<gpu:type>[%=agent.type.toString().toLowerCase()%]</gpu:type>
+			<gpu:bufferSize>[%=agent.bufferSize%]</gpu:bufferSize>
+		</gpu:xagent>
+		[%}%]
+	</xagents>
+	
+	<messages>
+		[%for (message in flame.messages){%]
+		<gpu:message>
+			<name>[%=message.name%]</name>
+			<description>[%=message.description%]</description>
+			<variables>
+				[%for (variable in message.variables){%]
+				<gpu:variable>
+					<type>[%=variable.type.toString().toLowerCase()%]</type>
+					<name>[%=variable.name%]</name>
+				</gpu:variable>
+				[%}%]
+			</variables>
+			[%if(not message.partitioning.isDefined()){%]
+			<gpu:partitioningNone/>
+			[%}else if(message.partitioning.isTypeOf(DiscretePartition)){%]
+			<gpu:partitioningDiscrete>
+				<gpu:radius>[%=message.partitioning.radius%]</gpu:radius>
+			</gpu:partitioningDiscrete>
+			[%}else{
+				var partition = message.partitioning;
+			%]
+			<gpu:partitioningSpatial>
+				<gpu:radius>[%=partition.radius%]</gpu:radius>
+				<gpu:xmin>[%=partition.xmin%]</gpu:xmin>
+				<gpu:xmax>[%=partition.xmax%]</gpu:xmax>
+				<gpu:ymin>[%=partition.ymin%]</gpu:ymin>
+				<gpu:ymax>[%=partition.ymax%]</gpu:ymax>
+				<gpu:zmin>[%=partition.zmin%]</gpu:zmin>
+				<gpu:zmax>[%=partition.zmax%]</gpu:zmax>
+			</gpu:partitioningSpatial>
+			[%}%]
+			<gpu:bufferSize>[%=message.bufferSize%]</gpu:bufferSize>
+		</gpu:message>
+		[%}%]
+	</messages>
+	
+	<layers>
+		[%for (layer in flame.layers.sortBy(l | l.order)){%]
+		<layer>
+			[%for (func in layer.functions){%]
+			<gpu:layerFunction>
+				<name>[%=func.name%]</name>
+			</gpu:layerFunction>
+			[%}%]
+		</layer>
+		[%}%]
+	</layers>
+</gpu:xmodel>

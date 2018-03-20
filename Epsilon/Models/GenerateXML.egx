@@ -1,0 +1,5 @@
+rule Model2Flame
+transform flame: Model{
+	template: "GenerateFlame.egl"
+	target: "XMLModelFile.xml"
+}

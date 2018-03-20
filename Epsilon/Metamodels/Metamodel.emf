@@ -1,0 +1,115 @@
+@gmf
+@namespace(uri="MetaFLAME", prefix="MetaFLAME")
+package MetaFLAME;
+
+@gmf.diagram
+class Model{
+	attr String name;
+	attr String version;
+	
+	val Variable[*] variables;
+	attr String[*] functionFiles;
+	attr String[*] initFunctions;
+	attr String[*] stepFunctions;
+	
+	val Agent[*] agents;
+	val Message[*] messages;
+	val Layer[*] layers;
+	
+	val Partition[*] partitions;
+}
+
+enum DataType{
+	Int = 0;
+	Float = 1;
+	Double = 2;
+}
+
+@gmf.node(label="name")
+class Variable{
+	attr String name;
+	attr String description;
+	
+	attr DataType type;
+}
+
+enum AgentType{
+	Continuous = 0;
+	Discrete = 1;
+}
+
+@gmf.node(label="name")
+class Agent{
+	attr String name;
+	attr String description;
+	
+	@gmf.compartment(layout="list")
+	val Variable[*] memory;
+	
+	ref State initialState;
+	@gmf.compartment
+	val State[+] states;
+	
+	
+	attr AgentType type;
+	attr Integer bufferSize;
+}
+
+@gmf.link(label="name", source="initialState", target="nextState", target.decoration="arrow")
+class Transition{
+	attr String name;
+
+	ref Message[*] inputs;
+	ref Message[*] outputs;
+	
+	attr Boolean reallocate;
+	attr Boolean randomGenerator;
+	
+	ref State#transitions initialState;
+	ref State nextState;
+}
+
+@gmf.node(label="name")
+class State{
+	attr String name;
+	
+	val Transition[*]#initialState transitions;
+}
+
+@gmf.node(label="name")
+class Message{
+	attr String name;
+	attr String description;
+	
+	@gmf.link(style="dot")
+	ref Partition partitioning;
+	
+	@gmf.compartment
+	val Variable[*] variables;
+	attr Integer bufferSize;
+}
+
+abstract class Partition{
+	attr Integer radius;
+}
+
+@gmf.node(label="radius")
+class SpatialPartition extends Partition{
+	attr Integer xmin;
+	attr Integer xmax;
+	
+	attr Integer ymin;
+	attr Integer ymax;
+	
+	attr Integer zmin;
+	attr Integer zmax;	
+}
+
+@gmf.node(label="radius")
+class DiscretePartition extends Partition{}
+
+@gmf.node(label="order")
+class Layer{
+	attr Integer order;
+	ref Transition[*] functions;
+}

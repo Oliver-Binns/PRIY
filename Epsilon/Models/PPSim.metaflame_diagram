@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:MetaFLAME="MetaFLAME" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmi:id="__S26UCxtEeiQBu7EcbaiTw" type="MetaFLAME" name="PPSim.metaflame_diagram" measurementUnit="Pixel">
+  <children xmi:type="notation:Shape" xmi:id="_J8bhECxuEeiQBu7EcbaiTw" type="2002" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_J8cvMCxuEeiQBu7EcbaiTw" type="5004"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_J8cvMSxuEeiQBu7EcbaiTw" type="7001" collapsed="true">
+      <children xmi:type="notation:Shape" xmi:id="_TSMEoCxwEeifnu--pFSJIg" type="3001" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_TSMEoixwEeifnu--pFSJIg" type="5002"/>
+        <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@agents.0/@memory.0"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_TSMEoSxwEeifnu--pFSJIg" x="6" y="4"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_UIcXMCxwEeifnu--pFSJIg" type="3001" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_UIcXMixwEeifnu--pFSJIg" type="5002"/>
+        <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@agents.0/@memory.1"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_UIcXMSxwEeifnu--pFSJIg" x="58" y="3"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_VTU18CxwEeifnu--pFSJIg" type="3001" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_VTU18ixwEeifnu--pFSJIg" type="5002"/>
+        <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@agents.0/@memory.2"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_VTU18SxwEeifnu--pFSJIg" x="106" y="3"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_X8hFwCxwEeifnu--pFSJIg" type="3001" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_X8hFwixwEeifnu--pFSJIg" type="5002"/>
+        <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@agents.0/@memory.3"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_X8hFwSxwEeifnu--pFSJIg" x="178" y="4"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_ymhdsCyFEeibf4MRiq2wzA" type="3001" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_ymiEwCyFEeibf4MRiq2wzA" type="5002"/>
+        <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@agents.0/@memory.4"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ymhdsSyFEeibf4MRiq2wzA" x="244" y="4"/>
+      </children>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_J8cvMixuEeiQBu7EcbaiTw" type="7002">
+      <children xmi:type="notation:Shape" xmi:id="_eiJA0CxuEeiQBu7EcbaiTw" type="3002" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_eiJn4CxuEeiQBu7EcbaiTw" type="5003"/>
+        <element xmi:type="MetaFLAME:State" href="default2.metaflame#//@agents.0/@states.0"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_eiJA0SxuEeiQBu7EcbaiTw" x="11" y="19"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_jlSxoCxuEeiQBu7EcbaiTw" type="3002" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_jlTYsCxuEeiQBu7EcbaiTw" type="5003"/>
+        <element xmi:type="MetaFLAME:State" href="default2.metaflame#//@agents.0/@states.1"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jlSxoSxuEeiQBu7EcbaiTw" x="192" y="75"/>
+      </children>
+    </children>
+    <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_J8bhESxuEeiQBu7EcbaiTw"/>
+    <element xmi:type="MetaFLAME:Agent" href="default2.metaflame#//@agents.0"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_J8bhEixuEeiQBu7EcbaiTw" x="40" y="52" width="331" height="224"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_NClZsCxuEeiQBu7EcbaiTw" type="2003" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_NClZsyxuEeiQBu7EcbaiTw" type="5006"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_NClZtCxuEeiQBu7EcbaiTw" type="7003">
+      <children xmi:type="notation:Shape" xmi:id="_PoPNUCxuEeiQBu7EcbaiTw" type="3003" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_PoPNUixuEeiQBu7EcbaiTw" type="5005"/>
+        <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@messages.0/@variables.0"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_PoPNUSxuEeiQBu7EcbaiTw" x="6" y="4"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_P-zTMCxuEeiQBu7EcbaiTw" type="3003" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_P-zTMixuEeiQBu7EcbaiTw" type="5005"/>
+        <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@messages.0/@variables.1"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_P-zTMSxuEeiQBu7EcbaiTw" x="54" y="4"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_SRwNQCxuEeiQBu7EcbaiTw" type="3003" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_SRwNQixuEeiQBu7EcbaiTw" type="5005"/>
+        <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@messages.0/@variables.2"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_SRwNQSxuEeiQBu7EcbaiTw" x="102" y="4"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_W3FZoCxuEeiQBu7EcbaiTw" type="3003" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_W3FZoixuEeiQBu7EcbaiTw" type="5005"/>
+        <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@messages.0/@variables.3"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_W3FZoSxuEeiQBu7EcbaiTw" x="6" y="48"/>
+      </children>
+    </children>
+    <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_NClZsSxuEeiQBu7EcbaiTw"/>
+    <element xmi:type="MetaFLAME:Message" href="default2.metaflame#//@messages.0"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_NClZsixuEeiQBu7EcbaiTw" x="508" y="48" width="229" height="137"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_cgvBYCx8EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_cgvocCx8EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.0"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_cgvBYSx8EeiorvOmfMW1Bg" x="828" y="48"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_hqg-oCx8EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_hqg-oix8EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.1"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hqg-oSx8EeiorvOmfMW1Bg" x="828" y="96"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_pGxU0Cx8EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_pGxU0ix8EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.2"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_pGxU0Sx8EeiorvOmfMW1Bg" x="828" y="144"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_0QJdACx8EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_0QJdAix8EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.3"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_0QJdASx8EeiorvOmfMW1Bg" x="828" y="192"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_3L4OUCx8EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_3L41YCx8EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.4"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3L4OUSx8EeiorvOmfMW1Bg" x="828" y="240"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_C7q2QCx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_C7rdUCx9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.5"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_C7q2QSx9EeiorvOmfMW1Bg" x="828" y="288"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_F987gCx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_F99ikCx9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.6"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_F987gSx9EeiorvOmfMW1Bg" x="1072" y="52"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_Ks8aMCx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_Ks8aMix9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.7"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Ks8aMSx9EeiorvOmfMW1Bg" x="1072" y="100"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_OsSkoCx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_OsSkoix9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.8"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_OsSkoSx9EeiorvOmfMW1Bg" x="1072" y="148"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_VEHCUCx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_VEHCUix9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.9"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_VEHCUSx9EeiorvOmfMW1Bg" x="1072" y="195"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_YkbucCx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_Ykbucix9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.10"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_YkbucSx9EeiorvOmfMW1Bg" x="1072" y="242"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_dZ2lQCx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_dZ2lQix9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.11"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dZ2lQSx9EeiorvOmfMW1Bg" x="1296" y="52"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_ev5LICx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_ev5LIix9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.12"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ev5LISx9EeiorvOmfMW1Bg" x="1296" y="96"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_gYLXkCx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_gYL-oCx9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.13"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_gYLXkSx9EeiorvOmfMW1Bg" x="1296" y="140"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_h3PWkCx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_h3PWkix9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.14"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_h3PWkSx9EeiorvOmfMW1Bg" x="1296" y="184"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_s-q-ACx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_s-q-Aix9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.15"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_s-q-ASx9EeiorvOmfMW1Bg" x="1512" y="53"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_t2q9ACx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_t2q9Aix9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.16"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_t2q9ASx9EeiorvOmfMW1Bg" x="1512" y="96"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_vCTpsCx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_vCUQwCx9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.17"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_vCTpsSx9EeiorvOmfMW1Bg" x="1512" y="140"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_xMLgQCx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_xMLgQix9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.18"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_xMLgQSx9EeiorvOmfMW1Bg" x="1512" y="184"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_yK1g4Cx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_yK1g4ix9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.19"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_yK1g4Sx9EeiorvOmfMW1Bg" x="1512" y="228"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_0DNXwCx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_0DNXwix9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.20"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_0DNXwSx9EeiorvOmfMW1Bg" x="1512" y="272"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_2u-acCx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_2u_BgCx9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.21"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_2u-acSx9EeiorvOmfMW1Bg" x="1512" y="316"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_36nuMCx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_36nuMix9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.22"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_36nuMSx9EeiorvOmfMW1Bg" x="1512" y="360"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_6mYw4Cx9EeiorvOmfMW1Bg" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_6mYw4ix9EeiorvOmfMW1Bg" type="5001"/>
+    <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@variables.23"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_6mYw4Sx9EeiorvOmfMW1Bg" x="1512" y="404"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_6NCAQCx-EeiorvOmfMW1Bg" type="2002" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_6NCAQyx-EeiorvOmfMW1Bg" type="5004"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_6NCnUCx-EeiorvOmfMW1Bg" type="7001" collapsed="true">
+      <children xmi:type="notation:Shape" xmi:id="_8pdmcCx-EeiorvOmfMW1Bg" type="3001" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_8peNgCx-EeiorvOmfMW1Bg" type="5002"/>
+        <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@agents.1/@memory.0"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_8pdmcSx-EeiorvOmfMW1Bg" x="9" y="13"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_9MNuMCx-EeiorvOmfMW1Bg" type="3001" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_9MNuMix-EeiorvOmfMW1Bg" type="5002"/>
+        <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@agents.1/@memory.1"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_9MNuMSx-EeiorvOmfMW1Bg" x="60" y="13"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_-3EtgCx-EeiorvOmfMW1Bg" type="3001" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_-3Etgix-EeiorvOmfMW1Bg" type="5002"/>
+        <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@agents.1/@memory.2"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_-3EtgSx-EeiorvOmfMW1Bg" x="124" y="13"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_OfOHECx_EeiorvOmfMW1Bg" type="3001" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_OfOHEix_EeiorvOmfMW1Bg" type="5002"/>
+        <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@agents.1/@memory.3"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_OfOHESx_EeiorvOmfMW1Bg" x="244" y="13"/>
+      </children>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_6NCnUSx-EeiorvOmfMW1Bg" type="7002">
+      <children xmi:type="notation:Shape" xmi:id="_QVCZMCx_EeiorvOmfMW1Bg" type="3002" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_QVDAQCx_EeiorvOmfMW1Bg" type="5003"/>
+        <element xmi:type="MetaFLAME:State" href="default2.metaflame#//@agents.1/@states.0"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_QVCZMSx_EeiorvOmfMW1Bg" x="8" y="7"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_Tp_i0Cx_EeiorvOmfMW1Bg" type="3002" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_Tp_i0ix_EeiorvOmfMW1Bg" type="5003"/>
+        <element xmi:type="MetaFLAME:State" href="default2.metaflame#//@agents.1/@states.1"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Tp_i0Sx_EeiorvOmfMW1Bg" x="236" y="4"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_WUy8MCx_EeiorvOmfMW1Bg" type="3002" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_WUy8Mix_EeiorvOmfMW1Bg" type="5003"/>
+        <element xmi:type="MetaFLAME:State" href="default2.metaflame#//@agents.1/@states.2"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WUy8MSx_EeiorvOmfMW1Bg" x="252" y="123"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_ci1LwCx_EeiorvOmfMW1Bg" type="3002" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_ci1Lwix_EeiorvOmfMW1Bg" type="5003"/>
+        <element xmi:type="MetaFLAME:State" href="default2.metaflame#//@agents.1/@states.3"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ci1LwSx_EeiorvOmfMW1Bg" x="8" y="121"/>
+      </children>
+    </children>
+    <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_6NCAQSx-EeiorvOmfMW1Bg"/>
+    <element xmi:type="MetaFLAME:Agent" href="default2.metaflame#//@agents.1"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_6NCAQix-EeiorvOmfMW1Bg" x="42" y="375" width="335" height="290"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_fIgNgCx_EeiorvOmfMW1Bg" type="2002" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_fIg0kCx_EeiorvOmfMW1Bg" type="5004"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_fIg0kSx_EeiorvOmfMW1Bg" type="7001">
+      <children xmi:type="notation:Shape" xmi:id="_lAvzQCx_EeiorvOmfMW1Bg" type="3001" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_lAvzQix_EeiorvOmfMW1Bg" type="5002"/>
+        <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@agents.2/@memory.0"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_lAvzQSx_EeiorvOmfMW1Bg" x="6" y="8"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_mjIzECx_EeiorvOmfMW1Bg" type="3001" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_mjIzEix_EeiorvOmfMW1Bg" type="5002"/>
+        <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@agents.2/@memory.1"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mjIzESx_EeiorvOmfMW1Bg" x="63" y="8"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_nklB8Cx_EeiorvOmfMW1Bg" type="3001" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_nklB8ix_EeiorvOmfMW1Bg" type="5002"/>
+        <element xmi:type="MetaFLAME:Variable" href="default2.metaflame#//@agents.2/@memory.2"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_nklB8Sx_EeiorvOmfMW1Bg" x="166" y="8"/>
+      </children>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_fIg0kix_EeiorvOmfMW1Bg" type="7002">
+      <children xmi:type="notation:Shape" xmi:id="_tIh9QCyAEeiorvOmfMW1Bg" type="3002" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_tIh9QiyAEeiorvOmfMW1Bg" type="5003"/>
+        <element xmi:type="MetaFLAME:State" href="default2.metaflame#//@agents.2/@states.0"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_tIh9QSyAEeiorvOmfMW1Bg" y="4"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_wuxEICyAEeiorvOmfMW1Bg" type="3002" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_wuxEIiyAEeiorvOmfMW1Bg" type="5003"/>
+        <element xmi:type="MetaFLAME:State" href="default2.metaflame#//@agents.2/@states.1"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_wuxEISyAEeiorvOmfMW1Bg" x="170" y="4"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_1ush0CyAEeiorvOmfMW1Bg" type="3002" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_1utI4CyAEeiorvOmfMW1Bg" type="5003"/>
+        <element xmi:type="MetaFLAME:State" href="default2.metaflame#//@agents.2/@states.2"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_1ush0SyAEeiorvOmfMW1Bg" x="406" y="1"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_4wkXYCyAEeiorvOmfMW1Bg" type="3002" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="_4wkXYiyAEeiorvOmfMW1Bg" type="5003"/>
+        <element xmi:type="MetaFLAME:State" href="default2.metaflame#//@agents.2/@states.3"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_4wkXYSyAEeiorvOmfMW1Bg" x="478" y="125"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="__wf98CyAEeiorvOmfMW1Bg" type="3002" fontName=".SF NS Text">
+        <children xmi:type="notation:DecorationNode" xmi:id="__wf98iyAEeiorvOmfMW1Bg" type="5003"/>
+        <element xmi:type="MetaFLAME:State" href="default2.metaflame#//@agents.2/@states.4"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="__wf98SyAEeiorvOmfMW1Bg" x="174" y="129"/>
+      </children>
+    </children>
+    <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_fIgNgSx_EeiorvOmfMW1Bg"/>
+    <element xmi:type="MetaFLAME:Agent" href="default2.metaflame#//@agents.2"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_fIgNgix_EeiorvOmfMW1Bg" x="496" y="376" width="585" height="281"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_xYjrMCyEEeixNeIy00eTQA" type="2006" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_xYjrMiyEEeixNeIy00eTQA" type="5007"/>
+    <element xmi:type="MetaFLAME:Layer" href="default2.metaflame#//@layers.0"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_xYjrMSyEEeixNeIy00eTQA" x="1424" y="404"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_yiJwgCyEEeixNeIy00eTQA" type="2006" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_yiJwgiyEEeixNeIy00eTQA" type="5007"/>
+    <element xmi:type="MetaFLAME:Layer" href="default2.metaflame#//@layers.1"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_yiJwgSyEEeixNeIy00eTQA" x="1424" y="360"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_UaoG0CyFEeibf4MRiq2wzA" type="2004" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_UaoG0iyFEeibf4MRiq2wzA" type="5008"/>
+    <element xmi:type="MetaFLAME:SpatialPartition" href="default2.metaflame#//@partitions.0"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_UaoG0SyFEeibf4MRiq2wzA" x="600" y="204"/>
+  </children>
+  <styles xmi:type="notation:DiagramStyle" xmi:id="__S26USxtEeiQBu7EcbaiTw"/>
+  <element xmi:type="MetaFLAME:Model" href="default2.metaflame#/"/>
+  <edges xmi:type="notation:Connector" xmi:id="_-CPbcCx3EeiorvOmfMW1Bg" type="4001" source="_eiJA0CxuEeiQBu7EcbaiTw" target="_jlSxoCxuEeiQBu7EcbaiTw">
+    <children xmi:type="notation:DecorationNode" xmi:id="_-CQpkCx3EeiorvOmfMW1Bg" type="6001">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_-CQpkSx3EeiorvOmfMW1Bg" y="40"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_-CPbcSx3EeiorvOmfMW1Bg" fontName=".SF NS Text"/>
+    <element xmi:type="MetaFLAME:Transition" href="default2.metaflame#//@agents.0/@states.0/@transitions.0"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_-CPbcix3EeiorvOmfMW1Bg" points="[28, 8, -120, -57]$[140, 8, -8, -57]$[140, 56, -8, -9]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_-DCFoCx3EeiorvOmfMW1Bg" id="(0.7862595419847328,0.225)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_-DCFoSx3EeiorvOmfMW1Bg" id="(0.5932203389830508,0.225)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_FyGqICx4EeiorvOmfMW1Bg" type="4001" source="_eiJA0CxuEeiQBu7EcbaiTw" target="_eiJA0CxuEeiQBu7EcbaiTw">
+    <children xmi:type="notation:DecorationNode" xmi:id="_FyHRMCx4EeiorvOmfMW1Bg" type="6001">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_FyHRMSx4EeiorvOmfMW1Bg" x="38" y="-5"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_FyGqISx4EeiorvOmfMW1Bg" fontName=".SF NS Text"/>
+    <element xmi:type="MetaFLAME:Transition" href="default2.metaflame#//@agents.0/@states.0/@transitions.1"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_FyGqIix4EeiorvOmfMW1Bg" points="[0, -6, 66, 9]$[28, -6, 94, 9]$[28, 26, 94, 41]$[-59, 26, 7, 41]$[-59, 5, 7, 20]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_FyJtcCx4EeiorvOmfMW1Bg" id="(1.0,0.875)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_J84BcCx4EeiorvOmfMW1Bg" type="4001" source="_jlSxoCxuEeiQBu7EcbaiTw" target="_jlSxoCxuEeiQBu7EcbaiTw">
+    <children xmi:type="notation:DecorationNode" xmi:id="_J84ogCx4EeiorvOmfMW1Bg" type="6001">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_J84ogSx4EeiorvOmfMW1Bg" x="42" y="-10"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_J84BcSx4EeiorvOmfMW1Bg" fontName=".SF NS Text"/>
+    <element xmi:type="MetaFLAME:Transition" href="default2.metaflame#//@agents.0/@states.1/@transitions.0"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_J84Bcix4EeiorvOmfMW1Bg" points="[73, 8, 63, -31]$[117, 8, 107, -31]$[117, 103, 107, 64]$[17, 103, 7, 64]$[17, 40, 7, 1]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_J87EwCx4EeiorvOmfMW1Bg" id="(0.3813559322033898,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_J87EwSx4EeiorvOmfMW1Bg" id="(0.4661016949152542,0.975)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_-USUECx_EeiorvOmfMW1Bg" type="4001" source="_QVCZMCx_EeiorvOmfMW1Bg" target="_QVCZMCx_EeiorvOmfMW1Bg">
+    <children xmi:type="notation:DecorationNode" xmi:id="_-US7ICx_EeiorvOmfMW1Bg" type="6001">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_-US7ISx_EeiorvOmfMW1Bg" x="22" y="9"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_-USUESx_EeiorvOmfMW1Bg" fontName=".SF NS Text"/>
+    <element xmi:type="MetaFLAME:Transition" href="default2.metaflame#//@agents.1/@states.0/@transitions.0"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_-USUEix_EeiorvOmfMW1Bg" points="[-2, 0, -31, -20]$[-46, 0, -75, -20]$[-46, 39, -75, 19]$[29, 39, 0, 19]$[29, 24, 0, 4]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_-UUJQCx_EeiorvOmfMW1Bg" id="(0.016,0.4)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_-UUJQSx_EeiorvOmfMW1Bg" id="(0.248,0.9)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_MTrKoCyBEeiorvOmfMW1Bg" type="4001" source="_tIh9QCyAEeiorvOmfMW1Bg" target="_tIh9QCyAEeiorvOmfMW1Bg">
+    <children xmi:type="notation:DecorationNode" xmi:id="_MTrxsCyBEeiorvOmfMW1Bg" type="6001">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_MTrxsSyBEeiorvOmfMW1Bg" x="-2" y="9"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_MTrKoSyBEeiorvOmfMW1Bg" fontName=".SF NS Text"/>
+    <element xmi:type="MetaFLAME:Transition" href="default2.metaflame#//@agents.2/@states.0/@transitions.0"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_MTrKoiyBEeiorvOmfMW1Bg" points="[-58, 6, -57, -13]$[-100, 6, -99, -13]$[-100, 58, -99, 39]$[-1, 58, 0, 39]$[-1, 25, 0, 6]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_MTs_0CyBEeiorvOmfMW1Bg" id="(0.7532467532467533,0.375)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_MTs_0SyBEeiorvOmfMW1Bg" id="(0.7402597402597403,0.85)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_aU33sCyFEeibf4MRiq2wzA" type="4002" source="_NClZsCxuEeiQBu7EcbaiTw" target="_UaoG0CyFEeibf4MRiq2wzA">
+    <children xmi:type="notation:DecorationNode" xmi:id="_aU33syyFEeibf4MRiq2wzA" type="6002">
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_aU33tCyFEeibf4MRiq2wzA"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_aU4ewCyFEeibf4MRiq2wzA" y="40"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_aU33sSyFEeibf4MRiq2wzA" fontName=".SF NS Text"/>
+    <element xsi:nil="true"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_aU33siyFEeibf4MRiq2wzA" points="[0, 25, -4, -39]$[0, 44, -4, -20]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_aU67ACyFEeibf4MRiq2wzA" id="(0.47161572052401746,0.8175182481751825)"/>
+  </edges>
+</notation:Diagram>

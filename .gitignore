@@ -6,3 +6,6 @@ Report/*
 !*/Appendix/*
 */src/dynamic/*
 *.o
+*/.settings
+*/.project
+*/.classpath
