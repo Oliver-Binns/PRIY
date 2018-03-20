@@ -182,25 +182,14 @@ __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* xmemory,
                                        xmachine_message_location_PBM* partition_matrix, 
                                        RNG_rand48* rand48)
 {
-    float x = xmemory->x;
-    float y = xmemory->y;
-
     xmachine_message_location* message = get_first_location_message(location_messages, partition_matrix,
-    	x, y, 0.0);
-
-    if(3647.0 < x && x < 3655.0){
-    	if(123.0 < y && y < 131.0){
-    		printf("\nShould Receive Message!");
-    		xmemory->colour = 2;
-    	}
-    }
+    	xmemory->x, xmemory->y, 0);
     while(message){
-   		printf("Message Received");
    		xmemory->colour = 3;
     	message = get_next_location_message(message, location_messages, partition_matrix);
     }
 
-	glm::vec2 init_position = glm::vec2(x, y);
+	glm::vec2 init_position = glm::vec2(xmemory->x, xmemory->y);
     glm::vec2 new_position = random_move(init_position, xmemory->velocity, rand48);
     //Agent DIES
     if(new_position.x == NULL){
@@ -218,25 +207,14 @@ __FLAME_GPU_FUNC__ int ltin_random_move(xmachine_memory_LTin* xmemory,
                                         xmachine_message_location_PBM* partition_matrix, 
                                         RNG_rand48* rand48)
 {
-	float x = xmemory->x;
-    float y = xmemory->y;
-
     xmachine_message_location* message = get_first_location_message(location_messages, partition_matrix,
-    	x, y, 0.0);
-
-    if(3647.0 < x && x < 3655.0){
-    	if(123.0 < y && y < 131.0){
-    		printf("\nShould Receive Message!");
-    		xmemory->colour = 2;
-    	}
-    }
+    	xmemory->x, xmemory->y, 0.0);
     while(message){
-   		printf("Message Received");
    		xmemory->colour = 3;
     	message = get_next_location_message(message, location_messages, partition_matrix);
     }
 
-	glm::vec2 init_position = glm::vec2(x, y);
+	glm::vec2 init_position = glm::vec2(xmemory->x, xmemory->y);
     glm::vec2 new_position = random_move(init_position, xmemory->velocity, rand48);
     //Agent DIES
     if(new_position.x == NULL){

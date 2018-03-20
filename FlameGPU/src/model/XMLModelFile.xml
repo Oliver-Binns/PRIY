@@ -389,17 +389,16 @@
 	<layers>
 		<layer>
 			<gpu:layerFunction>
+				<name>express</name>
+			</gpu:layerFunction>
+
+		</layer>
+		<layer>
+			<gpu:layerFunction>
 				<name>lti_random_move</name>
 			</gpu:layerFunction>
-		</layer>
-		<layer>
 			<gpu:layerFunction>
 				<name>ltin_random_move</name>
-			</gpu:layerFunction>
-		</layer>
-		<layer>
-			<gpu:layerFunction>
-				<name>express</name>
 			</gpu:layerFunction>
 		</layer>
 	</layers>
