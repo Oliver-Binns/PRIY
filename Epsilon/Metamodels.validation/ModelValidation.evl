@@ -10,3 +10,28 @@ context Simulation{
 		}
 	}
 }
+context Variable{
+	constraint Named{
+		check: not self.name.isEmpty()
+		message: "Variable must have a name."
+		fix{
+			title: "Name the variable."
+			do{
+				self.name = System.user.prompt("Enter a name.");
+			}
+		}
+	}
+}
+context Agent{
+	constraint Named{
+	}
+
+	constraint InitialStateNotNull{
+		check:
+	}
+
+	constraint InitialStateMustBelong{
+		check: self.states.contains(self.initialState)
+		message: "The initial state of Agent does not belong to it."
+	}
+}

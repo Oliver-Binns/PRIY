@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FLAME:Simulation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:FLAME="FLAME" name="PPSim">
+  <variables name="LTI_AGENT_TYPE" description="Int ID as enum for LTi cells"/>
+  <variables name="LTIN_AGENT_TYPE" description="Int ID as enum for LTin cells"/>
+  <variables name="LTO_AGENT_TYPE" description="Int ID as enum for LTo cells"/>
+  <variables name="LTI_CELL_SIZE" description="Diameter of the LTin and LTi cells"/>
+  <variables name="LTO_CELL_SIZE" description="Diameter of the LTo cells"/>
+  <variables name="ADHESION_DISTANCE_THRESHOLD" description="(lti_cell_size + lto_cell_size) / 2 : Used for calculating the distance between cells to determine adhesion"/>
+  <variables name="CHEMO_THRESHOLD" description="Chemokine Threshold, must be in the range 0-1" type="Float"/>
+  <variables name="CHEMO_CURVE_ADJUST" description="Sigmoid Curve Adjustment"/>
+  <variables name="CHEMO_UPPER_ADJUST" description="Initial Curve Value" type="Float"/>
+  <variables name="CHEMO_LOWER_ADJUST" description="Lower Curve Value" type="Float"/>
+  <variables name="INCREASE_CHEMO_EXPRESSION" description="Increase in expression with stable contact" type="Float"/>
+  <variables name="INITIAL_ADHESION" description="Initial expression of Adhesion Factors" type="Float"/>
+  <variables name="ADHESION_SLOPE" description="Linear Equation Slope" type="Float"/>
+  <variables name="ADHESION_INCREMENT" description="Increase in Adhesion with each stable contact" type="Float"/>
+  <variables name="MAX_ADHESION_PROBABILITY" description="Adhesion Level Threshold" type="Float"/>
+  <variables name="MAX_CELL_SPEED" description="The maximum number of pixels that a cell can move in a single iteration"/>
+  <variables name="INITIAL_CIRCUMFERENCE" description="Initial Circumference of the Gut"/>
+  <variables name="MAXIMUM_CIRCUMFERENCE" description="Maximum Circumference of the Gut"/>
+  <variables name="INITIAL_LENGTH" description="Initial Length of the Gut"/>
+  <variables name="MAXIMUM_LENGTH" description="Maximum Length of the Gut"/>
+  <variables name="STROMAL_CELL_DENSITY" type="Float"/>
+  <variables name="GROWTH_TIME" description="Intestinal Growth Time (hours)"/>
+  <variables name="PERCENT_LTIN_FROM_FACS" description="Percentage of area occupied by LTin cells at E15.5" type="Float"/>
+  <variables name="PERCENT_LTI_FROM_FACS" description="Percentage of area occupied by LTi cells at E15.5" type="Float"/>
+  <functionFiles>functions.c</functionFiles>
+  <initFunctions>setConstants</initFunctions>
+  <stepFunctions>migrateNewCells</stepFunctions>
+  <agents name="LTin" initialState="//@agents.0/@states.0" bufferSize="1024">
+    <memory name="x" type="Float"/>
+    <memory name="y" type="Float"/>
+    <memory name="velocity" type="Float"/>
+    <memory name="colour"/>
+    <memory name="stable_contact" description="Boolean flag, 1 if cell is in stable contact with an LTo cell."/>
+    <states name="ltin_random_movement">
+      <transitions name="ltin_adhesion" reallocate="true" randomGenerator="true" nextState="//@agents.0/@states.1"/>
+      <transitions name="ltin_random_move" inputs="//@messages.0" reallocate="true" randomGenerator="true" nextState="//@agents.0/@states.0"/>
+    </states>
+    <states name="localised_movement">
+      <transitions name="ltin_localised_move" reallocate="true" randomGenerator="true" nextState="//@agents.0/@states.1"/>
+    </states>
+  </agents>
+  <agents name="LTi" description="" initialState="//@agents.1/@states.0" bufferSize="1024">
+    <memory name="x" type="Float"/>
+    <memory name="y" type="Float"/>
+    <memory name="velocity" type="Float"/>
+    <memory name="colour"/>
+    <states name="lti_random_movement">
+      <transitions name="lti_random_move" reallocate="true" randomGenerator="true" nextState="//@agents.1/@states.0"/>
+    </states>
+    <states name="responding"/>
+    <states name="contact"/>
+    <states name="adhesion"/>
+  </agents>
+  <agents name="LTo" initialState="//@agents.2/@states.0" bufferSize="1024">
+    <memory name="x" type="Float"/>
+    <memory name="y" type="Float"/>
+    <memory name="colour"/>
+    <states name="expression">
+      <transitions name="express" outputs="//@messages.0" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0"/>
+    </states>
+    <states name="adhesion_upregulation"/>
+    <states name="chemokine_upregulation"/>
+    <states name="mature"/>
+    <states name="downregulated"/>
+  </agents>
+  <messages name="location" description="A message holding the type and location of a cell" partitioning="//@partitions.0" bufferSize="1024">
+    <variables name="x" type="Float"/>
+    <variables name="y" type="Float"/>
+    <variables name="z" type="Float"/>
+    <variables name="cell_type"/>
+  </messages>
+  <layers order="2" functions="//@agents.1/@states.0/@transitions.0 //@agents.0/@states.0/@transitions.1"/>
+  <layers order="1" functions="//@agents.2/@states.0/@transitions.0"/>
+  <partitions xsi:type="FLAME:SpatialPartition" radius="4" xmin="0" xmax="7304" ymin="0" ymax="256" zmin="0" zmax="4"/>
+</FLAME:Simulation>

@@ -240,6 +240,8 @@ Ease of creation (and maintenance) is an important feature for future simulation
 %still requires basic proficiency with the Linux OS and C++ programming as well as familiarity with mathematical modeling concepts
 %has industry support- Procter and Gamble
 
+%MODELLING - EPSILON, benefits of MDE?
+
 \subsubsection{Flexible Modelling}
 Flexible Modelling tools could be a good method for allowing new simulations to be created more easily. Using flexible modelling, non-technical users would be able to create sketches which can be automatically processed by tools into formal models and prototype metamodels\cite{Paige2017}. FlexiSketch is a good example of this and provides a good tool for creating models and metamodels for software development\cite{flexisketch}.
 
@@ -394,6 +396,20 @@ model based -> FlameGPU\cite{flame_keratinocyte}
 	A state-based platform model design is already available from the original MASON implementation of this simulation.
 	As FLAME GPU uses state machines for each agent type in its implementation, these have been directly implemented into it.
 
+\subsection{Epsilon}
+Building FLAME simulations requires the creation of two artifacts, a structural XML model which defines the agents in the system and their allowed channels for communication and a C source code file which defines the actual behaviour of agents.
+
+In the creation of the FLAME XML model, I decided to implement a new tool, built using the Epsilon Modelling Framework.
+This new tool contains a graphical editor which allows the FLAME model to be created diagramatically.
+This should significantly improve the model design experience and allow for domain experts to be kept more involved with the simulation creation.
+Figure \ref{fig:ppsim_gmf} shows the Peyer's Patch simulation created within this graphical editor. The XML model used for the final simulation was automatically generated from this diagram.
+
+The Epsilon Validation Language has allowed well-formedness constraints to be implemented for the FLAME input model.
+This should provide intuitive feedback in cases where the model may be incorrect, while completely preventing an invalid XML model from being produced.
+
+One final benefit of this new approach to model generation, is that it makes it far simpler to .
+
+
 \subsection{Testing}
 Talk about how the model was tested to ensure correctness\\
 Mention missing link in (incorrect) model from Kieran's paper 
@@ -402,6 +418,8 @@ Mention missing link in (incorrect) model from Kieran's paper
 %what tools were used?
 In order to produce a working simulation of Peyer's Patch formation, I have used an unreleased version (1.5) of FLAME GPU.
 As FLAME GPU is developed openly, this version is freely available online\cite{flame_github}.
+
+%EPSILON
 
 Git versioning has been used for this project to aid development.
 %mention VCS- git not good for XML model files as it doesn't understand the model syntax
@@ -425,7 +443,8 @@ Git versioning has been used for this project to aid development.
 %Expand project for more powerful cell based simulation
 %allow access to non-technical users
 %flexible modelling
-
+While the use of Epsilon has allowed for domain experts to be kept involved with the model implementation, there is still a final, most technically challenging, stage of the simulation creation where the agent behaviour is programmed.
+Further work will need to study agent behaviour in these forms of simulation generally...
 
 \printbibliography
 \chapter{Appendix}
@@ -433,5 +452,17 @@ Git versioning has been used for this project to aid development.
 
 
 \section{Cell Data Structures}
+
+\section{Other}
+
+\begin{figure}[htp]
+\centering
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Appendix/ppsim_gmf}
+\caption{Graphically produced FLAME Simulation model for Peyer's Patch}
+\label{fig:ppsim_gmf}
+\end{subfigure}%
+\end{figure}
  
 \end{document}

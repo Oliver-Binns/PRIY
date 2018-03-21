@@ -83,7 +83,7 @@ class Message{
 	@gmf.link(style="dot")
 	ref Partition partitioning;
 	
-	@gmf.compartment
+	@gmf.compartment(layout="list")
 	val Variable[*] variables;
 	attr Integer bufferSize;
 }
