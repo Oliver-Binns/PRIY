@@ -1,0 +1,12 @@
+context Simulation{
+	constraint Named{
+		check: not self.name.isEmpty()
+		message: "Simulation name must be set."
+		fix{
+			title: "Set simulation name."
+			do{
+				self.name = System.user.prompt("Enter a name:");
+			}
+		}
+	}
+}

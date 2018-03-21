@@ -1,11 +1,10 @@
 @gmf
-@namespace(uri="MetaFLAME", prefix="MetaFLAME")
-package MetaFLAME;
+@namespace(uri="FLAME", prefix="FLAME")
+package FLAME;
 
 @gmf.diagram
-class Model{
+class Simulation{
 	attr String name;
-	attr String version;
 	
 	val Variable[*] variables;
 	attr String[*] functionFiles;

@@ -6,6 +6,8 @@ Report/*
 !*/Appendix/*
 */src/dynamic/*
 *.o
-*/.settings
-*/.project
-*/.classpath
+.DS_Store
+*/Metamodels.diagram/*
+*/Metamodels/*
+.classpath
+.project
