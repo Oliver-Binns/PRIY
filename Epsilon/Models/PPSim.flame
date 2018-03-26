@@ -73,7 +73,5 @@
   </messages>
   <layers order="2" functions="//@agents.1/@states.0/@transitions.0 //@agents.0/@states.0/@transitions.1"/>
   <layers order="1" functions="//@agents.2/@states.0/@transitions.0"/>
-  <layers order="2" functions="//@agents.0/@states.1/@transitions.0"/>
-  <layers order="2" functions="//@agents.0/@states.1/@transitions.0"/>
   <partitions xsi:type="FLAME:SpatialPartition" radius="4" xmin="0" xmax="7304" ymin="0" ymax="256" zmin="0" zmax="4"/>
 </FLAME:Simulation>
