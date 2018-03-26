@@ -1,37 +1,70 @@
-context Simulation{
+context Named{
 	constraint Named{
-		check: not self.name.isEmpty()
-		message: "Simulation name must be set."
+		check: not (self.name == null)
+		message: "Name of " + self + " must be set."
 		fix{
-			title: "Set simulation name."
+			title: "Set name."
 			do{
 				self.name = System.user.prompt("Enter a name:");
 			}
 		}
 	}
 }
-context Variable{
-	constraint Named{
-		check: not self.name.isEmpty()
-		message: "Variable must have a name."
+
+context UniqueNamed{
+	constraint UniqueName{
+		guard: self.satisfies("Named")
+		check: UniqueNamed.allInstances().forAll(n | n.name = self.name implies n = self)
+		message: "Named elements (" + self.name + ") should have unique names."
+	}
+}
+
+context Agent{
+	constraint InitialStateNotNull{
+		check: not (self.initialState == null)
+		message: "An initial state must be set for Agent " + self.name
 		fix{
-			title: "Name the variable."
+			title: "Create a new state."
 			do{
-				self.name = System.user.prompt("Enter a name.");
+				var name = System.user.prompt("What should the new state be called?");
+				self.initialState = new State();
+				self.initialState.name = name;
+			}
+		}
+		fix{
+			title: "Select existing state."
+			do{
+				self.initialState = System.user.choose("Choose a state:", self.states);
+			}
+		}
+	}
+
+	constraint InitialStateMustBelong{
+		guard: self.satisfies("InitialStateNotNull")
+		check: self.states.contains(self.initialState)
+		message: "The initial state of Agent " + self.name + " does not belong to it."
+		fix{
+			title: "Select a state that belongs to Agent " + self.name
+			do{
+				self.initialState = System.user.choose("Choose a state:", self.states);
 			}
 		}
 	}
 }
-context Agent{
-	constraint Named{
-	}
 
-	constraint InitialStateNotNull{
-		check:
-	}
-
-	constraint InitialStateMustBelong{
-		check: self.states.contains(self.initialState)
-		message: "The initial state of Agent does not belong to it."
+context Layer{
+	critique IdenticalLayerOrders{
+		check: Layer.allInstances().forAll(r | r.order = self.order implies r = self)
+		message: "Layers with identical order should be merged."
+		fix{
+			title: "Merge all layers with order " + self.order
+			do{
+				var layersToMerge = Layer.allInstances().select(l | not l = self and l.order = self);
+				for(layer in layersToMerge){
+					self.functions.addAll(layer.functions);
+					delete layer;
+				}
+			}
+		}
 	}
 }

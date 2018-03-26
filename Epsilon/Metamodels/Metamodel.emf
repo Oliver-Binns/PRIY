@@ -2,10 +2,14 @@
 @namespace(uri="FLAME", prefix="FLAME")
 package FLAME;
 
-@gmf.diagram
-class Simulation{
+abstract class Named{
 	attr String name;
-	
+}
+
+abstract class UniqueNamed extends Named{}
+
+@gmf.diagram
+class Simulation extends UniqueNamed{
 	val Variable[*] variables;
 	attr String[*] functionFiles;
 	attr String[*] initFunctions;
@@ -25,8 +29,7 @@ enum DataType{
 }
 
 @gmf.node(label="name")
-class Variable{
-	attr String name;
+class Variable extends Named{
 	attr String description;
 	
 	attr DataType type;
@@ -38,8 +41,7 @@ enum AgentType{
 }
 
 @gmf.node(label="name")
-class Agent{
-	attr String name;
+class Agent extends UniqueNamed{
 	attr String description;
 	
 	@gmf.compartment(layout="list")
@@ -55,9 +57,7 @@ class Agent{
 }
 
 @gmf.link(label="name", source="initialState", target="nextState", target.decoration="arrow")
-class Transition{
-	attr String name;
-
+class Transition extends UniqueNamed{
 	ref Message[*] inputs;
 	ref Message[*] outputs;
 	
@@ -69,15 +69,12 @@ class Transition{
 }
 
 @gmf.node(label="name")
-class State{
-	attr String name;
-	
+class State extends UniqueNamed{
 	val Transition[*]#initialState transitions;
 }
 
 @gmf.node(label="name")
-class Message{
-	attr String name;
+class Message extends UniqueNamed{
 	attr String description;
 	
 	@gmf.link(style="dot")
