@@ -3,10 +3,10 @@ Report/*
 !Report/Report.tex
 !Report/Report.bib
 */iterations/*.xml
-!*/Appendix/*
+!Report/Appendix/*
 */src/dynamic/*
 *.o
-.DS_Store
+*/.DS_Store
 */Metamodels.diagram/*
 */Metamodels/*
 .classpath
