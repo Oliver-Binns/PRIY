@@ -11,20 +11,23 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{4043}
+\wordcount{4500}
 
 %Approx 500 Words
 \abstract{
-More powerful computers are paving the way for realistic simulations of previously underexplored complex biological systems.
-As advancements in computing tend towards parallelism and distributed systems, increasingly realistic simulations must take full advantage of this change in order to be computed in a reasonable time period.
-%briefly mention that parallelism makes programming more difficult
+More powerful computers are paving the way for sophisticated simulations of previously underexplored complex biological systems.
+Agent-based modelling has been previously used to implement this type of simulation, showing how the behaviour of individuals can contribute to the system as a whole.
 
-Some significant problems, including a significant computer science skills shortage, are slowing down the rate of progress in this area.
+As advancements in computing tend towards parallelism and distributed systems, these increasingly elaborate simulations must take full advantage of this change in order to be computed in a reasonable time period.
+Creating programs and simulations that make efficient use of this parallelism can be technically challenging. In particular it requires implementing an optimal distribution of tasks over the system and ensuring the integrity of any memory that is shared across multiple threads.
+Some significant problems, including a substantial computer science skills shortage, are slowing down the rate of progress in this area.
 
-In this project, I will propose model-driven engineering (MDE) as a solution to several of these problems, explore some of the current MDE technologies for creating simulations and propose further advancements to these tools for the future.
+In this project, 
+the FLAME GPU framework will be used to help mitigate some of the difficulties with implementing parallel programs in order to build on an existing sequential Java MASON simulation.
+I will also propose model-driven engineering (MDE) as a potential short-term solution to the skills shortage, exploring some of the current MDE technologies for creating simulations and proposing further advancements to these tools for the future.
 }
 
-\acknowledgements{I would like to my supervisors, Fiona Polack and Kieran Alden for their support and guidance throughout this project. I would also like to thank the Sheffield FLAME GPU development team for their help in utilising the latest and pre-released features of FLAME GPU.}
+\acknowledgements{I would like to my supervisors, Fiona Polack and Kieran Alden, for their support and guidance throughout this project. I would also like to thank the FLAME GPU development team at the University of Sheffield for their help in utilising the latest and pre-released features of this framework.}
 
 \begin{document}
 \maketitle
@@ -32,6 +35,12 @@ In this project, I will propose model-driven engineering (MDE) as a solution to 
 \listoftables
 \renewcommand*{\lstlistlistingname}{List of Listings}
 \lstlistoflistings
+
+%GLOSSARY?
+%modelling
+%behavioural models
+%agent-based
+%'complex'
 
 %Approx 1000 words
 \chapter{Introduction}
@@ -267,8 +276,9 @@ Already an ongoing area of research..
 %Complex to program, need to bear in mind:
 	%Radius of the agent messages, data transfer cost is HIGH
 	%Mindful of multi-thread data manipulation
-
 Parallelism fundamentally changes the game and allows computers to keep following Moore's law even has engineers are struggling to make transisters ever smaller and smaller\cite{concurrency_revolution}. As modern computers tend further towards parallelism to keep providing the speed-ups that have been inherent in the industry over recent years, new parallel algorithms need developing in order to take full advantage of the computing power available.
+
+%Different approaches to parallelism have different tradeoffs- we need to ensure that any gains here are not overshadowed by the overheads of managing a parallel implementation- partitioning, reduce phase, etc;
 
 \paragraph{Distributed Systems}
 %MAPREDUCE for distributed systems could be mentioned
@@ -405,10 +415,11 @@ This should significantly improve the model design experience and allow for doma
 Figure \ref{fig:ppsim_gmf} shows the Peyer's Patch simulation created within this graphical editor. The XML model used for the final simulation was automatically generated from this diagram.
 
 The Epsilon Validation Language has allowed well-formedness constraints to be implemented for the FLAME input model.
-This should provide intuitive feedback in cases where the model may be incorrect, while completely preventing an invalid XML model from being produced.
+This should provide intuitive feedback (Fig. \ref{fig:validation_gmf}) in cases where the model may be incorrect, in order to prevent an invalid XML model from being produced.
+Quick fixes (Fig. \ref{fig:validation_quickfix_gmf}) have also been implemented to guide the user through easily correcting their invalid model.
 
 One final benefit of this new approach to model generation, is that it makes it far simpler to .
-
+%HM?
 
 \subsection{Testing}
 Talk about how the model was tested to ensure correctness\\
@@ -421,12 +432,18 @@ As FLAME GPU is developed openly, this version is freely available online\cite{f
 
 %EPSILON
 
-Git versioning has been used for this project to aid development.
+Version Control for both the simulation code and this report has been managed through Git.
+The repository is available *currently private?* on \href{https://github.com/oliver-binns/PRIY.git}{GitHub}.
 %mention VCS- git not good for XML model files as it doesn't understand the model syntax
 
 %Approx 2500 words for results and evalution
 \chapter{Results and Evaluation}
 \section{Findings}
+\subsection{Ease of Use}
+"Further work is now being developed with Paul Richmond's FLAME GPU group, to enhance the accessibility of FLAME for simulation developers."
+"This should allow the simulation developer to focus on getting their domain details correct, rather than battling the agent platform.0"
+
+\subsection{Speed Up}
 \cite{statistical_tests} could be important for evaluating the performance of FlameGPU against original PPSim
 
 %Approx 1000 words
@@ -463,6 +480,26 @@ Further work will need to study agent behaviour in these forms of simulation gen
 \caption{Graphically produced FLAME Simulation model for Peyer's Patch}
 \label{fig:ppsim_gmf}
 \end{subfigure}%
+\end{figure}
+
+\begin{figure}[htp]\ContinuedFloat
+\centering
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Appendix/validation_gmf}
+\caption{Graphical validation using EVL constraints}
+\label{fig:validation_gmf}
+\end{subfigure}
+
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Appendix/validation_quickfix_gmf}
+\caption{Quick fix of invalid model}
+\label{fig:validation_quickfix_gmf}
+\end{subfigure}%
+
+\caption{Graphical Tool for creating FLAME GPU models}
+\label{fig:gmf}
 \end{figure}
  
 \end{document}
