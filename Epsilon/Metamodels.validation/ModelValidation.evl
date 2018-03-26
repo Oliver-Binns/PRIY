@@ -1,7 +1,7 @@
 context Named{
 	constraint Named{
-		check: not (self.name == null)
-		message: "Name of " + self + " must be set."
+		check: not (self.name == null) 
+		message: "Name of " + self.type().name + " must be set."
 		fix{
 			title: "Set name."
 			do{
@@ -15,14 +15,14 @@ context UniqueNamed{
 	constraint UniqueName{
 		guard: self.satisfies("Named")
 		check: UniqueNamed.allInstances().forAll(n | n.name = self.name implies n = self)
-		message: "Named elements (" + self.name + ") should have unique names."
+		message: self.type().name + " " + self.name +" must have a unique name."
 	}
 }
 
 context Agent{
 	constraint InitialStateNotNull{
 		check: not (self.initialState == null)
-		message: "An initial state must be set for Agent " + self.name
+		message: "An initial state must be set for Agent " + self.name + "."
 		fix{
 			title: "Create a new state."
 			do{

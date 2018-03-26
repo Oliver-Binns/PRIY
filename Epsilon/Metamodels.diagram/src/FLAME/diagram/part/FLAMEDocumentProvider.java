@@ -512,7 +512,7 @@ public class FLAMEDocumentProvider extends AbstractDocumentProvider implements I
 	}
 
 	/**
-	* @generated
+	* @generated NOT
 	*/
 	protected void doSaveDocument(IProgressMonitor monitor, Object element, IDocument document, boolean overwrite)
 			throws CoreException {

@@ -1,9 +1,10 @@
+!Report
 Report/*
 !Report/Report.pdf
 !Report/Report.tex
 !Report/Report.bib
-*/iterations/*.xml
 !Report/Appendix/*
+*/iterations/*.xml
 */src/dynamic/*
 *.o
 */.DS_Store
