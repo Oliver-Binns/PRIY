@@ -1,0 +1,6 @@
+/bin/
+META-INF/*
+src/*
+plugin.*
+build.*
+**/ctool16/*

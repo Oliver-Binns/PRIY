@@ -11,20 +11,20 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{4500}
+\wordcount{4553}
 
 %Approx 500 Words
 \abstract{
 More powerful computers are paving the way for sophisticated simulations of previously underexplored complex biological systems.
-Agent-based modelling has been previously used to implement this type of simulation, showing how the behaviour of individuals can contribute to the system as a whole.
+Agent-based modelling has been previously used to implement this type of simulation, showing how the behaviour of a number of individual agents can contribute to the system as a whole.
 
 As advancements in computing tend towards parallelism and distributed systems, these increasingly elaborate simulations must take full advantage of this change in order to be computed in a reasonable time period.
 Creating programs and simulations that make efficient use of this parallelism can be technically challenging. In particular it requires implementing an optimal distribution of tasks over the system and ensuring the integrity of any memory that is shared across multiple threads.
 Some significant problems, including a substantial computer science skills shortage, are slowing down the rate of progress in this area.
 
-In this project, 
-the FLAME GPU framework will be used to help mitigate some of the difficulties with implementing parallel programs in order to build on an existing sequential Java MASON simulation.
-I will also propose model-driven engineering (MDE) as a potential short-term solution to the skills shortage, exploring some of the current MDE technologies for creating simulations and proposing further advancements to these tools for the future.
+In this project 
+the FLAME GPU framework is used to help mitigate some of the difficulties with implementing parallel programs, in order to build on an existing sequential Java MASON simulation.
+I also propose model-driven engineering (MDE) as a potential short-term solution to the skills shortage, exploring some of the current MDE technologies for creating simulations and proposing further advancements to these tools for the future.
 }
 
 \acknowledgements{I would like to my supervisors, Fiona Polack and Kieran Alden, for their support and guidance throughout this project. I would also like to thank the FLAME GPU development team at the University of Sheffield for their help in utilising the latest and pre-released features of this framework.}
@@ -45,6 +45,9 @@ I will also propose model-driven engineering (MDE) as a potential short-term sol
 %Approx 1000 words
 \chapter{Introduction}
 \section{Project Overview}
+%TELL THEM WHAT YOU WILL TELL THEM
+%LIT REVIEW: TELL THEM
+%RESULTS/EVAL: TELL THEM WHAT YOU TOLD THEM!
 TALK ABOUT MODELING AND THE DESIRE FOR 
 \\
 Faster AND More Accessible Simulation
@@ -52,25 +55,31 @@ Faster AND More Accessible Simulation
 \section{Motivation}
 %What can be gained from better modelling.. particularly biology..?
 %Presentation- see justification slides!
-The motivation for this project stems mainly from the new knowledge that could be gained from the ability to create efficient parallel biological simulations more easily.
+The motivation behind this project is the new knowledge that could be gained from the ability to create efficient parallel biological simulations more easily.
+While many biological systems can not be fully studied in-vitro, simulations can provide a valid alternative.
+%rephrase this--->
+Indeed previous work has been used to prove some hypotheses wrong.
+%do we need citations/examples here if we are going to discuss this in more detail later on?
+%is it ok to reference a later chapter?
 
-If hypotheses for *drug testing* can be more easily and extensively tested in silico, this could significantly improve the process by which drugs are developed.
-New drugs and cures could be developed more quickly, allowing these to be available more quickly.
-The significant financial burden of drug development, which is estimated to be around \$2.9bn\cite{drug_cost}, could be reduced, freeing up heavily contested funds for additional research.
-The use of animal testing could be reduced, and potentially eliminated completely in the long term.
-
-%outside of drug testing, new understanding can..?
+%outside of biological exploration, new understanding can..?
+This type of in-silico experimentation could significantly improve the process by which drugs are developed.
+Extensive in-silico testing can be performed much more quickly than the current in-vitro testing, reducing the time it takes to research new drugs and cures.
+Drugs and cures would be available for patients earlier, saving many lives.
+Additionally, the significant financial burden of drug development, which is estimated to be around \$2.9bn\cite{drug_cost}, could be reduced, freeing up heavily contested funds for additional research.
+Finally, the use of animal testing could be reduced and, in the long term, eliminated completely.
 
 \section{Project Aims}
 In summary, the aims of this project are to
 \begin{enumerate}
-	\item Provide a thorough review of the use of simulations as part of Computational Biology, the advantages they provide and the problems that must be overcome for their mass adoption.
-	\item Develop a parallel implementation of an existing simulation of Peyer's Patch development and explore any speed increases that can be produced using General Purpose GPU programming.
 	\item Establish a firm grounding for the future development of new tools to allow fast, parallel simulations of biological systems to be easily created by non-technical users.
 	\begin{enumerate}
 		\item Explore the findings of the new implementation and discuss how these can be generalised to new simulations.
 		\item Discuss techniques for allowing non-technical users to easily create formal models that can be transformed into new simulation implementations.
 	\end{enumerate}
+	\item Develop a \textbf{parallel} implementation of an existing \textbf{sequential} simulation of Peyer's Patch development and explore any speed increases that can be produced using General Purpose GPU programming.
+	\item Review of the use of simulations, with a particular focus on computational biology. This review should explore the advantages that in-silico testing provides over in-vitro experimentation and the problems that must be overcome for the mass adoption of biological simulations.
+	
 \end{enumerate}
 
 \section{Statement of Ethics}
@@ -87,14 +96,16 @@ The simulation of the biological model is for the purpose of developing understa
 \section{Report Structure}
 This report details the work done throughout the project and 
 
-Chapter \ref{simulation} gives a general overview of simulations and the benefits and limitations of their use particularly with regard to computational biology.
-
-Chapter \ref{improvements} explores some of the limitations of simulations in additional detail and proposes future solutions for these.
-
-Chapter \ref{methods} details the development of an improved, inherently parallel, implementation of PPSim.
+\begin{enumerate}
+	\item Chapter \ref{lit_review} gives a general overview of simulations and the benefits and limitations of their use particularly with regard to computational biology.
+   %\item Chapter \ref{improvements} explores some of the limitations of simulations in additional detail and proposes future solutions for these.
+	\item Chapter \ref{methods} details the development of an improved, inherently parallel, implementation of PPSim.
+	\item Chapter \ref{results} evaluates the progress that this project has made towards making fast, parallel simulations more accessible.
+\end{enumerate}
 
 %Approx 3000 words for literature review
 \chapter{Literature Review}
+\label{lit_review}
 % Aims are to:
 %
 % Place original work into the context of existing Literature
@@ -114,7 +125,7 @@ The models of systems used in simulations may have a varying amounts of abstract
 
 %mention speculation that we live in a simulation? - simulation hypothesis, The Matrix, Elon Musk
 
-This chapter will explain the benefits and current limitations of using simulations and how these have affected this project.
+This chapter outlines the benefits and current limitations of using simulations and how these have affected this project.
 
 \subsection{Benefits}
 \subsubsection{Feasibility}
@@ -215,7 +226,7 @@ If the simulation needs to be safety-critical, developing it using formal method
 %Section on what we need to support complex simulations
 %link this to the previous chapter- discussion on current constraints on simulation:
 Significant constraints on when simulations can be used were discussed in the previous chapter. In order for simulations to become more widely adopted, some of these constraints must be overcome. 
-In particular, this project will focus on two particular sections of which I believe will have the biggest immediate impact.
+In particular, this project focuses on two particular sections of which I believe will have the biggest immediate impact.
 
 Firstly, attempting to overcome the problems provided by the current computing skills shortage. 
 Initial work to help overcome the skills shortage will likely come by providing tools that can automate work done by technical users in order to increase their productivity.
@@ -224,7 +235,7 @@ Eventually, if this technical work can be fully automated, non-technical users w
 
 Secondly, simulations need to be able to generate results in a realistic amount of time. As many biological simulations include significant elements of randomness, they must be run a large number of times in order to produce reliable results. This can often take 
 
-This chapter will discuss the potential solutions to each of these problems.
+This chapter discusses the potential solutions to each of these problems.
 %which I believe is model-driven engineering
 
 \subsection{Ease of Creation}
@@ -242,7 +253,6 @@ Ease of creation (and maintenance) is an important feature for future simulation
 
 %person-centric healthcare, custom simulations may be needed
 
-%biocellion
 %Biocellion is 
 %freely-available for non-profit use.
 %unfortunately, technical to understand- took several weeks to even install, how to cite conversation? CITE Jeff's report?
@@ -378,7 +388,7 @@ Simulations have even been proposed as a method for exploring a potential set of
 \label{ppsim}
 This project focuses on simulation as a tool for exploring biological systems at cell level. It uses the existing simulation of Peyer's Patch\cite{kieran_thesis} and attempts to use parallel computer architectures in order to speed this simulation up. %proof of concept- what new knowledge has PPSim created so far?
 
-Finally, I will propose a new tool, which builds on existing work in order to make this power available to non-technical users.
+Finally, I propose a new tool, which builds on existing work in order to make this power available to non-technical users.
 %or will I, probably not enough time for this!
 
 %Approx 1500 words for problem description and analysis
@@ -438,6 +448,8 @@ The repository is available *currently private?* on \href{https://github.com/oli
 
 %Approx 2500 words for results and evalution
 \chapter{Results and Evaluation}
+\label{results}
+
 \section{Findings}
 \subsection{Ease of Use}
 "Further work is now being developed with Paul Richmond's FLAME GPU group, to enhance the accessibility of FLAME for simulation developers."
@@ -461,6 +473,9 @@ The repository is available *currently private?* on \href{https://github.com/oli
 %allow access to non-technical users
 %flexible modelling
 While the use of Epsilon has allowed for domain experts to be kept involved with the model implementation, there is still a final, most technically challenging, stage of the simulation creation where the agent behaviour is programmed.
+%additionally, technical implementation details still need to be understood when creating the model-
+	%Layer Functions
+	%Partitioning
 Further work will need to study agent behaviour in these forms of simulation generally...
 
 \printbibliography
