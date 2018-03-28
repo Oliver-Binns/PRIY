@@ -23,9 +23,9 @@ class Simulation extends UniqueNamed{
 }
 
 enum DataType{
-	Int = 0;
-	Float = 1;
-	Double = 2;
+	Int;
+	Float;
+	Double;
 }
 
 @gmf.node(label="name")
@@ -61,11 +61,38 @@ class Transition extends UniqueNamed{
 	ref Message[*] inputs;
 	ref Message[*] outputs;
 	
+	val Condition[0..1] condition;
+	
 	attr Boolean reallocate;
 	attr Boolean randomGenerator;
 	
 	ref State#transitions initialState;
 	ref State nextState;
+}
+
+abstract class Evaluation{}
+class LiteralEval extends Evaluation{
+	attr Float value;
+}
+class VariableEval extends Evaluation{
+	ref Variable value;
+}
+class ConditionEval extends Evaluation{
+	val Condition value;
+}
+
+class Condition{
+	val Evaluation lhs;
+	attr Operator operation;
+	val Evaluation rhs;
+}
+
+enum Operator{
+	Equals;
+	LessThan;
+	GreaterThan;
+	
+	Plus;
 }
 
 @gmf.node(label="name")
