@@ -202,8 +202,7 @@ __FLAME_GPU_FUNC__ int ltin_random_move(xmachine_memory_LTin* xmemory,
     xmachine_message_location* message = get_first_location_message(location_messages, partition_matrix,
     	xmemory->x, xmemory->y, 0.0);
     while(message){
-   		xmemory->colour = 3;
-   		if(false){//Check if BIND is SUFFICIENT
+   		if(true){//Check if BIND is SUFFICIENT
    			//Transition to STABLE CONTACT
    			xmemory->stable_contact = 1;
    		}
