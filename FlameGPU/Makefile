@@ -32,7 +32,7 @@ HAS_VISUALISATION := 1
 CUSTOM_VISUALISATION := 0
 
 # Relative path to the root FLAME GPU directory. Must end with a trainling slash.
-FLAMEGPU_ROOT := ../../
+FLAMEGPU_ROOT := FLAMEGPU/
 
 # Parent directory for generated executable files.
 EXAMPLE_BIN_DIR := $(FLAMEGPU_ROOT)bin

@@ -1,0 +1,3 @@
+[submodule "FlameGPU/FLAMEGPU"]
+	path = FlameGPU/FLAMEGPU
+	url = https://github.com/FLAMEGPU/FLAMEGPU
