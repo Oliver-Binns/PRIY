@@ -20,7 +20,7 @@
 
 // constants
 const unsigned int WINDOW_WIDTH = 1920;
-const unsigned int WINDOW_HEIGHT = 50;
+const unsigned int WINDOW_HEIGHT = 500;
 
 //frustrum
 const double NEAR_CLIP = 0.1;

@@ -5,6 +5,7 @@ from lxml import etree
 import random
 
 LTo_TYPE = 0;
+LTi_TYPE = 1;
 
 #Create XML
 root = etree.Element('states')
@@ -36,11 +37,16 @@ def instantiateCell(variables):
 
 	return agent
 
-
+for i in range(1):
+	root.append(instantiateCell({
+		'name': 'LTi',
+		'x': 7303,
+		'y': 254,
+		'colour': LTi_TYPE
+	}))
 for i in range(1):
 	root.append(instantiateCell({
 		'name': 'LTo',
-		'id': i,
 		'x': 7303 / 2,
 		'y': 254 / 2,
 		'colour': LTo_TYPE
