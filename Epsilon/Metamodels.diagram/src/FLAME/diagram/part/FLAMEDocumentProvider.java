@@ -516,7 +516,7 @@ public class FLAMEDocumentProvider extends AbstractDocumentProvider implements I
 	*/
 	protected void doSaveDocument(IProgressMonitor monitor, Object element, IDocument document, boolean overwrite)
 			throws CoreException {
-		ValidateAction.runValidation((View)document.getContent());
+		ValidateAction.runValidation((View) document.getContent());
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
 			if (!overwrite && !info.isSynchronized()) {

@@ -19,12 +19,16 @@
 		</gpu:functionFiles>
 		<gpu:initFunctions>
 			[%for (func in flame.initFunctions){%]
+			<gpu:initFunction>
 				<gpu:name>[%=func%]</gpu:name>
+			</gpu:initFunction>
 			[%}%]
 		</gpu:initFunctions>
 		<gpu:stepFunctions>
 			[%for (func in flame.stepFunctions){%]
+			<gpu:stepFunction>
 				<gpu:name>[%=func%]</gpu:name>
+			</gpu:stepFunction>
 			[%}%]
 		</gpu:stepFunctions>
 	</gpu:environment>

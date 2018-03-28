@@ -52,6 +52,13 @@ context Agent{
 	}
 }
 
+context SpatialPartition{
+	constraint PartitionSegments{
+		check: self.segmentsValid()
+		message: "Partitioned space cannot be evenly divided into radius " + self.radius + "."
+	}
+}
+
 context Layer{
 	critique IdenticalLayerOrders{
 		check: Layer.allInstances().forAll(r | r.order = self.order implies r = self)
@@ -67,4 +74,18 @@ context Layer{
 			}
 		}
 	}
+}
+
+//TODO needs implementing
+operation SpatialPartition segmentsValid(){
+	if(not ((self.xmax - self.xmin).mod(self.radius) = 0)){
+		return false;
+	}
+	if(not ((self.ymax - self.ymin).mod(self.radius) = 0)){
+		return false;
+	}
+	if(not ((self.zmax - self.zmin).mod(self.radius) = 0)){
+		return false;
+	}
+	return true;
 }

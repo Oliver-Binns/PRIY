@@ -129,10 +129,14 @@
 				<file>functions.c</file>
 		</gpu:functionFiles>
 		<gpu:initFunctions>
+			<gpu:initFunction>
 				<gpu:name>setConstants</gpu:name>
+			</gpu:initFunction>
 		</gpu:initFunctions>
 		<gpu:stepFunctions>
+			<gpu:stepFunction>
 				<gpu:name>migrateNewCells</gpu:name>
+			</gpu:stepFunction>
 		</gpu:stepFunctions>
 	</gpu:environment>
 	

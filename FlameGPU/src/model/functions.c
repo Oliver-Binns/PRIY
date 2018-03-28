@@ -225,6 +225,14 @@ __FLAME_GPU_FUNC__ int ltin_random_move(xmachine_memory_LTin* xmemory,
     return 0;
 }
 
+__FLAME_GPU_FUNC__ int ltin_adhesion(xmachine_memory_LTin* agent, RNG_rand48* rand48){
+	return 0;
+}
+
+__FLAME_GPU_FUNC__ int ltin_localised_move(xmachine_memory_LTin* agent, RNG_rand48* rand48){
+	return 0;
+}
+
 __FLAME_GPU_FUNC__ int express(xmachine_memory_LTo* xmemory,
 							   xmachine_message_location_list* location_messages)
 {
