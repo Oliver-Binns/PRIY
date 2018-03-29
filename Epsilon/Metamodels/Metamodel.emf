@@ -80,19 +80,18 @@ class VariableEval extends Evaluation{
 class ConditionEval extends Evaluation{
 	val Condition value;
 }
-
 class Condition{
 	val Evaluation lhs;
-	attr Operator operation;
+	attr Operator operator;
 	val Evaluation rhs;
 }
-
 enum Operator{
 	Equals;
 	LessThan;
 	GreaterThan;
 	
 	Plus;
+	Subtract;
 }
 
 @gmf.node(label="name")

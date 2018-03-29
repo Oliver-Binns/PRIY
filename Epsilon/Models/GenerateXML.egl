@@ -53,6 +53,9 @@
 					<name>[%=transition.name%]</name>
 					<currentState>[%=transition.initialState.name%]</currentState>
 					<nextState>[%=transition.nextState.name%]</nextState>
+					[%if(transition.condition.isDefined()){%]
+					[%=transition.condition.toXML()%]
+					[%}%]
 					[%if (not transition.inputs.isEmpty()){%]
 					<inputs>
 						[%for (input in transition.inputs){%]
@@ -141,3 +144,31 @@
 		[%}%]
 	</layers>
 </gpu:xmodel>
+
+[%
+operation Condition toXML(){
+	var operator = "=";
+	switch(self.operator){
+		case 0 : return "==";
+		case 1 : return "<";
+		case 2 : return ">";
+		case 3 : return "+";
+		case 4 : return "-";
+	}
+
+	return "<condition><lhs>" + self.lhs.toXML()
+	+ "</lhs><operator>=="
+	+ "</operator><rhs>"
+	+ self.rhs.toXML()
+	+ "</rhs></condition>";
+}
+operation ConditionEval toXML(){
+	return self.value.toXML();
+}
+operation LiteralEval toXML(){
+	return self.value.toString();
+}
+operation VariableEval toXML(){
+	return self.value.name;
+}
+%]

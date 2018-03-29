@@ -7,7 +7,7 @@ Report/*
 */iterations/*.xml
 */src/dynamic/*
 *.o
-*/.DS_Store
+**/.DS_Store
 */Metamodels.diagram/*
 */Metamodels/*
 .classpath

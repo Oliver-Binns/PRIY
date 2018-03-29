@@ -34,7 +34,12 @@
     <memory name="colour"/>
     <memory name="stable_contact" description="Boolean flag, 1 if cell is in stable contact with an LTo cell."/>
     <states name="ltin_random_movement">
-      <transitions name="ltin_adhesion" reallocate="true" randomGenerator="true" nextState="//@agents.0/@states.1"/>
+      <transitions name="ltin_adhesion" reallocate="true" randomGenerator="true" nextState="//@agents.0/@states.1">
+        <condition>
+          <lhs xsi:type="FLAME:LiteralEval" value="1.0"/>
+          <rhs xsi:type="FLAME:VariableEval" value="//@agents.0/@memory.4"/>
+        </condition>
+      </transitions>
       <transitions name="ltin_random_move" inputs="//@messages.0" reallocate="true" randomGenerator="true" nextState="//@agents.0/@states.0"/>
     </states>
     <states name="localised_movement">
