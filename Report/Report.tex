@@ -4,6 +4,7 @@
 \usepackage{subcaption}
 \usepackage[acronym]{glossaries}
 \usepackage{listings}
+\usepackage{wrapfig}
 
 \addbibresource{Report.bib}
 \title{Parallel Programming Tools for Exploring Immune System Development}
@@ -11,7 +12,7 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{4553}
+\wordcount{5006}
 
 %Approx 500 Words
 \abstract{
@@ -97,9 +98,9 @@ The simulation of the biological model is for the purpose of developing understa
 This report details the work done throughout the project and 
 
 \begin{enumerate}
-	\item Chapter \ref{lit_review} gives a general overview of simulations and the benefits and limitations of their use particularly with regard to computational biology.
+	\item Chapter \ref{lit_review} gives an overview of simulations and the benefits and limitations of their use particularly with regard to computational biology.
    %\item Chapter \ref{improvements} explores some of the limitations of simulations in additional detail and proposes future solutions for these.
-	\item Chapter \ref{methods} details the development of an improved, inherently parallel, implementation of PPSim.
+	\item Chapter \ref{methods} details the development of an improved, inherently parallel, implementation of PPSim (PPSim v2).
 	\item Chapter \ref{results} evaluates the progress that this project has made towards making fast, parallel simulations more accessible.
 \end{enumerate}
 
@@ -121,21 +122,32 @@ This report details the work done throughout the project and
 %Background, what are simulations used for generally
 Simulations are model-based imitations of a system which feature its key characteristics and behaviours. Computer simulations are used in a wide range of disciplines on applications such as video games, medicine, product development and even nuclear weapons.
 
-The models of systems used in simulations may have a varying amounts of abstraction. Simulations used for teaching will likely have models which remove significant amounts of complexity from the system. Simulations used for video games tend to be as realistic as possible as realism has been shown to produce a higher level of immersion\cite{realism_immersion}, a highly desirable attribute of games.%may aim to remove some complexity from the original system (compute times)
+The models of systems used in simulations may have a varying amounts of abstraction. Simulations used for teaching will likely have models which remove significant amounts of complexity from the system. Removing complexity from the original system can also help to reduce the time it takes to run the simulation, a key focus of this project. Simulations used for video games tend to be as realistic as possible as realism has been shown to produce a higher level of immersion\cite{realism_immersion}, a highly desirable attribute of games.
 
 %mention speculation that we live in a simulation? - simulation hypothesis, The Matrix, Elon Musk
 
-This chapter outlines the benefits and current limitations of using simulations and how these have affected this project.
+%ABM...
+In particular this project will focus on simulations created using Agent-Based Modelling (ABM).
+ABM is a technique that explores the autonomous behaviour and interaction between a number of individuals, known as agents.
+The aim of this is to show how the individuals' behaviours interact to produce the system as a whole.
+This is in contrast to more traditional mathematical top-down models which consist of a set of equations which establish relationships between a set of variables.
+
+This chapter begins by outlining the benefits and current limitations of using simulations generally.
+It then discusses some potential solutions to some of these limitations before applying this to some of the existing simulations that have been developed.
 
 \subsection{Benefits}
 \subsubsection{Feasibility}
-Exploring computer simulations is often far more feasible than exploring a real world environment. Video games are simulations which may allow players to experience scenarios that they may not otherwise get the opportunity to encounter. For example, car racing games are significantly cheaper and safer than real life racing.
-%video games, clearly easier/cheaper/safe for someone to play a war/car simulation than experience this in real life
+Exploring computer simulations is can be far more feasible than exploring a real world environment.
+Video games are simulations which may allow players to experience scenarios that they may not otherwise get the opportunity to encounter.
+For example, car racing games are significantly cheaper and safer than real life racing.
 
-Often real-world scientific testing may not be feasible for a number of reasons. Simulating the aerodynamics of new car designs virtually is far quicker and cheaper than creating multiple different prototypes for physical tests. Morality may be a factor, animal testing for cosmetic products or medicine is a good example of this. With nuclear weapons, legality is a key issue, as some weapon testing is banned under a number of global treaties\cite{partial_nuclear_test_ban_treaty, threshold_test_ban_treaty}. Finally, some real-world tests may be too dangerous to perform, such as in the case of invasive medical examinations. %SO WHAT? %POINT, EVIDENCE, EXPLANATION
-In all of these examples, computer simulation is often used to reduce or replace real-world testing.
+Real-world scientific testing may not be feasible for a number of reasons.
+Simulating the aerodynamics of new car designs virtually is far quicker and cheaper than creating multiple different prototypes for physical tests.
+Morality may be a factor, animal testing for cosmetic products or medicine is a good example of this. With nuclear weapons, legality is a key issue, as some weapon testing is banned under a number of global treaties\cite{partial_nuclear_test_ban_treaty, threshold_test_ban_treaty}.
+Finally, some real-world tests may be too dangerous to perform, such as in the case of invasive medical examinations.
+%SO WHAT? %POINT, EVIDENCE, EXPLANATION:
+In all of these examples, computer simulation is routinely used to reduce or replace real-world testing.
 %can scale be a factor? simulations can quickly model across numerous independent variables - see environmental control
-
 
 \subsubsection{Reducing Complexity}
 Reducing complexity through abstraction allows better understanding of the system to be gained as the complexity may initially be overwhelming.
@@ -158,7 +170,7 @@ Simulations allow for additional tests to be easily added at a later date. If th
 	%relate this to laws of Physics, theoretical biology?
 
 \subsubsection{Visualisation}
-One of the biggest benefits of simulation is the ability to graphically visualise a system or its constituent parts. Using simulation for visualisation has number of benefits over attempting to demonstrate real world systems. Several of these benefits translate from the previous two sections- they are often more feasible to explore than a real world environment and featuring a reduced complexity often allows the key concepts to be understood without overwhelming the user.
+One of the biggest benefits of simulation is the ability to graphically visualise a system or its constituent parts. Using simulation for visualisation has number of benefits over attempting to demonstrate real world systems. Several of these benefits translate from the previous two sections- they can be more feasible to explore than a real world environment and featuring a reduced complexity can allow the key concepts to be understood without overwhelming the user.
 
 Simulation can be particularly useful for visualising concepts for education. 
 
@@ -199,7 +211,7 @@ Powerful hardware is expensive to access, so this may be a significant constrain
 \label{skills_shortage}
 The previous section discussed reliance that complex simulations have on advanced hardware. However, advanced hardware alone will not necessarily allow a simulation to compute in a reasonable amount of time. 
 %mention the concurrency- free lunch is over article findings
-Often, and particularly with the increasingly parallel modern architectures, the simulation code must be tailored to take advantage of the computing power available. Efficient parallel programs that do this rely on the availability of experienced programmers. May recent studies have highlighted the existance of significant computer science skills shortages, across the world\cite{digital_skills_uk, microsoft_blog}. These skills shortages may be significantly limiting the possibility for cross-disciplinary work to utilise fast, advanced simulations.
+With modern architectures which are becoming increasingly parallel, the simulation code must be tailored to take advantage of the computing power available. Efficient parallel programs that do this rely on the availability of experienced programmers. May recent studies have highlighted the existance of significant computer science skills shortages, across the world\cite{digital_skills_uk, microsoft_blog}. These skills shortages may be significantly limiting the possibility for cross-disciplinary work to utilise fast, advanced simulations.
 
 %Computer science degrees, and related courses and apprenticeships, are proving less popular in recent years
 %These are worrying trends considering the demand for digital skills by employers
@@ -233,7 +245,8 @@ Initial work to help overcome the skills shortage will likely come by providing 
 Eventually, if this technical work can be fully automated, non-technical users will be able to easily create advanced simulations.
 %As these simulations becoming more and more prevalent: tools need developing to allow less technical users to create these simulations easier and run faster...
 
-Secondly, simulations need to be able to generate results in a realistic amount of time. As many biological simulations include significant elements of randomness, they must be run a large number of times in order to produce reliable results. This can often take 
+Secondly, simulations need to be able to generate results in a realistic amount of time.
+As many biological simulations include significant elements of randomness, they must be run a large number of times in order to produce reliable results.
 
 This chapter discusses the potential solutions to each of these problems.
 %which I believe is model-driven engineering
@@ -292,7 +305,7 @@ Parallelism fundamentally changes the game and allows computers to keep followin
 
 \paragraph{Distributed Systems}
 %MAPREDUCE for distributed systems could be mentioned
-MapReduce is a programming model that is often used for processing big data in parallel using distributed systems.
+MapReduce is a programming model that is generally used for processing big data in parallel using distributed systems.
 
 %CPUs vs GPUs
 \paragraph{CPU vs GPU}
@@ -302,7 +315,7 @@ This previous project outlined the choice between CPU and GPU parallelism and ma
 
 %MENTION DIFFICULTY GETTING ACCESS TO A GPU FOR TESTING!
 Multiple CPU cores are now commonplace in modern computers, including smartphones.
-GPU often only found in gaming PCs and consoles
+GPU normally only found in gaming PCs and consoles
 This is changing, Apple now includes a custom GPU in many of its mobile devices- metal
 
 %partitioning is particularly effective if the vast majority of space is unpopulated
@@ -323,8 +336,8 @@ A previous project compared OpenGL and CUDA in detail.
 
 \subsection{Agent-Based Modelling}
 \label{abm}
-%What is ABM?
-Agent-based modelling is a modelling technique that simulates the autonomous behaviour and interaction between a number of agents. The aim of this is often to show how the individuals' behaviours 
+%Write comparison of AGENTS vs OBJECTS (OOP)
+
 %WHY IS AGENT BASED MODELLING THE MOST RELEVANT FOR THIS PROJECT
 While, agent-based modelling is more computationally expensive than top-down mathematical modelling, it is also more natural to model and intuitive to parallelise\cite{flame_simulation}.
 Communication between individual agents can be difficult to implement in parallel but parallel communication is by no means limited to ABM.
@@ -339,6 +352,7 @@ Mention Flame (traditional) is an attempt to make simulations more accessible vi
 \subsubsection{MASON}
 %mason usage
 MASON is a multi-agent simulation library for Java.
+Evaluated as the one of the fastest sequential ABM libraries available\cite{abm_platforms_review}.
 %peyers patch?
 
 %flame usage
@@ -395,11 +409,31 @@ Finally, I propose a new tool, which builds on existing work in order to make th
 %Approx 2500 words for design and implementation
 \chapter{Methods}
 \label{methods}
+
 \section{The Domain Model}
-The domain model is taken from the existing sequential simulation of Peyer's Patch development described in Section \ref{ppsim}.
+The domain model is taken from the existing sequential simulation of Peyer's patch development described in Section \ref{ppsim}.
+Peyer's patches are clusters of cells that form on the lining of the small intestine.
+
+In this simulation there are three types of agent which are all types of cells; LTo, LTin and LTi.
+Stationary LTo cells 
+%Environment.. 2D Plane- that wraps in the y direction?
 
 \section{The Platform Model}
-OPTIONS:
+In the platform model there is a single \textit{active} LTo cell in the centre of the environment.
+There are no LTi and LTin cells in the environment when the simulation is initialised.
+A host function manages cell migration into the environment by creating these cells in random positions at a constant rate.
+
+
+\section{FLAME GPU}
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+\includegraphics[width=0.5\textwidth]{Appendix/FLAME_Process}
+\caption{FLAME Development Process (Taken from \cite{flame_simulation})}
+\label{fig:flame_dev}
+\end{wrapfigure}
+
+Building FLAME simulations requires the creation of two artifacts (Fig. \ref{fig:flame_dev}), a structural `XML Model File' which defines the agents in the system and their allowed channels for communication and a C source code file of `Scripted Behaviour' which defines the actual behaviour of agents.
+\\
 
 Custom Code?\cite{phil_diss}
 	not well tested
@@ -421,8 +455,6 @@ Due to time constraints, I have not been able to implement environmental growth.
 %Unfortunately at present the FLAME GPU simulation sets the camera in the centre position of the environment bounds- these are determined by the INITIAL position of cells
 
 \subsection{Epsilon}
-Building FLAME simulations requires the creation of two artifacts, a structural XML model which defines the agents in the system and their allowed channels for communication and a C source code file which defines the actual behaviour of agents.
-
 In the creation of the FLAME XML model, I decided to implement a new tool, built using the Epsilon Modelling Framework.
 This new tool contains a graphical editor which allows the FLAME model to be created diagramatically.
 This should significantly improve the model design experience and allow for domain experts to be kept more involved with the simulation creation.
@@ -441,18 +473,21 @@ One final benefit of this new approach to model generation, is that it makes it 
 %Transitions.. BETWEEN states require some form of external trigger?
 
 \subsection{Testing}
+As the new simulation is a re-engineering of the existing PPSim, it can inherit the validation of the existing simulation.
+This requires the new simulation to be demonstrably similar with similar components, behaviours and results.
+
 Talk about how the model was tested to ensure correctness\\
 Mention missing link in (incorrect) model from Kieran's paper 
 
 \section{Tools}
+Version Control for both the simulation code and this report has been managed through Git and is available on \href{https://github.com/oliver-binns/PRIY.git}{GitHub}.
 %what tools were used?
 In order to produce a working simulation of Peyer's Patch formation, I have used an unreleased version (1.5) of FLAME GPU.
-As FLAME GPU is developed openly, this version is freely available online\cite{flame_github}.
+As FLAME GPU is developed openly, this version is freely available online\cite{flame_github}. FLAME has been added to the project repository as a submodule, to ensure version compatibility between FLAME and PPSim v2.
 
 %EPSILON
 
-Version Control for both the simulation code and this report has been managed through Git.
-The repository is available *currently private?* on \href{https://github.com/oliver-binns/PRIY.git}{GitHub}.
+
 %mention VCS- git not good for XML model files as it doesn't understand the model syntax
 
 %Approx 2500 words for results and evalution
