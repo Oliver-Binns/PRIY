@@ -49,11 +49,17 @@ class Agent extends UniqueNamed{
 	
 	ref State initialState;
 	@gmf.compartment
-	val State[+] states;
+	val State[+]#agent states;
 	
 	
 	attr AgentType type;
 	attr Integer bufferSize;
+}
+
+@gmf.node(label="name")
+class State extends UniqueNamed{
+	ref Agent#states agent;
+	val Transition[*]#initialState transitions;
 }
 
 @gmf.link(label="name", source="initialState", target="nextState", target.decoration="arrow")
@@ -61,7 +67,7 @@ class Transition extends UniqueNamed{
 	ref Message[*] inputs;
 	ref Message[*] outputs;
 	
-	val Condition[0..1] condition;
+	val Condition condition;
 	
 	attr Boolean reallocate;
 	attr Boolean randomGenerator;
@@ -88,15 +94,14 @@ class Condition{
 enum Operator{
 	Equals;
 	LessThan;
+	LessThanOrEqualTo;
 	GreaterThan;
+	GreaterThanOrEqualTo;
 	
 	Plus;
 	Subtract;
-}
-
-@gmf.node(label="name")
-class State extends UniqueNamed{
-	val Transition[*]#initialState transitions;
+	Multiply;
+	Divide;
 }
 
 @gmf.node(label="name")

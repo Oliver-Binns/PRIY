@@ -171,15 +171,7 @@
 					<name>ltin_adhesion</name>
 					<currentState>ltin_random_movement</currentState>
 					<nextState>localised_movement</nextState>
-					<condition>
-						<lhs>
-							<value>1</value>
-						</lhs>
-						<operator>==</operator>
-						<rhs>
-							<agentVariable>stable_contact</agentVariable>
-						</rhs>
-					</condition>
+					<condition><lhs><value>1.0</value></lhs><operator>==</operator><rhs><agentVariable>stable_contact</agentVariable></rhs></condition>
 					<gpu:reallocate>true</gpu:reallocate>
 					<gpu:RNG>true</gpu:RNG>
 				</gpu:function>
@@ -374,3 +366,4 @@
 		</layer>
 	</layers>
 </gpu:xmodel>
+

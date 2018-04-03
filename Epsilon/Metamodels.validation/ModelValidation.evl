@@ -27,7 +27,7 @@ context Agent{
 			title: "Create a new state."
 			do{
 				var name = System.user.prompt("What should the new state be called?");
-				self.initialState = new State();
+				self.initialState = new State;
 				self.initialState.name = name;
 			}
 		}
@@ -49,6 +49,32 @@ context Agent{
 				self.initialState = System.user.choose("Choose a state:", self.states);
 			}
 		}
+	}
+}
+
+context Transition{
+	critique StateTransition{
+		guard: not (self.initialState == self.nextState)
+		check: self.condition.isDefined()
+		message: "Transitions that move between states generally require a condition to be met."
+		fix{
+			title: "Create a new boolean condition for the transition."
+			do{
+				self.condition = createNewCondition(self.initialState.agent);
+			}
+		}
+	}
+}
+context Condition{
+	constraint LHSValid{
+		check: self.lhs.isDefined()
+		message: "Left-hand side of an equation must be set."
+	}
+
+	constraint RHSValid{
+		check: self.lhs.isDefined()
+		message: "Right-hand side of an equation must be set."
+		
 	}
 }
 
@@ -76,7 +102,38 @@ context Layer{
 	}
 }
 
-//TODO needs implementing
+operation createNewCondition(agent : Agent){
+	var con = new Condition;
+	con.lhs = createNewEval(agent);
+	
+	//TODO Not fully implemented yet! Pending response from Dimitris, regarding enums in EVL
+	//User will have to manually select this for now-
+	//con.operator = System.user.choose("Select an operator:", FLAME.Operator);
+	
+	con.rhs = createNewEval(agent);
+	
+	return con;
+}
+
+operation createNewEval(agent : Agent){
+	var options = Sequence{"Agent Variable", "Numeric Value", "Condition"};
+	var t = System.user.choose("Select type of evaluation: ", options);
+	switch (t){
+		case "Agent Variable":
+			var eval = new VariableEval;
+			eval.value = System.user.choose("Which variable should be used?", agent.memory);
+			return eval;
+		case "Numeric Value":
+			var eval = new LiteralEval;
+			eval.value = System.user.promptReal("What value should this number be?").asFloat();
+			return eval;
+		case "Condition":
+			var eval = new ConditionEval;
+			eval.value = createNewCondition();
+			return eval;
+	}
+}
+
 operation SpatialPartition segmentsValid(){
 	if(not ((self.xmax - self.xmin).mod(self.radius) = 0)){
 		return false;

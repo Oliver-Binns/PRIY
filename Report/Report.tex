@@ -413,8 +413,12 @@ model based -> FlameGPU\cite{flame_keratinocyte}
 			helper LTi/LTin agent factory is be required to facilitate this functionality?
 
 
-	A state-based platform model design is already available from the original MASON implementation of this simulation.
-	As FLAME GPU uses state machines for each agent type in its implementation, these have been directly implemented into it.
+A state-based platform model design is already available from the original MASON implementation of this simulation.
+As FLAME GPU uses state machines for each agent type in its implementation, these have been directly implemented into it.
+
+Due to time constraints, I have not been able to implement environmental growth.
+%This isn't complex to implement within FLAME GPU itself.. a step function could be used to adjust each agent's position.
+%Unfortunately at present the FLAME GPU simulation sets the camera in the centre position of the environment bounds- these are determined by the INITIAL position of cells
 
 \subsection{Epsilon}
 Building FLAME simulations requires the creation of two artifacts, a structural XML model which defines the agents in the system and their allowed channels for communication and a C source code file which defines the actual behaviour of agents.
@@ -429,7 +433,12 @@ This should provide intuitive feedback (Fig. \ref{fig:validation_gmf}) in cases 
 Quick fixes (Fig. \ref{fig:validation_quickfix_gmf}) have also been implemented to guide the user through easily correcting their invalid model.
 
 One final benefit of this new approach to model generation, is that it makes it far simpler to .
-%HM?
+%Hm?
+
+%boolean transition conditions:
+%critique allows users to ignore it
+%BUT generally, and particularly with biological models like this:
+%Transitions.. BETWEEN states require some form of external trigger?
 
 \subsection{Testing}
 Talk about how the model was tested to ensure correctness\\
