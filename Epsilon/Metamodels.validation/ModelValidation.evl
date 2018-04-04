@@ -106,9 +106,20 @@ operation createNewCondition(agent : Agent){
 	var con = new Condition;
 	con.lhs = createNewEval(agent);
 	
-	//TODO Not fully implemented yet! Pending response from Dimitris, regarding enums in EVL
 	//User will have to manually select this for now-
-	//con.operator = System.user.choose("Select an operator:", FLAME.Operator);
+	var ops = Sequence{
+		Operator#Equals,
+		Operator#LessThan,
+		Operator#LessThanOrEqualTo,
+		Operator#GreaterThan,
+		Operator#GreaterThanOrEqualTo,
+	
+		Operator#Plus,
+		Operator#Subtract,
+		Operator#Multiply,
+		Operator#Divide
+	};
+	con.operator = System.user.choose("Select an operator:", ops);
 	
 	con.rhs = createNewEval(agent);
 	

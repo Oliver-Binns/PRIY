@@ -147,34 +147,35 @@
 
 [%
 operation Condition toXML(){
-	var operator = "=";
+	var str = "<condition><lhs>" + self.lhs.toXML()
+	+ "</lhs><operator>";
+
 	switch(self.operator){
-		//case FLAME.Operator.Equals : return "==";
-		case 0 : return "==";
-		//case FLAME.Operator.LessThan : return "&lt;";
-		case 1 : return "&lt;";
-		//case FLAME.Operator.LessThanOrEqualTo : return "&lt;=";
-		case 2 : return "&lt;=";
-		//case FLAME.Operator.GreaterThan : return "&gt;";
-		case 3 : return "&gt;";
-		//case FLAME.Operator.GreaterThanOrEqualTo : return "&gt;=";
-		case 4 : return "&gt;=";
+		case Operator#Equals :
+			str += "==";
+		case Operator#LessThan :
+			str += "&lt;";
+		case Operator#LessThanOrEqualTo :
+			str += "&lt;=";
+		case Operator#GreaterThan : 
+			str += "&gt;";
+		case Operator#GreaterThanOrEqualTo :
+			str += "&gt;=";
 		
-		//case FLAME.Operator.Plus : return "+";
-		case 5 : return "+";
-		//case FLAME.Operator.Subtract : return "-";
-		case 6 : return "-";
-		//case FLAME.Operator.Multiply : return "*";
-		case 7 : return "*";
-		//case FLAME.Operator.Divide : return "/";
-		case 8 : return "/";
+		case Operator#Plus :
+			str += "+";
+		case Operator#Subtract :	
+			str += "-";
+		case Operator#Multiply :
+			str += "*";
+		case Operator#Divide :
+			str += "/";
 	}
 
-	return "<condition><lhs>" + self.lhs.toXML()
-	+ "</lhs><operator>=="
-	+ "</operator><rhs>"
+	str += "</operator><rhs>"
 	+ self.rhs.toXML()
 	+ "</rhs></condition>";
+	return str;
 }
 operation ConditionEval toXML(){
 	return "<condition>" + self.value.toXML() + "</condition>";
