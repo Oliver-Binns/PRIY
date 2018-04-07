@@ -2,9 +2,11 @@
 \usepackage{graphicx}
 \usepackage[nottoc,numbib]{tocbibind}
 \usepackage{subcaption}
-\usepackage[acronym]{glossaries}
 \usepackage{listings}
 \usepackage{wrapfig}
+
+\usepackage[utf8]{inputenc}
+\usepackage[acronym]{glossaries}
 
 \addbibresource{Report.bib}
 \title{Parallel Programming Tools for Exploring Immune System Development}
@@ -14,34 +16,55 @@
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
 \wordcount{5006}
 
+
 %Approx 500 Words
 \abstract{
 More powerful computers are paving the way for sophisticated simulations of previously underexplored complex biological systems.
-Agent-based modelling has been previously used to implement this type of simulation, showing how the behaviour of a number of individual agents can contribute to the system as a whole.
+\acrlong{abm} has been previously used to implement this type of simulation, showing how the behaviour of a number of individual agents can contribute to the system as a whole.
 
 As advancements in computing tend towards parallelism and distributed systems, these increasingly elaborate simulations must take full advantage of this change in order to be computed in a reasonable time period.
 Creating programs and simulations that make efficient use of this parallelism can be technically challenging. In particular it requires implementing an optimal distribution of tasks over the system and ensuring the integrity of any memory that is shared across multiple threads.
 Some significant problems, including a substantial computer science skills shortage, are slowing down the rate of progress in this area.
 
 In this project 
-the FLAME GPU framework is used to help mitigate some of the difficulties with implementing parallel programs, in order to build on an existing sequential Java MASON simulation.
-I also propose model-driven engineering (MDE) as a potential short-term solution to the skills shortage, exploring some of the current MDE technologies for creating simulations and proposing further advancements to these tools for the future.
+the \acrshort{flamegpu} framework is used to help mitigate some of the difficulties with implementing parallel programs, in order to build on an existing sequential \acrshort{mason} simulation.
+I also propose \acrfull{mde} as a potential short-term solution to the skills shortage, exploring some of the current \acrshort{mde} technologies for creating simulations and proposing further advancements to these tools for the future.
 }
 
-\acknowledgements{I would like to my supervisors, Fiona Polack and Kieran Alden, for their support and guidance throughout this project. I would also like to thank the FLAME GPU development team at the University of Sheffield for their help in utilising the latest and pre-released features of this framework.}
+\acknowledgements{I would like to my supervisors, Fiona Polack and Kieran Alden, for their support and guidance throughout this project. I would also like to thank the \acrshort{flamegpu} development team at the University of Sheffield for their help in utilising the latest and pre-released features of this framework.}
+
+\makeglossaries
+\newacronym{abm}{ABM}{Agent-Based Modelling}
+\newacronym{cpu}{CPU}{Central Processsing Unit}
+\newacronym{evl}{EVL}{Epsilon Validation Language}
+\newacronym{egl}{EGL}{Epsilon Generation Language}
+\newacronym{flame}{FLAME}{Flexible Large Scale Agent Modelling Environment}
+\newacronym{flamegpu}{FLAME GPU}{An extension of the \acrshort{flame} framework which uses \acrshort{gpu}s for parallelism}
+\newacronym{gpu}{GPU}{Graphics Processing Unit}
+\newacronym{gpgpu}{GPGPU}{General Purpose \acrshort{gpu}}
+\newacronym{mason}{MASON}{A Java framework for producting simulations using \acrshort{abm}}
+\newacronym{mde}{MDE}{Model-Driven Engineering}
+
+%behavioural model
+%complex meaning
+\newglossaryentry{in-silico}
+{
+    name=in-silico,
+    description={Scientific tests conducted using computer simulation}
+}
+\newglossaryentry{in-vitro}
+{
+    name=in-vitro,
+    description={Scientific tests conducted using real biological systems under laboratory conditions}
+}
 
 \begin{document}
 \maketitle
 \listoffigures
 \listoftables
-\renewcommand*{\lstlistlistingname}{List of Listings}
-\lstlistoflistings
+\printglossary[type=\acronymtype]
+\printglossary
 
-%GLOSSARY?
-%modelling
-%behavioural models
-%agent-based
-%'complex'
 
 %Approx 1000 words
 \chapter{Introduction}
@@ -57,15 +80,15 @@ Faster AND More Accessible Simulation
 %What can be gained from better modelling.. particularly biology..?
 %Presentation- see justification slides!
 The motivation behind this project is the new knowledge that could be gained from the ability to create efficient parallel biological simulations more easily.
-While many biological systems can not be fully studied in-vitro, simulations can provide a valid alternative.
+While many biological systems can not be fully studied \gls{in-vitro}, simulations can provide a valid alternative.
 %rephrase this--->
 Indeed previous work has been used to prove some hypotheses wrong.
 %do we need citations/examples here if we are going to discuss this in more detail later on?
 %is it ok to reference a later chapter?
 
 %outside of biological exploration, new understanding can..?
-This type of in-silico experimentation could significantly improve the process by which drugs are developed.
-Extensive in-silico testing can be performed much more quickly than the current in-vitro testing, reducing the time it takes to research new drugs and cures.
+This type of \gls{in-silico} experimentation could significantly improve the process by which drugs are developed.
+Extensive \gls{in-silico} testing can be performed much more quickly than the current \gls{in-vitro} testing, reducing the time it takes to research new drugs and cures.
 Drugs and cures would be available for patients earlier, saving many lives.
 Additionally, the significant financial burden of drug development, which is estimated to be around \$2.9bn\cite{drug_cost}, could be reduced, freeing up heavily contested funds for additional research.
 Finally, the use of animal testing could be reduced and, in the long term, eliminated completely.
@@ -78,8 +101,8 @@ In summary, the aims of this project are to
 		\item Explore the findings of the new implementation and discuss how these can be generalised to new simulations.
 		\item Discuss techniques for allowing non-technical users to easily create formal models that can be transformed into new simulation implementations.
 	\end{enumerate}
-	\item Develop a \textbf{parallel} implementation of an existing \textbf{sequential} simulation of Peyer's Patch development and explore any speed increases that can be produced using General Purpose GPU programming.
-	\item Review of the use of simulations, with a particular focus on computational biology. This review should explore the advantages that in-silico testing provides over in-vitro experimentation and the problems that must be overcome for the mass adoption of biological simulations.
+	\item Develop a \textbf{parallel} implementation of an existing \textbf{sequential} simulation of Peyer's Patch development and explore any speed increases that can be produced using \acrlong{gpgpu} programming.
+	\item Review of the use of simulations, with a particular focus on computational biology. This review should explore the advantages that in-silico testing provides over \gls{in-vitro} experimentation and the problems that must be overcome for the mass adoption of biological simulations.
 	
 \end{enumerate}
 
@@ -88,7 +111,7 @@ This project was conducted in accordance with the University of York's code of p
 This project does not involve human participants, so guidelines on informed consent and confidentiality will be met. No confidential medical data or personal information has been used during the course of the project development. This project has involved no direct animal participation.
 %[Where did the data come from?!], how was the original model created, should this be mentioned?
 
-The simulation of the biological model is for the purpose of developing understanding of applying GPGPU methods to an agent based model of a biological system. It will not be used its current form to publish novel biological findings and does not fully simulate a biological process.%WAIT, is this true?
+The simulation of the biological model is for the purpose of developing understanding of applying \acrshort{gpgpu} methods to an agent based model of a biological system. It will not be used its current form to publish novel biological findings and does not fully simulate a biological process.%WAIT, is this true?
 %Software used and licences? FlameGPU is freely available / open source
 %Cuda is proprietary but freely available..
 %Hardware.. is this relevant?
@@ -127,7 +150,7 @@ The models of systems used in simulations may have a varying amounts of abstract
 %mention speculation that we live in a simulation? - simulation hypothesis, The Matrix, Elon Musk
 
 %ABM...
-In particular this project will focus on simulations created using Agent-Based Modelling (ABM).
+In particular this project will focus on simulations created using \acrfull{abm}.
 ABM is a technique that explores the autonomous behaviour and interaction between a number of individuals, known as agents.
 The aim of this is to show how the individuals' behaviours interact to produce the system as a whole.
 This is in contrast to more traditional mathematical top-down models which consist of a set of equations which establish relationships between a set of variables.
@@ -307,15 +330,14 @@ Parallelism fundamentally changes the game and allows computers to keep followin
 %MAPREDUCE for distributed systems could be mentioned
 MapReduce is a programming model that is generally used for processing big data in parallel using distributed systems.
 
-%CPUs vs GPUs
-\paragraph{CPU vs GPU}
+\paragraph{\acrshort{cpu} vs \acrshort{gpu}}
 Modern computers provide two main methods for parallelising code.
 We are building on a previous project\cite{phil_diss} which layed the groudwork for this.
-This previous project outlined the choice between CPU and GPU parallelism and makes the case for exploring GPUs- simplisitically put, this is due to the significantly greater speed ups that can be achieved. Indeed it has been shown that GPU simulation on a standard desktop computer can easily produce performance rates that are better than those of a high-performance computing cluster\cite{flame_simulation}.
+This previous project outlined the choice between \acrshort{cpu} and \acrshort{gpu} parallelism and makes the case for exploring \acrshort{gpu}s- simplisitically put, this is due to the significantly greater speed ups that can be achieved. Indeed it has been shown that GPU simulation on a standard desktop computer can easily produce performance rates that are better than those of a high-performance computing cluster\cite{flame_simulation}.
 
 %MENTION DIFFICULTY GETTING ACCESS TO A GPU FOR TESTING!
-Multiple CPU cores are now commonplace in modern computers, including smartphones.
-GPU normally only found in gaming PCs and consoles
+Multiple \acrshort{cpu} cores are now commonplace in modern computers, including smartphones.
+\acrshort{gpu} normally only found in gaming PCs and consoles
 This is changing, Apple now includes a custom GPU in many of its mobile devices- metal
 
 %partitioning is particularly effective if the vast majority of space is unpopulated
@@ -334,24 +356,24 @@ A previous project compared OpenGL and CUDA in detail.
 %EASIER TO MAKE - less technical users can work on them
 %FASTER TO RUN. - more feasible, to use in experiments, more complex sims can be made
 
-\subsection{Agent-Based Modelling}
+\subsection{\acrlong{abm}}
 \label{abm}
 %Write comparison of AGENTS vs OBJECTS (OOP)
 
 %WHY IS AGENT BASED MODELLING THE MOST RELEVANT FOR THIS PROJECT
-While, agent-based modelling is more computationally expensive than top-down mathematical modelling, it is also more natural to model and intuitive to parallelise\cite{flame_simulation}.
-Communication between individual agents can be difficult to implement in parallel but parallel communication is by no means limited to ABM.
+While, \acrlong{abm} is more computationally expensive than top-down mathematical modelling, it is also more natural to model and intuitive to parallelise\cite{flame_simulation}.
+Communication between individual agents can be difficult to implement in parallel but parallel communication is by no means limited to \acrshort{abm}.
 
 
-Mention Flame (traditional) is an attempt to make simulations more accessible via ABM.
+Mention \acrshort{flame} (traditional) is an attempt to make simulations more accessible via ABM.
 %Flexible Large Scale Agent Modelling Environment
 %http://flame.ac.uk
 
 %discuss types (and existing) simulations..
 
-\subsubsection{MASON}
+\subsubsection{\acrshort{mason}}
 %mason usage
-MASON is a multi-agent simulation library for Java.
+\acrshort{mason} is a multi-agent simulation library for Java.
 Evaluated as the one of the fastest sequential ABM libraries available\cite{abm_platforms_review}.
 %peyers patch?
 
@@ -360,27 +382,27 @@ Evaluated as the one of the fastest sequential ABM libraries available\cite{abm_
 
 %particularly well suited for these cell-based simulations as can be visualised..
 
-\subsubsection{FLAME GPU}
-FLAME (Flexible Large-Scale Agent Modelling Environment) GPU is an extension of the original version of FLAME, where the simulations that are created are compiled down to parallelised CUDA code. This means the simulation can take full advantage of the significant power of modern NVIDIA GPUs.
+\subsubsection{\acrshort{flamegpu}}
+\acrfull{flamegpu} is an extension of the original version of \acrshort{flame}, where the simulations that are created are compiled down to parallelised CUDA code. This means the simulation can take full advantage of the significant power of modern NVIDIA \acrshort{gpu}s.
 %flame is built on top of CUDA, why?
-As its name suggests, FLAME GPU uses agent-based modelling to implement simulations.
+As its name suggests, \acrshort{flamegpu} uses \acrlong{abm} to implement simulations.
 
 %Disadvantages
-While relying on a framework such as FLAME GPU can cause problems if support is stopped, FLAME GPU is an open source project, so this should slightly be less of a concern.
+While relying on a framework such as \acrshort{flamegpu} can cause problems if support is stopped, \acrshort{flamegpu} is an open source project, so this should slightly be less of a concern.
 
 %Advantages
-The FLAME GPU framework brings its own advantages.
-As it maps a model to simulation code, it brings with it many of the advantages of model-driven engineering.
+The \acrshort{flamegpu} framework brings its own advantages.
+As it maps a model to simulation code, it brings with it many of the advantages of \acrlong{mde}.
 In particular, it gives domain experts with limited programming knowledge the ability to understand and help design models.
 Additionally, the auto-generation of artifacts, such as simulation code templates, significantly lowers the boundary to entry to less advanced programmers.
-Finally, As FLAME is continuously updated to support new hardware advances, such as multicore GPU architectures\cite{flame_simulation}, the implementations can always be certain of taking advantage of the latest hardware optimisations and portability features that FLAME provides. Existing simulation models that are implemented on top of FLAME GPU may receive these performance improvements without major code changes.
+Finally, As FLAME is continuously updated to support new hardware advances, such as multicore \acrshort{gpu} architectures\cite{flame_simulation}, the implementations can always be certain of taking advantage of the latest hardware optimisations and portability features that FLAME provides. Existing simulation models that are implemented on top of FLAME GPU may receive these performance improvements without major code changes.
 
 %overview of FlameGPU
 %http://www.flamegpu.com
-FLAME GPU takes input in the form of an XMML model which defines the types of agents that feature in the simulation and their interactions%read XMML paper!
+\acrshort{flamegpu} takes input in the form of an XMML model which defines the types of agents that feature in the simulation and their interactions%read XMML paper!
 %x-machine, etc.
 
-FLAME also provides a message passing interface which abstracts away from the underlying agent communication.
+\acrshort{flamegpu} also provides a message passing interface which abstracts away from the underlying agent communication.
 This means that programmers need not be concerned with communication between threads which is one of the most difficult tasks in parallel programming.
 
 \subsection{Biological Simulations}
@@ -423,16 +445,18 @@ In the platform model there is a single \textit{active} LTo cell in the centre o
 There are no LTi and LTin cells in the environment when the simulation is initialised.
 A host function manages cell migration into the environment by creating these cells in random positions at a constant rate.
 
+%host step function can be used for performing LTo cell division every 12 hours!
+%flame provides an API to access cells in a particular state from the Host
 
-\section{FLAME GPU}
+\section{\acrshort{flamegpu}}
 
 \begin{wrapfigure}{r}{0.5\textwidth}
 \includegraphics[width=0.5\textwidth]{Appendix/FLAME_Process}
-\caption{FLAME Development Process (Taken from \cite{flame_simulation})}
+\caption{\acrshort{flamegpu} Development Process (Taken from \cite{flame_simulation})}
 \label{fig:flame_dev}
 \end{wrapfigure}
 
-Building FLAME simulations requires the creation of two artifacts (Fig. \ref{fig:flame_dev}), a structural `XML Model File' which defines the agents in the system and their allowed channels for communication and a C source code file of `Scripted Behaviour' which defines the actual behaviour of agents.
+Building \acrshort{flamegpu} simulations requires the creation of two artifacts (Fig. \ref{fig:flame_dev}), a structural `XML Model File' which defines the agents in the system and their allowed channels for communication and a C source code file of `Scripted Behaviour' which defines the actual behaviour of agents.
 \\
 
 Custom Code?\cite{phil_diss}
@@ -443,24 +467,24 @@ Custom Code?\cite{phil_diss}
 
 model based -> FlameGPU\cite{flame_keratinocyte}
 	restricted to the framework limitations
-		Host cell creation into the system is a work in progress for next FlameGPU release?
+		Host cell creation into the system is a work in progress for next \acrshort{flamegpu} release?
 			helper LTi/LTin agent factory is be required to facilitate this functionality?
 
 
-A state-based platform model design is already available from the original MASON implementation of this simulation.
-As FLAME GPU uses state machines for each agent type in its implementation, these have been directly implemented into it.
+A state-based platform model design is already available from the original \acrshort{mason} implementation of this simulation.
+As \acrshort{flamegpu} uses state machines for each agent type in its implementation, these have been directly implemented into it.
 
 Due to time constraints, I have not been able to implement environmental growth.
 %This isn't complex to implement within FLAME GPU itself.. a step function could be used to adjust each agent's position.
 %Unfortunately at present the FLAME GPU simulation sets the camera in the centre position of the environment bounds- these are determined by the INITIAL position of cells
 
 \subsection{Epsilon}
-In the creation of the FLAME XML model, I decided to implement a new tool, built using the Epsilon Modelling Framework.
-This new tool contains a graphical editor which allows the FLAME model to be created diagramatically.
+In the creation of the \acrshort{flamegpu} XML model, I decided to implement a new tool, built using the Epsilon Modelling Framework.
+This new tool contains a graphical editor which allows the \acrshort{flamegpu} model to be created diagramatically.
 This should significantly improve the model design experience and allow for domain experts to be kept more involved with the simulation creation.
 Figure \ref{fig:ppsim_gmf} shows the Peyer's Patch simulation created within this graphical editor. The XML model used for the final simulation was automatically generated from this diagram.
 
-The Epsilon Validation Language has allowed well-formedness constraints to be implemented for the FLAME input model.
+The \acrlong{evl} has allowed well-formedness constraints to be implemented for the \acrshort{flamegpu} input model.
 This should provide intuitive feedback (Fig. \ref{fig:validation_gmf}) in cases where the model may be incorrect, in order to prevent an invalid XML model from being produced.
 Quick fixes (Fig. \ref{fig:validation_quickfix_gmf}) have also been implemented to guide the user through easily correcting their invalid model.
 
@@ -482,8 +506,8 @@ Mention missing link in (incorrect) model from Kieran's paper
 \section{Tools}
 Version Control for both the simulation code and this report has been managed through Git and is available on \href{https://github.com/oliver-binns/PRIY.git}{GitHub}.
 %what tools were used?
-In order to produce a working simulation of Peyer's Patch formation, I have used an unreleased version (1.5) of FLAME GPU.
-As FLAME GPU is developed openly, this version is freely available online\cite{flame_github}. FLAME has been added to the project repository as a submodule, to ensure version compatibility between FLAME and PPSim v2.
+In order to produce a working simulation of Peyer's Patch formation, I have used an unreleased version (1.5) of \acrshort{flamegpu}.
+As \acrshort{flamegpu} is developed openly, this version is freely available online\cite{flame_github}. \acrshort{flamegpu} has been added to the project repository as a submodule, to ensure version compatibility between \acrshort{flamegpu} and PPSim v2.
 
 %EPSILON
 
@@ -496,11 +520,11 @@ As FLAME GPU is developed openly, this version is freely available online\cite{f
 
 \section{Findings}
 \subsection{Ease of Use}
-"Further work is now being developed with Paul Richmond's FLAME GPU group, to enhance the accessibility of FLAME for simulation developers."
+"Further work is now being developed with Paul Richmond's \acrshort{flamegpu} group, to enhance the accessibility of \acrshort{flamegpu} for simulation developers."
 "This should allow the simulation developer to focus on getting their domain details correct, rather than battling the agent platform.0"
 
 \subsection{Speed Up}
-\cite{statistical_tests} could be important for evaluating the performance of FlameGPU against original PPSim
+\cite{statistical_tests} could be important for evaluating the performance of \acrshort{flamegpu} against original PPSim
 
 %Approx 1000 words
 \section{Conclusion}
@@ -536,7 +560,7 @@ Further work will need to study agent behaviour in these forms of simulation gen
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=\textwidth]{Appendix/ppsim_gmf}
-\caption{Graphically produced FLAME Simulation model for Peyer's Patch}
+\caption{Graphically produced \acrshort{flamegpu} Simulation model for Peyer's Patch}
 \label{fig:ppsim_gmf}
 \end{subfigure}%
 \end{figure}
@@ -546,7 +570,7 @@ Further work will need to study agent behaviour in these forms of simulation gen
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=\textwidth]{Appendix/validation_gmf}
-\caption{Graphical validation using EVL constraints}
+\caption{Graphical validation using \acrshort{evl} constraints}
 \label{fig:validation_gmf}
 \end{subfigure}
 
@@ -557,7 +581,7 @@ Further work will need to study agent behaviour in these forms of simulation gen
 \label{fig:validation_quickfix_gmf}
 \end{subfigure}%
 
-\caption{Graphical Tool for creating FLAME GPU models}
+\caption{Graphical Tool for creating \acrshort{flamegpu} models}
 \label{fig:gmf}
 \end{figure}
  
