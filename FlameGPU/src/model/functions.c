@@ -52,14 +52,10 @@ __FLAME_GPU_INIT_FUNC__ void setConstants(){
 
 	int MAX_CELL_SPEED = 10;
 	set_MAX_CELL_SPEED(&MAX_CELL_SPEED);
-	int INITIAL_CIRCUMFERENCE = 244;
-	set_INITIAL_CIRCUMFERENCE(&INITIAL_CIRCUMFERENCE);
-	int MAXIMUM_CIRCUMFERENCE = 254;
-	set_MAXIMUM_CIRCUMFERENCE(&MAXIMUM_CIRCUMFERENCE);
-	int INITIAL_LENGTH = 7203;
-	set_INITIAL_LENGTH(&INITIAL_LENGTH);
-	int MAXIMUM_LENGTH = 7303;
-	set_MAXIMUM_LENGTH(&MAXIMUM_LENGTH);
+	int CIRCUMFERENCE = 244;
+	set_CIRCUMFERENCE(&CIRCUMFERENCE);
+	int LENGTH = 7203;
+	set_LENGTH(&LENGTH);
 	float STROMAL_CELL_DENSITY = 0.2f;
 	set_STROMAL_CELL_DENSITY(&STROMAL_CELL_DENSITY);
 	int GROWTH_TIME = 72;
@@ -93,10 +89,13 @@ inline __device__ float chemokineLevel(float distanceToLTo){
 }
 
 float randPC(){
+	//TODO this should follow the gaussian distribution 
 	return (float)rand() / (float)RAND_MAX;
 }
 
 __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
+    //TODO: refactor LTi, LTin migration to share code, if possible:
+    
 	//CREATE LTis:
 	// Can create upto h_agent_AoS_MAX agents in a single pass (the number allocated for) but the full amount does not have to be created.
 	unsigned int lti_migration_rate = 5;
@@ -138,6 +137,9 @@ __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
 			h_free_agent_LTin(&h_agent);
 		}
 	}
+    
+    //Manage LTo Cell Division-
+    //This should take place every 12 hours:
 }
 
 /*

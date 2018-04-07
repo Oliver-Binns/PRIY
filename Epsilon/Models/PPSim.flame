@@ -16,10 +16,8 @@
   <variables name="ADHESION_INCREMENT" description="Increase in Adhesion with each stable contact" type="Float"/>
   <variables name="MAX_ADHESION_PROBABILITY" description="Adhesion Level Threshold" type="Float"/>
   <variables name="MAX_CELL_SPEED" description="The maximum number of pixels that a cell can move in a single iteration"/>
-  <variables name="INITIAL_CIRCUMFERENCE" description="Initial Circumference of the Gut"/>
-  <variables name="MAXIMUM_CIRCUMFERENCE" description="Maximum Circumference of the Gut"/>
-  <variables name="INITIAL_LENGTH" description="Initial Length of the Gut"/>
-  <variables name="MAXIMUM_LENGTH" description="Maximum Length of the Gut"/>
+  <variables name="CIRCUMFERENCE" description="Circumference of the Gut"/>
+  <variables name="LENGTH" description="Length of the Gut"/>
   <variables name="STROMAL_CELL_DENSITY" type="Float"/>
   <variables name="GROWTH_TIME" description="Intestinal Growth Time (hours)"/>
   <variables name="PERCENT_LTIN_FROM_FACS" description="Percentage of area occupied by LTin cells at E15.5" type="Float"/>
