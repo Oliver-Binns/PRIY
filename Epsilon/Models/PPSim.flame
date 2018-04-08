@@ -25,6 +25,7 @@
   <functionFiles>functions.c</functionFiles>
   <initFunctions>setConstants</initFunctions>
   <stepFunctions>migrateNewCells</stepFunctions>
+  <stepFunctions>divideLTos</stepFunctions>
   <agents name="LTin" initialState="//@agents.0/@states.0" bufferSize="1024">
     <memory name="x" type="Float"/>
     <memory name="y" type="Float"/>

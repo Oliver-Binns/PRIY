@@ -127,6 +127,9 @@
             <gpu:stepFunction>
                 <gpu:name>migrateNewCells</gpu:name>
             </gpu:stepFunction>
+            <gpu:stepFunction>
+                <gpu:name>divideLTos</gpu:name>
+            </gpu:stepFunction>
         </gpu:stepFunctions>
     </gpu:environment>
     

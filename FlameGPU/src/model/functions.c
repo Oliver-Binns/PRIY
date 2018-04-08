@@ -88,9 +88,49 @@ inline __device__ float chemokineLevel(float distanceToLTo){
     return 1 / value;
 }
 
-float randPC(){
-	//TODO this should follow the gaussian distribution 
+/*
+ * This method returns a random value within
+ */
+float randomUniform(){
 	return (float)rand() / (float)RAND_MAX;
+}
+
+/*
+ * This method generates a random value from the Gaussian distribution
+ * using the given mean and standard deviation.
+ */
+float genGaussian(float mean, float std){
+    //Uses the Polar method to generate Gaussian values
+    float r1, r2, w, mult;
+    //Two values are created, so one is stored in a static variable until this function is next called.
+    static float x1, x2;
+    //Call is a boolean flag to determine whether this is our initial call.
+    static int call = 0;
+    
+    if(call == 1){
+        call = !call;
+        return (mean + std * x2);
+    }
+    do{
+        r1 = randomUniform();
+        r2 = randomUniform();
+        w = powf(r1, 2) + powf(r2, 2);
+    }while(w >= 1 || w == 0);
+    
+    mult = sqrtf((-2 * logf(w)) / w);
+    x1 = r1 * mult;
+    x2 = r2 * mult;
+    
+    call = !call;
+    
+    return mean + std * x1;
+}
+
+/*
+ * TODO: truncate the value to ensure it is within the range 0, 1
+ */
+float randomGaussian(){
+    return genGaussian(0.5, 0.2);
 }
 
 __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
@@ -107,10 +147,10 @@ __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
 		for (unsigned int i = 0; i < count; i++) {
 			xmachine_memory_LTi * h_agent = h_allocate_agent_LTi();
 			//Initialise agent variables:
-			h_agent->x = randPC() * 7203;
-			h_agent->y = randPC() * 254;
+			h_agent->x = randomUniform() * 7203;
+			h_agent->y = randomUniform() * 254;
 			h_agent->colour = 1;
-			h_agent->velocity = 0.5;//random
+            h_agent->velocity = randomGaussian();
 
 			h_add_agent_LTi_lti_random_movement(h_agent);
 			h_free_agent_LTi(&h_agent);
@@ -128,18 +168,36 @@ __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
 		for (unsigned int i = 0; i < count; i++) {
 			xmachine_memory_LTin * h_agent = h_allocate_agent_LTin();
 			//Initialise agent variables:
-			h_agent->x = randPC() * 7203;
-			h_agent->y = randPC() * 254;
+			h_agent->x = randomUniform() * 7203;
+			h_agent->y = randomUniform() * 254;
 			h_agent->colour = 7;
-			h_agent->velocity = 0.5;//random
+            h_agent->velocity = randomGaussian();
 
 			h_add_agent_LTin_ltin_random_movement(h_agent);
 			h_free_agent_LTin(&h_agent);
 		}
 	}
+}
+
+/*
+ * Manage LTo Cell Division- This should only take place every 12 hours.
+ */
+__FLAME_GPU_STEP_FUNC__ void divideLTos(){
+    unsigned int lto_count = get_agent_LTo_expression_count();
     
-    //Manage LTo Cell Division-
-    //This should take place every 12 hours:
+    //Fetch each of these LTo cells
+    for (unsigned int i = 0; i < lto_count; i++){
+        //Create new LTo
+        xmachine_memory_LTo * new_lto = h_allocate_agent_LTo();
+        
+        //TODO: fetch existing LTo cells and position this nearby
+        h_agent->x = 0;
+        h_agent->y = 0;
+        h_agent->colour = 0;
+        
+        h_add_agent_LTin_ltin_express(new_lto);
+        h_free_agent_LTo(&new_lto);
+    }
 }
 
 /*
