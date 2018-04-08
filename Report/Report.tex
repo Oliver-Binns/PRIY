@@ -14,7 +14,7 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{5006}
+\wordcount{5391}
 
 
 %Approx 500 Words
@@ -36,6 +36,7 @@ I also propose \gls{mde} as a potential short-term solution to the skills shorta
 \makeglossaries
 \newacronym{abm}{ABM}{Agent-Based Modelling}
 \newacronym{cpu}{CPU}{Central Processsing Unit}
+\newacronym{cuda}{CUDA}{Compute Unified Device Architecture}
 \newacronym{evl}{EVL}{Epsilon Validation Language}
 \newacronym{egl}{EGL}{Epsilon Generation Language}
 \newacronym{flame}{FLAME}{Flexible Large Scale Agent Modelling Environment}
@@ -55,10 +56,10 @@ I also propose \gls{mde} as a potential short-term solution to the skills shorta
     name=\glslink{flamegpu}{FLAME GPU},
     description={An extension of the \acrshort{flame} framework which uses \acrshort{gpu}s for parallelism}
 }
-\newglossaryentry{Peyer's Patch}
+\newglossaryentry{PP}
 {
-    name=in-silico,
-    description={Scientific tests conducted using computer simulation}
+    name=Peyer's Patch,
+    description={Clusters of cells that form in the small intestine}
 }
 \newglossaryentry{LTo}
 {
@@ -111,9 +112,13 @@ I also propose \gls{mde} as a potential short-term solution to the skills shorta
 %TELL THEM WHAT YOU WILL TELL THEM
 %LIT REVIEW: TELL THEM
 %RESULTS/EVAL: TELL THEM WHAT YOU TOLD THEM!
+
 TALK ABOUT MODELING AND THE DESIRE FOR 
 \\
 Faster AND More Accessible Simulation
+
+%TAKEN from Fiona: consider rephrasing?
+In this project, complex simulations are discussed. This term does not necessarily mean that the simulation contains several components that are difficult to engineer. In contrast to this, these types of simulations are generally made up of lots of simple components that interact with each other and the environment in such a way that the system behaviour can only be predicted by running the simulation. 
 
 \section{Motivation}
 %What can be gained from better modelling.. particularly biology..?
@@ -140,7 +145,7 @@ In summary, the aims of this project are to
 		\item Explore the findings of the new implementation and discuss how these can be generalised to new simulations.
 		\item Discuss techniques for allowing non-technical users to easily create formal models that can be transformed into new simulation implementations.
 	\end{enumerate}
-	\item Develop a \textbf{parallel} implementation of an existing \textbf{sequential} simulation of Peyer's Patch development and explore any speed increases that can be produced using \gls{gpgpu} programming.
+	\item Develop a \textbf{parallel} implementation of an existing \textbf{sequential} simulation of \gls{PP} development and explore any speed increases that can be produced using \gls{gpgpu} programming.
 	\item Review of the use of simulations, with a particular focus on computational biology. This review should explore the advantages that in-silico testing provides over \gls{in-vitro} experimentation and the problems that must be overcome for the mass adoption of biological simulations.
 	
 \end{enumerate}
@@ -247,9 +252,14 @@ While simulations seem very useful across a wide number of fields, there are som
 
 \subsubsection{Insufficient Domain Knowledge}
 \label{domain_knowledge}
-A simulation is based on a model of a system. A model is an abstraction from reality representing only the necessary key characteristics and behaviours of the system. A lack of knowledge regarding the domain of the simulation is one of the most significant constraints regarding its implementation. If this is the case, the model produced may be incorrect or abstractions may remove necessary detail required for the system to function as expected.%Incorrect models can also be a result of incorrect knowledge of the domain.
+A simulation is based on a model of a system.
+A model is an abstraction from reality representing only the necessary key characteristics and behaviours of the system.
+In order for the model to the be faithful to its original domain it must be able to produce demonstrably similar behaviour from similar system components.
 
-For complex systems, having too many abstractions from the original domain may invalidate the model and produce incorect results[CITATION NEEDED].
+A lack of knowledge regarding the domain of the simulation is one of the most significant constraints regarding its implementation.
+If this is the case, the model produced may be incorrect or abstractions may remove necessary detail required for the system to function as expected.
+Unfaithful models can also be a result of \textit{incorrect} knowledge of the domain.
+For complex systems, having too many abstractions from the original domain may also invalidate the model and produce incorect results[CITATION NEEDED].
 
 \subsubsection{Compute Power}
 Complex models with too few abstractions from their domain may require significant computing power to simulate. Additional abstractions may not be possible as they may invalidate the model. In these cases, cutting edge hardware may be needed for the simulation to be run in an acceptable time. 
@@ -291,9 +301,15 @@ With modern architectures which are becoming increasingly parallel, the simulati
 \subsubsection{Bugs}
 As with any form of computer program, mistakes can be made causing bugs to be present in the simulation code. Bugs may cause the simulation to be incorrect meaning any hypotheses and results are based on incorrect data.
 
-This is linked to, but not the same as, having insufficent domain knowledge. Both of these limitations will cause the simulations fail silently, produce incorrect results with no immediately obvious failure[CITE]. However, while these problems are specific to simulation, they are not dissimilar from the issues that can occur from poorly designed real-world testing. %as such, these limitations are no reason to dismiss simulation by themselves
+This is linked to, but not the same as, having insufficient domain knowledge. Both of these limitations will cause the simulations fail silently, produce incorrect results with no immediately obvious failure[CITE].
+%Failing silently is interesting: no unexpected behaviour.. this should be discussed in more detail
+However, while these problems are specific to simulation, they are not dissimilar from the issues that can occur from poorly designed real-world testing.
+%GIVE MORE DETAIL HERE: how can poorly designed in-vitro testing affect results in similar ways?
+%As such, these limitations are no reason to dismiss simulation by themselves
 
-If the simulation needs to be safety-critical, developing it using formal methods and refinement may be a good way to ensure that no bugs are present in the code.
+%Here we are talking about refining from an initial model, which we have shown to be correct:
+%This is the same concept as MDE - discussed later!
+If the simulation needs to be safety-critical, developing it using formal methods and refinement may be a good way to ensure that no bugs are introduced in the code.
 
 \section{Improving Simulations}
 \label{improvements}
@@ -386,8 +402,8 @@ This is changing, Apple now includes a custom \acrshort{gpu} in many of its mobi
 
 %compare speed ups that can be gained, reference Phil's project for more details
 
-\paragraph{OpenGL vs CUDA}
-A previous project compared OpenGL and CUDA in detail.
+\paragraph{OpenGL vs \acrshort{cuda}}
+A previous project compared OpenGL and \acrshort{cuda} in detail.
 %OpenGL runs on a wider number of devices, including mobile (iOS)
 %frameworks, such as Apple's Metal allow significant simulations to be run, even on mobile devices
 
@@ -412,7 +428,7 @@ While, \acrlong{abm} is more computationally expensive than top-down mathematica
 Communication between individual agents can be difficult to implement in parallel but parallel communication is by no means limited to \gls{abm}.
 
 
-Mention \acrshort{flame} (traditional) is an attempt to make simulations more accessible via \acrshort{ABM}.
+Mention \acrshort{flame} (traditional) is an attempt to make simulations more accessible via \acrshort{abm}.
 %Flexible Large Scale Agent Modelling Environment
 %http://flame.ac.uk
 
@@ -436,6 +452,10 @@ As its name suggests, \gls{FLAME GPU} uses \acrlong{abm} to implement simulation
 
 %Disadvantages
 While relying on a framework such as \gls{FLAME GPU} can cause problems if support is stopped, \gls{FLAME GPU} is an open source project, so this should slightly be less of a concern.
+
+model based -> FlameGPU\cite{flame_keratinocyte}
+	restricted to the framework limitations
+	--step function host-based agent creation
 
 %Advantages
 The \gls{FLAME GPU} framework brings its own advantages.
@@ -480,7 +500,7 @@ Finally, I propose a new tool, which builds on existing work in order to make th
 \label{methods}
 
 \section{Tools}
-In order to produce a working simulation of Peyer's Patch formation, I have used an unreleased version (1.5) of \gls{FLAME GPU}.
+In order to produce a working simulation of \gls{PP} formation, I have used an unreleased version (1.5) of \gls{FLAME GPU}.
 As \gls{FLAME GPU} is developed openly, this version is freely available online\cite{flame_github}. \gls{FLAME GPU} has been added to the project repository as a submodule, to ensure version compatibility between \gls{FLAME GPU} and PPSim v2.
 
 Eclipse Neon v4.6 and Epsilon v1.4 have been used with Java Runtime Environment 1.8.0 for developing the input XML model for \gls{FLAME GPU}.
@@ -512,16 +532,11 @@ A host function manages cell migration into the environment by creating these ce
 \end{wrapfigure}
 
 Building \gls{FLAME GPU} simulations requires the creation of two artifacts (Fig. \ref{fig:flame_dev}), a structural `XML Model File' which defines the agents in the system and their allowed channels for communication and a C source code file of `Scripted Behaviour' which defines the actual behaviour of agents.
-\\
-
-model based -> FlameGPU\cite{flame_keratinocyte}
-	restricted to the framework limitations
-		Host cell creation into the system is a work in progress for next \gls{FLAME GPU} release?
-			helper LTi/LTin agent factory is be required to facilitate this functionality?
-
 
 A state-based platform model design is already available from the original \gls{MASON} implementation of this simulation.
 As \gls{FLAME GPU} uses state machines for each agent type in its implementation, these have been directly implemented into it.
+
+Host cell creation into the system is a work in progress for next \gls{FLAME GPU} release?
 
 Due to time constraints, I have not been able to implement environmental growth.
 %This isn't complex to implement within FLAME GPU itself.. a step function could be used to adjust each agent's position.
@@ -559,7 +574,7 @@ Mention missing link in (incorrect) model from Kieran's paper
 \section{Findings}
 \subsection{Ease of Use}
 "Further work is now being developed with Paul Richmond's \gls{FLAME GPU} group, to enhance the accessibility of \gls{FLAME GPU} for simulation developers."
-"This should allow the simulation developer to focus on getting their domain details correct, rather than battling the agent platform.0"
+"This should allow the simulation developer to focus on getting their domain details correct, rather than battling the agent platform."
 
 \subsection{Speed Up}
 \cite{statistical_tests} could be important for evaluating the performance of \gls{FLAME GPU} against original PPSim
@@ -578,10 +593,8 @@ Mention missing link in (incorrect) model from Kieran's paper
 %Expand project for more powerful cell based simulation
 %allow access to non-technical users
 %flexible modelling
-While the use of Epsilon has allowed for domain experts to be kept involved with the model implementation, there is still a final, most technically challenging, stage of the simulation creation where the agent behaviour is programmed.
-%additionally, technical implementation details still need to be understood when creating the model-
-	%Layer Functions
-	%Partitioning
+While the use of Epsilon has allowed for domain experts to be kept involved with the model implementation, there is still a final, most technically challenging, stage of the simulation creation where the agent behaviour is programmed. On top of this, with the current implementation, technical implementation details (layer functions and agent partitioning) have become part of the model. Ideally these should be extracted from the model implementation and automated.
+
 Further work will need to study agent behaviour in these forms of simulation generally...
 
 \printbibliography
