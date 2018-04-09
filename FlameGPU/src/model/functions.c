@@ -52,9 +52,9 @@ __FLAME_GPU_INIT_FUNC__ void setConstants(){
 
 	int MAX_CELL_SPEED = 10;
 	set_MAX_CELL_SPEED(&MAX_CELL_SPEED);
-	int CIRCUMFERENCE = 244;
+	int CIRCUMFERENCE = 254;
 	set_CIRCUMFERENCE(&CIRCUMFERENCE);
-	int LENGTH = 7203;
+	int LENGTH = 7303;
 	set_LENGTH(&LENGTH);
 	float STROMAL_CELL_DENSITY = 0.2f;
 	set_STROMAL_CELL_DENSITY(&STROMAL_CELL_DENSITY);
@@ -147,9 +147,9 @@ __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
 		for (unsigned int i = 0; i < count; i++) {
 			xmachine_memory_LTi * h_agent = h_allocate_agent_LTi();
 			//Initialise agent variables:
-			h_agent->x = randomUniform() * 7203;
-			h_agent->y = randomUniform() * 254;
-			h_agent->colour = 1;
+			h_agent->x = randomUniform() * *get_LENGTH();
+			h_agent->y = randomUniform() * *get_CIRCUMFERENCE();
+			h_agent->colour = *get_LTI_AGENT_TYPE();
             h_agent->velocity = randomGaussian();
 
 			h_add_agent_LTi_lti_random_movement(h_agent);
@@ -168,9 +168,9 @@ __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
 		for (unsigned int i = 0; i < count; i++) {
 			xmachine_memory_LTin * h_agent = h_allocate_agent_LTin();
 			//Initialise agent variables:
-			h_agent->x = randomUniform() * 7203;
-			h_agent->y = randomUniform() * 254;
-			h_agent->colour = 7;
+			h_agent->x = randomUniform() * *get_LENGTH();
+			h_agent->y = randomUniform() * *get_CIRCUMFERENCE();
+			h_agent->colour = *get_LTIN_AGENT_TYPE();
             h_agent->velocity = randomGaussian();
 
 			h_add_agent_LTin_ltin_random_movement(h_agent);
@@ -179,10 +179,20 @@ __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
 	}
 }
 
+int steps = 0;
+
 /*
  * Manage LTo Cell Division- This should only take place every 12 hours.
  */
 __FLAME_GPU_STEP_FUNC__ void divideLTos(){
+
+	steps += 1;
+
+	//There are 60 steps per hour, we divide ever 12 hours
+	if(steps % (60 * 12) != 0){
+		return;
+	}
+
     unsigned int lto_count = get_agent_LTo_expression_count();
     
     //Fetch each of these LTo cells
@@ -193,7 +203,7 @@ __FLAME_GPU_STEP_FUNC__ void divideLTos(){
         //TODO: fetch existing LTo cells and position this nearby
         new_lto->x = 0;
         new_lto->y = 0;
-        new_lto->colour = 0;
+        new_lto->colour = *get_LTO_AGENT_TYPE();
         
         h_add_agent_LTo_expression(new_lto);
         h_free_agent_LTo(&new_lto);
@@ -210,8 +220,8 @@ __FLAME_GPU_FUNC__ glm::vec2 random_move(glm::vec2 position,
 	//Calculate velocity
 	float angle = 2 * M_PI *  rnd<CONTINUOUS>(rand48);
 
-	float x_move = 10 * velocity * sinf(angle);
-	float y_move = 10 * velocity * cosf(angle);
+	float x_move = MAX_CELL_SPEED * velocity * sinf(angle);
+	float y_move = MAX_CELL_SPEED * velocity * cosf(angle);
 
 	glm::vec2 agent_velocity = glm::vec2(x_move, y_move);
 

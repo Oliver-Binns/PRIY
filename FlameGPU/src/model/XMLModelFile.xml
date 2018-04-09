@@ -100,11 +100,6 @@
                 <description></description>
             </gpu:variable>
             <gpu:variable>
-                <type>int</type>
-                <name>GROWTH_TIME</name>
-                <description>Intestinal Growth Time (hours)</description>
-            </gpu:variable>
-            <gpu:variable>
                 <type>float</type>
                 <name>PERCENT_LTIN_FROM_FACS</name>
                 <description>Percentage of area occupied by LTin cells at E15.5</description>

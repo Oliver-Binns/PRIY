@@ -19,7 +19,6 @@
   <variables name="CIRCUMFERENCE" description="Circumference of the Gut"/>
   <variables name="LENGTH" description="Length of the Gut"/>
   <variables name="STROMAL_CELL_DENSITY" type="Float"/>
-  <variables name="GROWTH_TIME" description="Intestinal Growth Time (hours)"/>
   <variables name="PERCENT_LTIN_FROM_FACS" description="Percentage of area occupied by LTin cells at E15.5" type="Float"/>
   <variables name="PERCENT_LTI_FROM_FACS" description="Percentage of area occupied by LTi cells at E15.5" type="Float"/>
   <functionFiles>functions.c</functionFiles>
