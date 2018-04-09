@@ -75,6 +75,16 @@
 						[%}%]
 					</outputs>
 					[%}%]
+					[%if (not transition.creates.isEmpty()){%]
+					<xagentOutputs>
+						[%for (output in transition.creates){%]
+						<gpu:xagentOutput>
+							<xagentName>[%=output.name%]</xagentName>
+							<state></state>
+						</gpu:xagentOutput>
+						[%}%]
+					</xagentOutputs>
+					[%}%]
 					<gpu:reallocate>[%=transition.reallocate%]</gpu:reallocate>
 					<gpu:RNG>[%=transition.randomGenerator%]</gpu:RNG>
 				</gpu:function>
@@ -170,6 +180,8 @@ operation Condition toXML(){
 			str += "*";
 		case Operator#Divide :
 			str += "/";
+		case Operator#Modulo :
+			str += "%";
 	}
 
 	str += "</operator><rhs>"

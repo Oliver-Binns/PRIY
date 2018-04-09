@@ -109,9 +109,14 @@
                 <name>PERCENT_LTI_FROM_FACS</name>
                 <description>Percentage of area occupied by LTi cells at E15.5</description>
             </gpu:variable>
+            <gpu:variable>
+                <type>int</type>
+                <name>SIM_STEP</name>
+                <description>The current step of the simulation.</description>
+            </gpu:variable>
         </gpu:constants>
         <gpu:functionFiles>
-            <file>functions.c</file>
+                <file>functions.c</file>
         </gpu:functionFiles>
         <gpu:initFunctions>
             <gpu:initFunction>
@@ -121,9 +126,6 @@
         <gpu:stepFunctions>
             <gpu:stepFunction>
                 <gpu:name>migrateNewCells</gpu:name>
-            </gpu:stepFunction>
-            <gpu:stepFunction>
-                <gpu:name>divideLTos</gpu:name>
             </gpu:stepFunction>
         </gpu:stepFunctions>
     </gpu:environment>
@@ -274,6 +276,19 @@
                     <gpu:reallocate>false</gpu:reallocate>
                     <gpu:RNG>false</gpu:RNG>
                 </gpu:function>
+                <gpu:function>
+                    <name>divide</name>
+                    <currentState>expression</currentState>
+                    <nextState>expression</nextState>
+                    <xagentOutputs>
+                        <gpu:xagentOutput>
+                            <xagentName>LTo</xagentName>
+                            <state>expression</state>
+                        </gpu:xagentOutput>
+                    </xagentOutputs>
+                    <gpu:reallocate>false</gpu:reallocate>
+                    <gpu:RNG>false</gpu:RNG>
+                </gpu:function>
             </functions>
             <states>
                 <gpu:state>
@@ -351,7 +366,9 @@
             <gpu:layerFunction>
                 <name>ltin_adhesion</name>
             </gpu:layerFunction>
+            <gpu:layerFunction>
+                <name>divide</name>
+            </gpu:layerFunction>
         </layer>
     </layers>
 </gpu:xmodel>
-

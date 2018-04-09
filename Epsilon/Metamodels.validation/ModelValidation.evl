@@ -117,7 +117,8 @@ operation createNewCondition(agent : Agent){
 		Operator#Plus,
 		Operator#Subtract,
 		Operator#Multiply,
-		Operator#Divide
+		Operator#Divide,
+		Operator#Modulo
 	};
 	con.operator = System.user.choose("Select an operator:", ops);
 	

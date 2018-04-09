@@ -66,6 +66,7 @@ class State extends UniqueNamed{
 class Transition extends UniqueNamed{
 	ref Message[*] inputs;
 	ref Message[*] outputs;
+	ref Agent[*] creates;
 	
 	val Condition condition;
 	
@@ -101,6 +102,7 @@ enum Operator{
 	Plus;
 	Subtract;
 	Multiply;
+	Modulo;
 	Divide;
 }
 

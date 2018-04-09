@@ -21,10 +21,10 @@
   <variables name="STROMAL_CELL_DENSITY" type="Float"/>
   <variables name="PERCENT_LTIN_FROM_FACS" description="Percentage of area occupied by LTin cells at E15.5" type="Float"/>
   <variables name="PERCENT_LTI_FROM_FACS" description="Percentage of area occupied by LTi cells at E15.5" type="Float"/>
+  <variables name="SIM_STEP" description="The current step of the simulation."/>
   <functionFiles>functions.c</functionFiles>
   <initFunctions>setConstants</initFunctions>
   <stepFunctions>migrateNewCells</stepFunctions>
-  <stepFunctions>divideLTos</stepFunctions>
   <agents name="LTin" initialState="//@agents.0/@states.0" bufferSize="1024">
     <memory name="x" type="Float"/>
     <memory name="y" type="Float"/>
@@ -62,6 +62,17 @@
     <memory name="colour"/>
     <states name="expression">
       <transitions name="express" outputs="//@messages.0" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0"/>
+      <transitions name="divide" creates="//@agents.2" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0">
+        <condition>
+          <lhs xsi:type="FLAME:LiteralEval" value="0.0"/>
+          <rhs xsi:type="FLAME:ConditionEval">
+            <value operator="Modulo">
+              <lhs xsi:type="FLAME:VariableEval" value="//@variables.21"/>
+              <rhs xsi:type="FLAME:LiteralEval" value="12.0"/>
+            </value>
+          </rhs>
+        </condition>
+      </transitions>
     </states>
     <states name="adhesion_upregulation"/>
     <states name="chemokine_upregulation"/>
@@ -76,6 +87,6 @@
   </messages>
   <layers order="2" functions="//@agents.1/@states.0/@transitions.0 //@agents.0/@states.0/@transitions.1"/>
   <layers order="1" functions="//@agents.2/@states.0/@transitions.0"/>
-  <layers order="3" functions="//@agents.0/@states.0/@transitions.0"/>
+  <layers order="3" functions="//@agents.0/@states.0/@transitions.0 //@agents.2/@states.0/@transitions.1"/>
   <partitions xsi:type="FLAME:SpatialPartition" radius="4" xmin="0" xmax="7304" ymin="0" ymax="256" zmin="0" zmax="4"/>
 </FLAME:Simulation>

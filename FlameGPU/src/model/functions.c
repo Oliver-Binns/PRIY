@@ -13,6 +13,9 @@
 #include "header.h"
 
 __FLAME_GPU_INIT_FUNC__ void setConstants(){
+    int SIM_STEP = 0;
+    set_SIM_STEP(&SIM_STEP);
+
 	int LTI_AGENT_TYPE = 1;
 	set_LTI_AGENT_TYPE(&LTI_AGENT_TYPE);
 	int LTIN_AGENT_TYPE = 7;
@@ -58,8 +61,6 @@ __FLAME_GPU_INIT_FUNC__ void setConstants(){
 	set_LENGTH(&LENGTH);
 	float STROMAL_CELL_DENSITY = 0.2f;
 	set_STROMAL_CELL_DENSITY(&STROMAL_CELL_DENSITY);
-	int GROWTH_TIME = 72;
-	set_GROWTH_TIME(&GROWTH_TIME);
 	float PERCENT_LTIN_FROM_FACS = 0.45f;
 	set_PERCENT_LTIN_FROM_FACS(&PERCENT_LTIN_FROM_FACS);
 	float PERCENT_LTI_FROM_FACS = 0.37;
@@ -134,8 +135,11 @@ float randomGaussian(){
 }
 
 __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
+    //INCREMENT SIM STEP:
+    int step = *get_SIM_STEP() + 1;
+    set_SIM_STEP(&step);
+
     //TODO: refactor LTi, LTin migration to share code, if possible:
-    
 	//CREATE LTis:
 	// Can create upto h_agent_AoS_MAX agents in a single pass (the number allocated for) but the full amount does not have to be created.
 	unsigned int lti_migration_rate = 5;
@@ -143,18 +147,18 @@ __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
 	unsigned int agent_remaining = get_agent_LTi_MAX_count() - get_agent_LTi_lti_random_movement_count();
 	if (agent_remaining > 0) {
 		unsigned int count = (lti_migration_rate > agent_remaining) ? agent_remaining: lti_migration_rate;
-		// Populate data as required
+		xmachine_memory_LTi** agents = h_allocate_agent_LTi_array(count);
+        // Populate data as required
 		for (unsigned int i = 0; i < count; i++) {
-			xmachine_memory_LTi * h_agent = h_allocate_agent_LTi();
+			//agents[i] = h_allocate_agent_LTi();
 			//Initialise agent variables:
-			h_agent->x = randomUniform() * *get_LENGTH();
-			h_agent->y = randomUniform() * *get_CIRCUMFERENCE();
-			h_agent->colour = *get_LTI_AGENT_TYPE();
-            h_agent->velocity = randomGaussian();
-
-			h_add_agent_LTi_lti_random_movement(h_agent);
-			h_free_agent_LTi(&h_agent);
+			agents[i]->x = randomUniform() * *get_LENGTH();
+			agents[i]->y = randomUniform() * *get_CIRCUMFERENCE();
+			agents[i]->colour = *get_LTI_AGENT_TYPE();
+            agents[i]->velocity = randomGaussian();
 		}
+        h_add_agents_LTi_lti_random_movement(agents, count);
+        h_free_agent_LTi_array(&agents, count);
 	}
 
 	//Create LTins:
@@ -164,50 +168,19 @@ __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
 	agent_remaining = get_agent_LTin_MAX_count() - get_agent_LTin_ltin_random_movement_count();
 	if (agent_remaining > 0) {
 		unsigned int count = (ltin_migration_rate > agent_remaining) ? agent_remaining: ltin_migration_rate;
+        xmachine_memory_LTin** agents = h_allocate_agent_LTin_array(count);
 		// Populate data as required
 		for (unsigned int i = 0; i < count; i++) {
-			xmachine_memory_LTin * h_agent = h_allocate_agent_LTin();
+			//agents[i] = h_allocate_agent_LTin();
 			//Initialise agent variables:
-			h_agent->x = randomUniform() * *get_LENGTH();
-			h_agent->y = randomUniform() * *get_CIRCUMFERENCE();
-			h_agent->colour = *get_LTIN_AGENT_TYPE();
-            h_agent->velocity = randomGaussian();
-
-			h_add_agent_LTin_ltin_random_movement(h_agent);
-			h_free_agent_LTin(&h_agent);
+			agents[i]->x = randomUniform() * *get_LENGTH();
+			agents[i]->y = randomUniform() * *get_CIRCUMFERENCE();
+			agents[i]->colour = *get_LTIN_AGENT_TYPE();
+            agents[i]->velocity = randomGaussian();
 		}
+        h_add_agents_LTin_ltin_random_movement(agents, count);
+        h_free_agent_LTin_array(&agents, count);
 	}
-}
-
-int steps = 0;
-
-/*
- * Manage LTo Cell Division- This should only take place every 12 hours.
- */
-__FLAME_GPU_STEP_FUNC__ void divideLTos(){
-
-	steps += 1;
-
-	//There are 60 steps per hour, we divide ever 12 hours
-	if(steps % (60 * 12) != 0){
-		return;
-	}
-
-    unsigned int lto_count = get_agent_LTo_expression_count();
-    
-    //Fetch each of these LTo cells
-    for (unsigned int i = 0; i < lto_count; i++){
-        //Create new LTo
-        xmachine_memory_LTo * new_lto = h_allocate_agent_LTo();
-        
-        //TODO: fetch existing LTo cells and position this nearby
-        new_lto->x = 0;
-        new_lto->y = 0;
-        new_lto->colour = *get_LTO_AGENT_TYPE();
-        
-        h_add_agent_LTo_expression(new_lto);
-        h_free_agent_LTo(&new_lto);
-    }
 }
 
 /*
@@ -311,5 +284,24 @@ __FLAME_GPU_FUNC__ int express(xmachine_memory_LTo* xmemory,
     
     return 0;
 }
+
+/*
+ * Perform this on the device- w
+ */
+__FLAME_GPU_FUNC__ int divide(xmachine_memory_LTo* agent, xmachine_memory_LTo_list* LTo_agents){
+    //There are 60 steps per hour, we divide ever 12 hours
+    if(SIM_STEP % (60 * 12) != 0){
+        return 0;
+    }
+
+    //TODO: fetch existing LTo cells and position this nearby
+    float x = agent->x - LTO_CELL_SIZE * 2;
+    float y = agent->y;
+    int colour = LTO_AGENT_TYPE;
+    add_LTo_agent(LTo_agents, x, y, colour);
+
+    return 0;
+}
+
 
 #endif //_FLAMEGPU_FUNCTIONS
