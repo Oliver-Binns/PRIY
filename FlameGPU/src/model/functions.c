@@ -191,11 +191,11 @@ __FLAME_GPU_STEP_FUNC__ void divideLTos(){
         xmachine_memory_LTo * new_lto = h_allocate_agent_LTo();
         
         //TODO: fetch existing LTo cells and position this nearby
-        h_agent->x = 0;
-        h_agent->y = 0;
-        h_agent->colour = 0;
+        new_lto->x = 0;
+        new_lto->y = 0;
+        new_lto->colour = 0;
         
-        h_add_agent_LTin_ltin_express(new_lto);
+        h_add_agent_LTo_expression(new_lto);
         h_free_agent_LTo(&new_lto);
     }
 }
@@ -218,12 +218,12 @@ __FLAME_GPU_FUNC__ glm::vec2 random_move(glm::vec2 position,
 	position += agent_velocity;
 
 	//agent should die if it goes outside area of the x direction
-	if(position.x < 0 || MAXIMUM_LENGTH < position.x){
+	if(position.x < 0 || LENGTH < position.x){
 		position.x = NULL;
 	}
 
 	//Y position should wrap
-	position.y = fmod(position.y, float(MAXIMUM_CIRCUMFERENCE));
+	position.y = fmod(position.y, float(CIRCUMFERENCE));
 	
 	return position;
 }
