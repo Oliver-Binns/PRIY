@@ -50,10 +50,18 @@ class Agent extends UniqueNamed{
 	ref State initialState;
 	@gmf.compartment
 	val State[+]#agent states;
+	@gmf.compartment(layout="list")
+	val Differentiation[*] differentiation;
 	
 	
 	attr AgentType type;
 	attr Integer bufferSize;
+}
+
+@gmf.node(label.placement="none")
+class Differentiation{
+	ref Agent agent;
+	ref State state;
 }
 
 @gmf.node(label="name")
@@ -66,7 +74,7 @@ class State extends UniqueNamed{
 class Transition extends UniqueNamed{
 	ref Message[*] inputs;
 	ref Message[*] outputs;
-	ref Agent[*] creates;
+	ref Differentiation[*] differentiation;
 	
 	val Condition condition;
 	

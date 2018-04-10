@@ -75,12 +75,12 @@
 						[%}%]
 					</outputs>
 					[%}%]
-					[%if (not transition.creates.isEmpty()){%]
+					[%if (not transition.differentiation.isEmpty()){%]
 					<xagentOutputs>
-						[%for (output in transition.creates){%]
+						[%for (output in transition.differentiation){%]
 						<gpu:xagentOutput>
-							<xagentName>[%=output.name%]</xagentName>
-							<state></state>
+							<xagentName>[%=output.agent.name%]</xagentName>
+							<state>[%=output.state.name%]</state>
 						</gpu:xagentOutput>
 						[%}%]
 					</xagentOutputs>

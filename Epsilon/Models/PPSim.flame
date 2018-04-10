@@ -62,11 +62,11 @@
     <memory name="colour"/>
     <states name="expression">
       <transitions name="express" outputs="//@messages.0" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0"/>
-      <transitions name="divide" creates="//@agents.2" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0">
+      <transitions name="divide" inputs="//@messages.0" differentiation="//@agents.2/@differentiation.0" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0">
         <condition>
           <lhs xsi:type="FLAME:LiteralEval" value="0.0"/>
           <rhs xsi:type="FLAME:ConditionEval">
-            <value operator="Modulo">
+            <value>
               <lhs xsi:type="FLAME:VariableEval" value="//@variables.21"/>
               <rhs xsi:type="FLAME:LiteralEval" value="12.0"/>
             </value>
@@ -78,6 +78,7 @@
     <states name="chemokine_upregulation"/>
     <states name="mature"/>
     <states name="downregulated"/>
+    <differentiation agent="//@agents.2" state="//@agents.2/@states.0"/>
   </agents>
   <messages name="location" description="A message holding the type and location of a cell" partitioning="//@partitions.0" bufferSize="1024">
     <variables name="x" type="Float"/>

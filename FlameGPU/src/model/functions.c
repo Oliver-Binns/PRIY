@@ -286,7 +286,8 @@ __FLAME_GPU_FUNC__ int express(xmachine_memory_LTo* xmemory,
 }
 
 /*
- * Perform this on the device- w
+ * This cell division is performed on the device
+ * The cell *creates* a new cell by division.
  */
 __FLAME_GPU_FUNC__ int divide(xmachine_memory_LTo* agent, xmachine_memory_LTo_list* LTo_agents){
     //There are 60 steps per hour, we divide ever 12 hours

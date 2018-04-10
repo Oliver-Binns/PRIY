@@ -64,17 +64,52 @@ context Transition{
 			}
 		}
 	}
+	
+	constraint RNGSet{
+		check: self.randomGenerator.isDefined()
+		message: "Is a random number generator needed for transition " + self.name + "?"
+		fix{
+			title: "Yes!"
+			do{
+				self.randomGenerator = true;
+			}
+		}
+		fix{
+			title: "No."
+			do{
+				self.randomGenerator = false;
+			}
+		}
+	}
+	
+	constraint ReallocateSet{
+		check: self.reallocate.isDefined()
+		message: "Can the agent die during transition " + self.name + "?"
+		fix{
+			title: "Yes!"
+			do{
+				self.reallocate = true;
+			}
+		}
+		fix{
+			title: "No."
+			do{
+				self.reallocate = false;
+			}
+		}
+	}
 }
 context Condition{
 	constraint LHSValid{
 		check: self.lhs.isDefined()
 		message: "Left-hand side of an equation must be set."
+		//TODO add fix
 	}
 
 	constraint RHSValid{
 		check: self.lhs.isDefined()
 		message: "Right-hand side of an equation must be set."
-		
+		//TODO add fix
 	}
 }
 
