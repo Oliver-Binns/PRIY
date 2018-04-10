@@ -62,17 +62,7 @@
     <memory name="colour"/>
     <states name="expression">
       <transitions name="express" outputs="//@messages.0" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0"/>
-      <transitions name="divide" inputs="//@messages.0" differentiation="//@agents.2/@differentiation.0" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0">
-        <condition>
-          <lhs xsi:type="FLAME:LiteralEval" value="0.0"/>
-          <rhs xsi:type="FLAME:ConditionEval">
-            <value>
-              <lhs xsi:type="FLAME:VariableEval" value="//@variables.21"/>
-              <rhs xsi:type="FLAME:LiteralEval" value="12.0"/>
-            </value>
-          </rhs>
-        </condition>
-      </transitions>
+      <transitions name="divide" inputs="//@messages.0" differentiation="//@agents.2/@differentiation.0" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0"/>
     </states>
     <states name="adhesion_upregulation"/>
     <states name="chemokine_upregulation"/>

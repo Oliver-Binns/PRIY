@@ -53,9 +53,6 @@
 					<name>[%=transition.name%]</name>
 					<currentState>[%=transition.initialState.name%]</currentState>
 					<nextState>[%=transition.nextState.name%]</nextState>
-					[%if(transition.condition.isDefined()){%]
-					[%=transition.condition.toXML()%]
-					[%}%]
 					[%if (not transition.inputs.isEmpty()){%]
 					<inputs>
 						[%for (input in transition.inputs){%]
@@ -84,6 +81,9 @@
 						</gpu:xagentOutput>
 						[%}%]
 					</xagentOutputs>
+					[%}
+						if(transition.condition.isDefined()){%]
+					[%=transition.condition.toXML()%]
 					[%}%]
 					<gpu:reallocate>[%=transition.reallocate%]</gpu:reallocate>
 					<gpu:RNG>[%=transition.randomGenerator%]</gpu:RNG>
@@ -190,7 +190,7 @@ operation Condition toXML(){
 	return str;
 }
 operation ConditionEval toXML(){
-	return "<condition>" + self.value.toXML() + "</condition>";
+	return self.value.toXML();
 }
 operation LiteralEval toXML(){
 	return "<value>" + self.value.toString() + "</value>";
