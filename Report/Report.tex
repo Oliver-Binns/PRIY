@@ -29,6 +29,8 @@ Some significant problems, including a substantial computer science skills short
 In this project 
 the \gls{FLAME GPU} framework is used to help mitigate some of the difficulties with implementing parallel programs, in order to build on an existing sequential \gls{MASON} simulation.
 I also propose \gls{mde} as a potential short-term solution to the skills shortage, exploring some of the current \gls{mde} technologies for creating simulations and proposing further advancements to these tools for the future.
+%add a little bit about the experiments you have carried out (very brief)
+%and a general account of the significant findings (including any drawbacks)
 }
 
 \acknowledgements{I would like to my supervisors, Fiona Polack and Kieran Alden, for their support and guidance throughout this project. I would also like to thank the \gls{FLAME GPU} development team at the University of Sheffield for their help in utilising the latest and pre-released features of this framework.}
@@ -108,17 +110,21 @@ I also propose \gls{mde} as a potential short-term solution to the skills shorta
 
 %Approx 1000 words
 \chapter{Introduction}
-\section{Project Overview}
 %TELL THEM WHAT YOU WILL TELL THEM
 %LIT REVIEW: TELL THEM
 %RESULTS/EVAL: TELL THEM WHAT YOU TOLD THEM!
 
-TALK ABOUT MODELING AND THE DESIRE FOR 
+Agent-Based Modelling has given good results
+%compare to mathematical models?
+but can take a long time to run, as simulations become more and more complex.
 \\
-Faster AND More Accessible Simulation
 
-%TAKEN from Fiona: consider rephrasing?
-In this project, complex simulations are discussed. This term does not necessarily mean that the simulation contains several components that are difficult to engineer. In contrast to this, these types of simulations are generally made up of lots of simple components that interact with each other and the environment in such a way that the system behaviour can only be predicted by running the simulation. 
+Here, and throughout this report, complexity does not necessarily refer to simulations that contains several components that are difficult to engineer.
+Rather, we discuss simulations that are made up of lots of simple components that interact with each other and the environment in such a way that the system behaviour is so elaborate that it can only be predicted by running the simulation.
+\\
+%an introduction to what is to follow
+%the abstract can be very specific
+%Here: a bit more general (i.e. MDE and simulation concerns in general)
 
 \section{Motivation}
 %What can be gained from better modelling.. particularly biology..?
@@ -500,8 +506,13 @@ Finally, I propose a new tool, which builds on existing work in order to make th
 \label{methods}
 
 \section{Tools}
+This project was developed on a machine running Ubuntu 16.04 with Intel i5 (650 @ 3.20 GHz) and 8GB of RAM.
+The GPU utilised was an NVIDIA GeForce GTX 1050.
+GPU programming utilised the latest version of CUDA (9.1).
+
 In order to produce a working simulation of \gls{PP} formation, I have used an unreleased version (1.5) of \gls{FLAME GPU}.
-As \gls{FLAME GPU} is developed openly, this version is freely available online\cite{flame_github}. \gls{FLAME GPU} has been added to the project repository as a submodule, to ensure version compatibility between \gls{FLAME GPU} and PPSim v2.
+As \gls{FLAME GPU} is developed openly, this version is freely available online\cite{flame_github}.
+\gls{FLAME GPU} has been added to the project repository as a submodule, to ensure version compatibility between \gls{FLAME GPU} and PPSim v2.
 
 Eclipse Neon v4.6 and Epsilon v1.4 have been used with Java Runtime Environment 1.8.0 for developing the input XML model for \gls{FLAME GPU}.
 
