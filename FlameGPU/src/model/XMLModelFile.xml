@@ -280,7 +280,6 @@
                     <name>divide</name>
                     <currentState>expression</currentState>
                     <nextState>expression</nextState>
-                    <condition><lhs><value>0.0</value></lhs><operator>==</operator><rhs><condition><condition><lhs><agentVariable>SIM_STEP</agentVariable></lhs><operator>==</operator><rhs><value>12.0</value></rhs></condition></condition></rhs></condition>
                     <inputs>
                         <gpu:input>
                             <messageName>location</messageName>

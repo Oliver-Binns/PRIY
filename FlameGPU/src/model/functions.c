@@ -285,24 +285,75 @@ __FLAME_GPU_FUNC__ int express(xmachine_memory_LTo* xmemory,
     return 0;
 }
 
+__device__ int searchOutwards(int i){
+    return (i % 2 == 0 ? i/2 : -(i/2+1)); //index lookup here
+}
+
 /*
  * This cell division is performed on the device
  * The cell *creates* a new cell by division.
+ *
+ * TODO: currently if there is no free location within messaging RADIUS, then no new cell is added.
+ * Can this be done by adjusting x,y values in get_first_location_message?
+ * Ideally, we need to EXPAND the search space RADIUS if this occurs.
+ *
+ * N.B. This method will NOT avoid cells that have been placed in the SAME timestep
+ * TOODO: this should be come a sequential step function!
  */
-__FLAME_GPU_FUNC__ int divide(xmachine_memory_LTo* agent, xmachine_memory_LTo_list* LTo_agents){
+__FLAME_GPU_FUNC__ int divide(xmachine_memory_LTo* agent, xmachine_memory_LTo_list* LTo_agents,
+    xmachine_message_location_list* location_messages, xmachine_message_location_PBM* partition_matrix)
+{
     //There are 60 steps per hour, we divide ever 12 hours
-    if(SIM_STEP % (60 * 12) != 0){
+    /*if((SIM_STEP % (60 * 12)) != 0){
+        return 0;
+    }*/
+    if(SIM_STEP % (10) != 0){
         return 0;
     }
 
-    //TODO: fetch existing LTo cells and position this nearby
-    float x = agent->x - LTO_CELL_SIZE * 2;
-    float y = agent->y;
-    int colour = LTO_AGENT_TYPE;
-    add_LTo_agent(LTo_agents, x, y, colour);
+    //Radius * 2 + 1 for origin: C++ does not allow variable length arrays!
+    //TODO, allocate somehow using calculated values.
+    //const int radius = ADHESION_DISTANCE_THRESHOLD + 1;
+    int occupied[5][5] = {0};
+
+    //Search within radius for cell positions and place accordingly:
+    //Use Expression Messages to determine location of other LTo cells:
+    xmachine_message_location* message = get_first_location_message(location_messages, partition_matrix,
+        agent->x, agent->y, 0.0);
+
+    while(message){
+        int x_diff = (agent->x - message->x) / LTO_CELL_SIZE;
+        int y_diff = (agent->y - message->y) / LTO_CELL_SIZE;
+
+        occupied[x_diff + 2][y_diff + 2] = 1;
+
+        message = get_next_location_message(message, location_messages, partition_matrix);
+    }
+
+    //This may seem an unusual way to index:
+    //But we want to ensure the cell is as close to the center of the array as possible!
+    for(int x = 0; x < 5; x++){
+        int x_offset = searchOutwards(x);
+        for(int y = 0; y < 5; y++){
+            int y_offset = searchOutwards(y);
+
+            if(!occupied[x_offset + 2][y_offset + 2]){
+                int relative_x = x_offset * LTO_CELL_SIZE;
+                int relative_y = y_offset * LTO_CELL_SIZE;
+
+                float x = agent->x + __int2float_rn(relative_x);
+                float y = agent->y + __int2float_rn(relative_y);
+                printf("x: %f, new x: %f, offset: %d\n", agent->x, x, x_offset);
+                printf("y: %f, new y: %f, offset: %d\n", agent->y, y, y_offset);
+
+                add_LTo_agent(LTo_agents, x, y, LTO_AGENT_TYPE);
+
+                return 0;
+            }
+        }
+    }
 
     return 0;
 }
-
 
 #endif //_FLAMEGPU_FUNCTIONS
