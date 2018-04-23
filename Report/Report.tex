@@ -14,7 +14,7 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{4577}
+\wordcount{4608}
 
 
 %Approx 500 Words
@@ -596,8 +596,9 @@ Finally, I propose a new tool, which builds on existing work in order to make th
 \label{methods}
 
 %Intro Chapter:
-Having established the current difficulties with biological simulation, this chapter details the development of tools and simulation experiment performed as part of this project and how these difficulties are mitigated.
-It describes the implementation of a new \acrshort{gpu}-based PPSim platform implementation and presents a new tool for mapping and transforming biological models into \gls{FLAME GPU} simulations.
+The chapter details the simulation experiment that has been performed and the development of new tools to aid the implementation of this, and future simulations.
+The experiment involved the development of a new \acrshort{gpu}-based PPSim platform implementation as well as a new tool for mapping and transforming biological models into \gls{FLAME GPU} simulations.
+Having previously established the current difficulties with biological simulation, this chapter also details how these are overcome in the implementation of this project.
 
 \section{Tools}
 This project was developed on a machine running Ubuntu 16.04 with Intel i5 (650 @ 3.20 GHz) and 8GB of RAM.
@@ -634,15 +635,15 @@ However, by adding a force resolution step, as used in previous \gls{FLAME GPU} 
 %flame provides an API to access cells in a particular state from the Host
 
 \section{\gls{FLAME GPU}}
-
-\begin{wrapfigure}{r}{0.5\textwidth}
-\includegraphics[width=0.5\textwidth]{Appendix/FLAME_Process}
-\caption{\gls{FLAME GPU} Development Process (Taken from \cite{flame_simulation})}
-\label{fig:flame_dev}
-\end{wrapfigure}
-
 %HOW DOES THIS RELATE TO THE COSMOS PROCESS (ABOVE)
 Building \gls{FLAME GPU} simulations requires the creation of two artifacts (Fig. \ref{fig:flame_dev}), a structural `XML Model File' which defines the agents in the system and their allowed channels for communication and a C source code file of `Scripted Behaviour' which defines the actual behaviour of agents.
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=0.6\textwidth]{Appendix/FLAME_Process}
+\caption{\gls{FLAME GPU} Development Process (Taken from \cite{flame_simulation})}
+\label{fig:flame_dev}
+\end{figure}
 
 A state-based platform model design is already available- the domain model for the original \gls{MASON} implementation of this simulation.
 As \gls{FLAME GPU} uses state machines for each agent type in its implementation, these have been directly implemented into it.
@@ -658,6 +659,15 @@ In the creation of the \gls{FLAME GPU} XML model, I decided to implement a new t
 This new tool contains a graphical editor which allows the \gls{FLAME GPU} `XML Model File' to be created diagramatically.
 If implemented correctly, the tool should \textit{directly map} the platform model structures into the \gls{FLAME GPU} domain model.
 This should significantly improve the model design experience and allow for domain experts to be kept more involved with the simulation creation.
+This new process is shown as part of the \gls{cosmos} process in Fig. \ref{fig:flame_improved}.
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=0.7\textwidth]{Appendix/CoSMoS_FLAME}
+\caption{Autogeneration of \gls{FLAME GPU} Artifact as part of the \gls{cosmos} Development Process}
+\label{fig:flame_improved}
+\end{figure}
+
 Figure \ref{fig:ppsim_gmf} shows the Peyer's Patch simulation created within this graphical editor. The XML model used for the final simulation was automatically generated from this diagram.
 
 The \gls{evl} has allowed well-formedness constraints to be implemented for the \gls{FLAME GPU} input model.
@@ -678,7 +688,6 @@ This requires the new simulation to be demonstrably similar with similar compone
 %is this the case?
 
 Talk about how the model was tested to ensure correctness\\
-Mention missing link in (incorrect) model from Kieran's paper 
 
 %Approx 2500 words for results and evalution
 \chapter{Results and Evaluation}
@@ -691,6 +700,8 @@ This proof of concept has shown that direct mappings from a biological domain mo
 Based on this, further work is now being developed with Paul Richmond's \gls{FLAME GPU} group, to enhance the accessibility of \gls{FLAME GPU} for simulation developers.
 This should allow the simulation developer to focus on getting their domain details correct, rather than battling the agent platform.
 An improved mapping, which abstracts away all implementation details, could bring additional benefits in this area, including ensuring that the simulation code always supports the latest hardware features.
+%Mention missing link in (incorrect) model from Kieran's paper 
+It also ensures that the platform model 
 This work is ongoing.
 
 \subsection{Speed Up}
@@ -712,7 +723,13 @@ Instead, a new hypothesis is that the platform model for the \gls{FLAME GPU} imp
 %Approx 1000 words
 \section{Conclusion}
 %NB.. INTRODUCTION + CONCLUSION MUST MATCH AND REFERENCE EACH OTHER.
+%Establish a firm grounding for the future development of new tools to allow fast, parallel simulations of biological systems to be easily created by non-technical users.
+%   Explore the findings of the new implementation and discuss how these can be generalised to new simulations.
+%   Discuss techniques for allowing non-technical users to eas- ily create formal models that can be transformed into new simulation implementations.
 
+%Develop a parallel implementation of an existing sequential simulation of Peyer’s Patch development and explore any speed increases that can be produced using General Purpose GPU programming (GPGPU) programming.
+
+%Review of the use of simulations, with a particular focus on computational biology. This review should explore the advantages that in-silico testing provides over in-vitro experimentation and the problems that must be overcome for the mass adoption of biological simulations.
 
 \section{Further Work}
 \subsection{Peyer's Patch Case Study}
