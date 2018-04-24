@@ -771,6 +771,9 @@ Future work will need to explore the meaning of the differences between simulati
 %explore what the "differences" between the simulations "mean", specifically for PPSim and more generally
 
 %SPARTAN?
+Spartan is a tool for understanding relationships and providing novel biological insight into simulation behaviour.
+Spartan was use for analysing the results of the original PPSim implementation\cite{spartan} and may provide an insight into validity of the parallel \textit{PPSim v2} implementation.
+
 %can we produce any new hypotheses from this?
 
 \subsection{Software Generalisibility}%IS THIS A WORD?
@@ -787,9 +790,10 @@ Ideally these should be extracted from the model implementation and automated.
 
 \subsection{Hardware Availability}
 %Talk about difficulty getting access to the necessary NVIDIA hardware
-One of the greatest challenges of this project has been gaining access to GPU hardware.
+One of the greatest challenges of this project has been gaining access to NVIDIA GPU hardware.
 While these are available off the shelf in most high-street computer retailers, they are not commonly found as part of standard desktop PCs, which generally containing integrated graphics hardware.
 Indeed, none of the software lab PCs at the University of York contain the dedicated graphics chips required to run this software.
+Future work could reevaluate whether the benefit of a cross-platform API, such as OpenGL, could outweigh the performance benefit provided by \acrshort{cuda}.
 %OpenGL could be something to discuss here
 %dismissed by Phil, but further exploration could be good!
 %ANDY is working on this
