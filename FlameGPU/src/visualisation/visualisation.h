@@ -16,7 +16,7 @@
 #ifndef __VISUALISATION_H
 #define __VISUALISATION_H
 
-#define SIMULATION_DELAY 25
+#define SIMULATION_DELAY 15
 
 // constants
 const unsigned int WINDOW_WIDTH = 1920;

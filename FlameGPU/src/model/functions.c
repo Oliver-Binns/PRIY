@@ -13,7 +13,7 @@
 #include "header.h"
 
 __FLAME_GPU_INIT_FUNC__ void setConstants(){
-    int SIM_STEP = 0;
+    int SIM_STEP = 1;
     set_SIM_STEP(&SIM_STEP);
 
 	int LTI_AGENT_TYPE = 1;
@@ -90,7 +90,7 @@ inline __device__ float chemokineLevel(float distanceToLTo){
 }
 
 /*
- * This method returns a random value within
+ * This method returns a random value within 0-1
  */
 float randomUniform(){
 	return (float)rand() / (float)RAND_MAX;
@@ -191,7 +191,7 @@ __FLAME_GPU_FUNC__ glm::vec2 random_move(glm::vec2 position,
                                          RNG_rand48* rand48)
 {
 	//Calculate velocity
-	float angle = 2 * M_PI *  rnd<CONTINUOUS>(rand48);
+	float angle = 2 * M_PI * rnd<CONTINUOUS>(rand48);
 
 	float x_move = MAX_CELL_SPEED * velocity * sinf(angle);
 	float y_move = MAX_CELL_SPEED * velocity * cosf(angle);
@@ -245,9 +245,12 @@ __FLAME_GPU_FUNC__ int ltin_random_move(xmachine_memory_LTin* xmemory,
     xmachine_message_location* message = get_first_location_message(location_messages, partition_matrix,
     	xmemory->x, xmemory->y, 0.0);
     while(message){
-   		if(true){//Check if BIND is SUFFICIENT
+        //Check if BIND is SUFFICIENT - 50% is THRESHOLD BIND PROBABILITY
+   		if(rnd<CONTINUOUS>(rand48) < 0.5){
    			//Transition to STABLE CONTACT
    			xmemory->stable_contact = 1;
+            //TODO: Here we should ALSO message LTo
+            //to begin upregulation of adhesion molecules
    		}
 
 
@@ -268,91 +271,97 @@ __FLAME_GPU_FUNC__ int ltin_random_move(xmachine_memory_LTin* xmemory,
 }
 
 __FLAME_GPU_FUNC__ int ltin_adhesion(xmachine_memory_LTin* agent, RNG_rand48* rand48){
+    //Placeholder transition for movement between states
+    //This transition logic is performed in the XMLModelFile.xml
 	return 0;
 }
 
 __FLAME_GPU_FUNC__ int ltin_localised_move(xmachine_memory_LTin* agent, RNG_rand48* rand48){
+    //Move locally around the LTo cell.
+
+    //If escape becomes more likely
+    if(0){
+        agent->stable_contact = 0;
+    }
 	return 0;
 }
 
 __FLAME_GPU_FUNC__ int express(xmachine_memory_LTo* xmemory,
 							   xmachine_message_location_list* location_messages)
 {
-	float x = xmemory->x;
-	float y = xmemory->y;
-	add_location_message(location_messages, x, y, 0.0, LTO_AGENT_TYPE);
+	add_location_message(location_messages,
+        xmemory->x,
+        xmemory->y,
+        0.0,
+        LTO_AGENT_TYPE
+    );
     
     return 0;
 }
 
-__device__ int searchOutwards(int i){
-    return (i % 2 == 0 ? i/2 : -(i/2+1)); //index lookup here
+/**
+ *  Perform generic cell division:
+ */
+__FLAME_GPU_FUNC__ int divide(xmachine_memory_LTo* agent,
+    xmachine_memory_LTo_list* LTo_agents,
+    RNG_rand48* rand48){
+
+    float x = agent->x - LTO_CELL_SIZE * 2;
+    float y = agent->y + rnd<CONTINUOUS>(rand48);
+
+    add_LTo_agent(LTo_agents, x, y, LTO_AGENT_TYPE);
+
+    return 0;
 }
 
-/*
- * This cell division is performed on the device
- * The cell *creates* a new cell by division.
- *
- * TODO: currently if there is no free location within messaging RADIUS, then no new cell is added.
- * Can this be done by adjusting x,y values in get_first_location_message?
- * Ideally, we need to EXPAND the search space RADIUS if this occurs.
- *
- * N.B. This method will NOT avoid cells that have been placed in the SAME timestep
- * TOODO: this should be come a sequential step function!
+/**
+ *  Output forces, to help resolve overlapping states
  */
-__FLAME_GPU_FUNC__ int divide(xmachine_memory_LTo* agent, xmachine_memory_LTo_list* LTo_agents,
-    xmachine_message_location_list* location_messages, xmachine_message_location_PBM* partition_matrix)
-{
-    //There are 60 steps per hour, we divide ever 12 hours
-    /*if((SIM_STEP % (60 * 12)) != 0){
-        return 0;
-    }*/
-    if(SIM_STEP % (10) != 0){
-        return 0;
-    }
+__FLAME_GPU_FUNC__ int output_force(xmachine_memory_LTo* agent, xmachine_message_force_list* force_messages){
+    add_force_message(force_messages,
+        agent->x,
+        agent->y,
+        0.0
+    );
 
-    //Radius * 2 + 1 for origin: C++ does not allow variable length arrays!
-    //TODO, allocate somehow using calculated values.
-    //const int radius = ADHESION_DISTANCE_THRESHOLD + 1;
-    int occupied[5][5] = {0};
+    return 0;
+}
 
-    //Search within radius for cell positions and place accordingly:
-    //Use Expression Messages to determine location of other LTo cells:
-    xmachine_message_location* message = get_first_location_message(location_messages, partition_matrix,
-        agent->x, agent->y, 0.0);
+/**
+ *  Resolve overlapping states
+ */
+__FLAME_GPU_FUNC__ int resolve(xmachine_memory_LTo* agent,
+    xmachine_message_force_list* force_messages,
+    xmachine_message_force_PBM* partition_matrix){
 
+    int cells_above = 0;
+    int cells_below = 0;
+
+    xmachine_message_force* message = get_first_force_message(
+        force_messages, partition_matrix,
+        agent->x, agent->y, 0
+    );
+
+    //Iterate through these messages:
     while(message){
-        int x_diff = (agent->x - message->x) / LTO_CELL_SIZE;
-        int y_diff = (agent->y - message->y) / LTO_CELL_SIZE;
-
-        occupied[x_diff + 2][y_diff + 2] = 1;
-
-        message = get_next_location_message(message, location_messages, partition_matrix);
-    }
-
-    //This may seem an unusual way to index:
-    //But we want to ensure the cell is as close to the center of the array as possible!
-    for(int x = 0; x < 5; x++){
-        int x_offset = searchOutwards(x);
-        for(int y = 0; y < 5; y++){
-            int y_offset = searchOutwards(y);
-
-            if(!occupied[x_offset + 2][y_offset + 2]){
-                int relative_x = x_offset * LTO_CELL_SIZE;
-                int relative_y = y_offset * LTO_CELL_SIZE;
-
-                float x = agent->x + __int2float_rn(relative_x);
-                float y = agent->y + __int2float_rn(relative_y);
-                printf("x: %f, new x: %f, offset: %d\n", agent->x, x, x_offset);
-                printf("y: %f, new y: %f, offset: %d\n", agent->y, y, y_offset);
-
-                add_LTo_agent(LTo_agents, x, y, LTO_AGENT_TYPE);
-
-                return 0;
-            }
+        //calculate how to resolve the positions!
+        if(agent->y < message->y){
+            cells_above++;
+        }else{
+            cells_below++;
         }
+
+        message = get_next_force_message(message, force_messages, partition_matrix);
     }
 
+    float y_diff = (cells_below * LTO_CELL_SIZE) - (cells_above * LTO_CELL_SIZE);
+    agent->y += y_diff;
+    agent->y = fmod(agent->y, float(CIRCUMFERENCE));
+
+    return 0;
+}
+
+__FLAME_GPU_FUNC__ int resolved(xmachine_memory_LTo* agent){
     return 0;
 }
 

@@ -286,9 +286,9 @@
 							<state>expression</state>
 						</gpu:xagentOutput>
 					</xagentOutputs>
-						<condition><lhs><value>0.0</value></lhs><operator>==</operator><rhs><condition><lhs><value>SIM_STEP</value></lhs><operator>%</operator><rhs><value>720.0</value></rhs></condition></rhs></condition>
+						<condition><lhs><value>0</value></lhs><operator>==</operator><rhs><condition><lhs><value>SIM_STEP</value></lhs><operator>%</operator><rhs><value>720</value></rhs></condition></rhs></condition>
 					<gpu:reallocate>false</gpu:reallocate>
-					<gpu:RNG>false</gpu:RNG>
+					<gpu:RNG>true</gpu:RNG>
 				</gpu:function>
 				<gpu:function>
 					<name>resolve</name>
@@ -400,7 +400,7 @@
 				</gpu:variable>
 			</variables>
 			<gpu:partitioningSpatial>
-				<gpu:radius>4</gpu:radius>
+				<gpu:radius>2</gpu:radius>
 				<gpu:xmin>0</gpu:xmin>
 				<gpu:xmax>7304</gpu:xmax>
 				<gpu:ymin>0</gpu:ymin>
