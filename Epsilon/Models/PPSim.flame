@@ -62,12 +62,27 @@
     <memory name="colour"/>
     <states name="expression">
       <transitions name="express" outputs="//@messages.0" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0"/>
-      <transitions name="divide" inputs="//@messages.0" differentiation="//@agents.2/@differentiation.0" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0"/>
+      <transitions name="divide" differentiation="//@agents.2/@differentiation.0" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.5">
+        <condition>
+          <lhs xsi:type="FLAME:LiteralEval" value="0.0"/>
+          <rhs xsi:type="FLAME:ConditionEval">
+            <value operator="Modulo">
+              <lhs xsi:type="FLAME:VariableEval" value="//@variables.21"/>
+              <rhs xsi:type="FLAME:LiteralEval" value="720.0"/>
+            </value>
+          </rhs>
+        </condition>
+      </transitions>
     </states>
     <states name="adhesion_upregulation"/>
     <states name="chemokine_upregulation"/>
     <states name="mature"/>
     <states name="downregulated"/>
+    <states name="resolve">
+      <transitions name="resolve" inputs="//@messages.1" nextState="//@agents.2/@states.5"/>
+      <transitions name="resolved" nextState="//@agents.2/@states.0"/>
+      <transitions name="output_force" outputs="//@messages.1" nextState="//@agents.2/@states.5"/>
+    </states>
     <differentiation agent="//@agents.2" state="//@agents.2/@states.0"/>
   </agents>
   <messages name="location" description="A message holding the type and location of a cell" partitioning="//@partitions.0" bufferSize="1024">
@@ -76,8 +91,16 @@
     <variables name="z" type="Float"/>
     <variables name="cell_type"/>
   </messages>
+  <messages name="force" description="" partitioning="//@partitions.1" bufferSize="1024">
+    <variables name="x"/>
+    <variables name="y"/>
+    <variables name="z"/>
+  </messages>
   <layers order="2" functions="//@agents.1/@states.0/@transitions.0 //@agents.0/@states.0/@transitions.1"/>
   <layers order="1" functions="//@agents.2/@states.0/@transitions.0"/>
   <layers order="3" functions="//@agents.0/@states.0/@transitions.0 //@agents.2/@states.0/@transitions.1"/>
+  <layers order="4"/>
+  <layers order="5"/>
+  <partitions xsi:type="FLAME:SpatialPartition" radius="4" xmin="0" xmax="7304" ymin="0" ymax="256" zmin="0" zmax="4"/>
   <partitions xsi:type="FLAME:SpatialPartition" radius="4" xmin="0" xmax="7304" ymin="0" ymax="256" zmin="0" zmax="4"/>
 </FLAME:Simulation>

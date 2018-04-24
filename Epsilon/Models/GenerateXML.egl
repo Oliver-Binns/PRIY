@@ -82,8 +82,8 @@
 						[%}%]
 					</xagentOutputs>
 					[%}
-						if(transition.condition.isDefined()){%]
-					[%=transition.condition.toXML()%]
+					if(transition.condition.isDefined()){%]
+						[%=transition.condition.toXML(agent)%]
 					[%}%]
 					<gpu:reallocate>[%=transition.reallocate%]</gpu:reallocate>
 					<gpu:RNG>[%=transition.randomGenerator%]</gpu:RNG>
@@ -156,8 +156,8 @@
 </gpu:xmodel>
 
 [%
-operation Condition toXML(){
-	var str = "<condition><lhs>" + self.lhs.toXML()
+operation Condition toXML(agent: Agent){
+	var str = "<condition><lhs>" + self.lhs.toXML(agent)
 	+ "</lhs><operator>";
 
 	switch(self.operator){
@@ -185,17 +185,20 @@ operation Condition toXML(){
 	}
 
 	str += "</operator><rhs>"
-	+ self.rhs.toXML()
+	+ self.rhs.toXML(agent)
 	+ "</rhs></condition>";
 	return str;
 }
-operation ConditionEval toXML(){
-	return self.value.toXML();
+operation ConditionEval toXML(agent: Agent){
+	return self.value.toXML(agent);
 }
-operation LiteralEval toXML(){
+operation LiteralEval toXML(agent: Agent){
 	return "<value>" + self.value.toString() + "</value>";
 }
-operation VariableEval toXML(){
-	return "<agentVariable>" + self.value.name + "</agentVariable>";
+operation VariableEval toXML(agent: Agent){
+	if (agent.memory.contains(self)){
+		return "<agentVariable>" + self.value.name + "</agentVariable>";
+	}
+	return "<value>" + self.value.name + "</value>";
 }
 %]
