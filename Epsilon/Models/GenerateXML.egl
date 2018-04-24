@@ -196,7 +196,7 @@ operation LiteralEval toXML(agent: Agent){
 	return "<value>" + self.value.toString() + "</value>";
 }
 operation VariableEval toXML(agent: Agent){
-	if (agent.memory.contains(self)){
+	if (agent.memory.contains(self.value)){
 		return "<agentVariable>" + self.value.name + "</agentVariable>";
 	}
 	return "<value>" + self.value.name + "</value>";

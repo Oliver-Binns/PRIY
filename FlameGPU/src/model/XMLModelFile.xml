@@ -161,7 +161,7 @@
 					<name>ltin_adhesion</name>
 					<currentState>ltin_random_movement</currentState>
 					<nextState>localised_movement</nextState>
-						<condition><lhs><value>1.0</value></lhs><operator>==</operator><rhs><value>stable_contact</value></rhs></condition>
+						<condition><lhs><value>1.0</value></lhs><operator>==</operator><rhs><agentVariable>stable_contact</agentVariable></rhs></condition>
 					<gpu:reallocate>true</gpu:reallocate>
 					<gpu:RNG>true</gpu:RNG>
 				</gpu:function>
@@ -299,15 +299,15 @@
 							<messageName>force</messageName>
 						</gpu:input>
 					</inputs>
-					<gpu:reallocate></gpu:reallocate>
-					<gpu:RNG></gpu:RNG>
+					<gpu:reallocate>false</gpu:reallocate>
+					<gpu:RNG>false</gpu:RNG>
 				</gpu:function>
 				<gpu:function>
 					<name>resolved</name>
 					<currentState>resolve</currentState>
 					<nextState>expression</nextState>
-					<gpu:reallocate></gpu:reallocate>
-					<gpu:RNG></gpu:RNG>
+					<gpu:reallocate>false</gpu:reallocate>
+					<gpu:RNG>false</gpu:RNG>
 				</gpu:function>
 				<gpu:function>
 					<name>output_force</name>
@@ -319,8 +319,8 @@
 							<gpu:type>single_message</gpu:type>
 						</gpu:output>
 					</outputs>
-					<gpu:reallocate></gpu:reallocate>
-					<gpu:RNG></gpu:RNG>
+					<gpu:reallocate>false</gpu:reallocate>
+					<gpu:RNG>false</gpu:RNG>
 				</gpu:function>
 			</functions>
 			<states>

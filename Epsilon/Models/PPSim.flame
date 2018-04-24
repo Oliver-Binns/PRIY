@@ -79,9 +79,9 @@
     <states name="mature"/>
     <states name="downregulated"/>
     <states name="resolve">
-      <transitions name="resolve" inputs="//@messages.1" nextState="//@agents.2/@states.5"/>
-      <transitions name="resolved" nextState="//@agents.2/@states.0"/>
-      <transitions name="output_force" outputs="//@messages.1" nextState="//@agents.2/@states.5"/>
+      <transitions name="resolve" inputs="//@messages.1" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.5"/>
+      <transitions name="resolved" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0"/>
+      <transitions name="output_force" outputs="//@messages.1" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.5"/>
     </states>
     <differentiation agent="//@agents.2" state="//@agents.2/@states.0"/>
   </agents>
