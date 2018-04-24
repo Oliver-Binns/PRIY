@@ -87,6 +87,7 @@ class Transition extends UniqueNamed{
 
 abstract class Evaluation{}
 class LiteralEval extends Evaluation{
+	attr Boolean is_float;
 	attr Float value;
 }
 class VariableEval extends Evaluation{

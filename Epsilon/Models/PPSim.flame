@@ -34,7 +34,7 @@
     <states name="ltin_random_movement">
       <transitions name="ltin_adhesion" reallocate="true" randomGenerator="true" nextState="//@agents.0/@states.1">
         <condition>
-          <lhs xsi:type="FLAME:LiteralEval" value="1.0"/>
+          <lhs xsi:type="FLAME:LiteralEval" is_float="true" value="1.0"/>
           <rhs xsi:type="FLAME:VariableEval" value="//@agents.0/@memory.4"/>
         </condition>
       </transitions>
@@ -62,13 +62,13 @@
     <memory name="colour"/>
     <states name="expression">
       <transitions name="express" outputs="//@messages.0" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0"/>
-      <transitions name="divide" differentiation="//@agents.2/@differentiation.0" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.5">
+      <transitions name="divide" differentiation="//@agents.2/@differentiation.0" reallocate="false" randomGenerator="true" nextState="//@agents.2/@states.5">
         <condition>
-          <lhs xsi:type="FLAME:LiteralEval" value="0.0"/>
+          <lhs xsi:type="FLAME:LiteralEval" is_float="false" value="0.0"/>
           <rhs xsi:type="FLAME:ConditionEval">
             <value operator="Modulo">
               <lhs xsi:type="FLAME:VariableEval" value="//@variables.21"/>
-              <rhs xsi:type="FLAME:LiteralEval" value="720.0"/>
+              <rhs xsi:type="FLAME:LiteralEval" is_float="false" value="720.0"/>
             </value>
           </rhs>
         </condition>
@@ -78,12 +78,12 @@
     <states name="chemokine_upregulation"/>
     <states name="mature"/>
     <states name="downregulated"/>
-    <states name="resolve">
-      <transitions name="resolve" inputs="//@messages.1" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.5"/>
+    <states name="lto_resolve">
+      <transitions name="resolve" inputs="//@messages.1" reallocate="true" randomGenerator="false" nextState="//@agents.2/@states.5"/>
       <transitions name="resolved" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0"/>
       <transitions name="output_force" outputs="//@messages.1" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.5"/>
     </states>
-    <differentiation agent="//@agents.2" state="//@agents.2/@states.0"/>
+    <differentiation agent="//@agents.2" state="//@agents.2/@states.5"/>
   </agents>
   <messages name="location" description="A message holding the type and location of a cell" partitioning="//@partitions.0" bufferSize="1024">
     <variables name="x" type="Float"/>

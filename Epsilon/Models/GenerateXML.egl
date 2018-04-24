@@ -193,7 +193,11 @@ operation ConditionEval toXML(agent: Agent){
 	return self.value.toXML(agent);
 }
 operation LiteralEval toXML(agent: Agent){
-	return "<value>" + self.value.toString() + "</value>";
+	var val = self.value;
+	if(not self.is_float){
+		val = val.floor();
+	}
+	return "<value>" + val.toString() + "</value>";
 }
 operation VariableEval toXML(agent: Agent){
 	if (agent.memory.contains(self.value)){

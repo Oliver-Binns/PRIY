@@ -279,11 +279,11 @@
 				<gpu:function>
 					<name>divide</name>
 					<currentState>expression</currentState>
-					<nextState>resolve</nextState>
+					<nextState>lto_resolve</nextState>
 					<xagentOutputs>
 						<gpu:xagentOutput>
 							<xagentName>LTo</xagentName>
-							<state>expression</state>
+							<state>lto_resolve</state>
 						</gpu:xagentOutput>
 					</xagentOutputs>
 						<condition><lhs><value>0</value></lhs><operator>==</operator><rhs><condition><lhs><value>SIM_STEP</value></lhs><operator>%</operator><rhs><value>720</value></rhs></condition></rhs></condition>
@@ -292,27 +292,27 @@
 				</gpu:function>
 				<gpu:function>
 					<name>resolve</name>
-					<currentState>resolve</currentState>
-					<nextState>resolve</nextState>
+					<currentState>lto_resolve</currentState>
+					<nextState>lto_resolve</nextState>
 					<inputs>
 						<gpu:input>
 							<messageName>force</messageName>
 						</gpu:input>
 					</inputs>
-					<gpu:reallocate>false</gpu:reallocate>
+					<gpu:reallocate>true</gpu:reallocate>
 					<gpu:RNG>false</gpu:RNG>
 				</gpu:function>
 				<gpu:function>
 					<name>resolved</name>
-					<currentState>resolve</currentState>
+					<currentState>lto_resolve</currentState>
 					<nextState>expression</nextState>
 					<gpu:reallocate>false</gpu:reallocate>
 					<gpu:RNG>false</gpu:RNG>
 				</gpu:function>
 				<gpu:function>
 					<name>output_force</name>
-					<currentState>resolve</currentState>
-					<nextState>resolve</nextState>
+					<currentState>lto_resolve</currentState>
+					<nextState>lto_resolve</nextState>
 					<outputs>
 						<gpu:output>
 							<messageName>force</messageName>
@@ -340,7 +340,7 @@
 					<name>downregulated</name>
 				</gpu:state>
 				<gpu:state>
-					<name>resolve</name>
+					<name>lto_resolve</name>
 				</gpu:state>
 				<initialState>expression</initialState>
 			</states>
@@ -400,7 +400,7 @@
 				</gpu:variable>
 			</variables>
 			<gpu:partitioningSpatial>
-				<gpu:radius>2</gpu:radius>
+				<gpu:radius>4</gpu:radius>
 				<gpu:xmin>0</gpu:xmin>
 				<gpu:xmax>7304</gpu:xmax>
 				<gpu:ymin>0</gpu:ymin>
