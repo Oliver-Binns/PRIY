@@ -61,9 +61,9 @@ __FLAME_GPU_INIT_FUNC__ void setConstants(){
 	set_LENGTH(&LENGTH);
 	float STROMAL_CELL_DENSITY = 0.2f;
 	set_STROMAL_CELL_DENSITY(&STROMAL_CELL_DENSITY);
-	float PERCENT_LTIN_FROM_FACS = 0.45f;
+	float PERCENT_LTIN_FROM_FACS = 0.0045f;
 	set_PERCENT_LTIN_FROM_FACS(&PERCENT_LTIN_FROM_FACS);
-	float PERCENT_LTI_FROM_FACS = 0.37;
+	float PERCENT_LTI_FROM_FACS = 0.0037;
 	set_PERCENT_LTI_FROM_FACS(&PERCENT_LTI_FROM_FACS);	
 }
 
@@ -142,11 +142,22 @@ __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
     //TODO: refactor LTi, LTin migration to share code, if possible:
 	//CREATE LTis:
 	// Can create upto h_agent_AoS_MAX agents in a single pass (the number allocated for) but the full amount does not have to be created.
-	unsigned int lti_migration_rate = 5;
-	// It is sensible to check if it is possible to create new agents, and if so how many.
+    const float spaces = (float)(*get_LENGTH() * *get_CIRCUMFERENCE() / *get_LTI_CELL_SIZE());
+    const float steps_24h = 24.0f * 60.0f;
+
+	const float lti_migration_rate = spaces * *get_PERCENT_LTI_FROM_FACS() / steps_24h;
+    unsigned int lti_to_add = 0;
+    if(lti_migration_rate > 1){
+        lti_to_add = floor(lti_migration_rate);
+    }else if((step % 100) > (lti_migration_rate * 100)){
+        //^ modulo with 100 for Percentage:
+        lti_to_add = 1;
+    }
+    
+    // It is sensible to check if it is possible to create new agents, and if so how many.
 	unsigned int agent_remaining = get_agent_LTi_MAX_count() - get_agent_LTi_lti_random_movement_count();
 	if (agent_remaining > 0) {
-		unsigned int count = (lti_migration_rate > agent_remaining) ? agent_remaining: lti_migration_rate;
+		unsigned int count = (lti_to_add > agent_remaining) ? agent_remaining: lti_to_add;
 		xmachine_memory_LTi** agents = h_allocate_agent_LTi_array(count);
         // Populate data as required
 		for (unsigned int i = 0; i < count; i++) {
@@ -163,11 +174,18 @@ __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
 
 	//Create LTins:
 	// Can create upto h_agent_AoS_MAX agents in a single pass (the number allocated for) but the full amount does not have to be created.
-	unsigned int ltin_migration_rate = 5;
+	const float ltin_migration_rate = spaces * *get_PERCENT_LTIN_FROM_FACS() / steps_24h;
+    unsigned int ltin_to_add = 0;
+    if(ltin_migration_rate > 1){
+        ltin_to_add = floor(ltin_migration_rate);
+    }else if((step % 100) > (ltin_migration_rate * 100)){
+        //^ modulo with 100 for Percentage:
+        ltin_to_add = 1;
+    }
 	// It is sensible to check if it is possible to create new agents, and if so how many.
 	agent_remaining = get_agent_LTin_MAX_count() - get_agent_LTin_ltin_random_movement_count();
 	if (agent_remaining > 0) {
-		unsigned int count = (ltin_migration_rate > agent_remaining) ? agent_remaining: ltin_migration_rate;
+		unsigned int count = (ltin_to_add > agent_remaining) ? agent_remaining: ltin_to_add;
         xmachine_memory_LTin** agents = h_allocate_agent_LTin_array(count);
 		// Populate data as required
 		for (unsigned int i = 0; i < count; i++) {
