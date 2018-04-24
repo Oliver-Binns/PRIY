@@ -195,7 +195,7 @@
 				<initialState>ltin_random_movement</initialState>
 			</states>
 			<gpu:type>continuous</gpu:type>
-			<gpu:bufferSize>1024</gpu:bufferSize>
+			<gpu:bufferSize>5530</gpu:bufferSize>
 		</gpu:xagent>
 		<gpu:xagent>
 			<name>LTi</name>
@@ -243,7 +243,7 @@
 				<initialState>lti_random_movement</initialState>
 			</states>
 			<gpu:type>continuous</gpu:type>
-			<gpu:bufferSize>1024</gpu:bufferSize>
+			<gpu:bufferSize>4551</gpu:bufferSize>
 		</gpu:xagent>
 		<gpu:xagent>
 			<name>LTo</name>
@@ -345,7 +345,7 @@
 				<initialState>expression</initialState>
 			</states>
 			<gpu:type>continuous</gpu:type>
-			<gpu:bufferSize>1024</gpu:bufferSize>
+			<gpu:bufferSize>64</gpu:bufferSize>
 		</gpu:xagent>
 	</xagents>
 	
@@ -380,7 +380,7 @@
 				<gpu:zmin>0</gpu:zmin>
 				<gpu:zmax>4</gpu:zmax>
 			</gpu:partitioningSpatial>
-			<gpu:bufferSize>1024</gpu:bufferSize>
+			<gpu:bufferSize>64</gpu:bufferSize>
 		</gpu:message>
 		<gpu:message>
 			<name>force</name>
@@ -408,7 +408,7 @@
 				<gpu:zmin>0</gpu:zmin>
 				<gpu:zmax>4</gpu:zmax>
 			</gpu:partitioningSpatial>
-			<gpu:bufferSize>1024</gpu:bufferSize>
+			<gpu:bufferSize>64</gpu:bufferSize>
 		</gpu:message>
 	</messages>
 	

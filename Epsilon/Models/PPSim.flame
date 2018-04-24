@@ -25,7 +25,7 @@
   <functionFiles>functions.c</functionFiles>
   <initFunctions>setConstants</initFunctions>
   <stepFunctions>migrateNewCells</stepFunctions>
-  <agents name="LTin" initialState="//@agents.0/@states.0" bufferSize="1024">
+  <agents name="LTin" initialState="//@agents.0/@states.0" bufferSize="5530">
     <memory name="x" type="Float"/>
     <memory name="y" type="Float"/>
     <memory name="velocity" type="Float"/>
@@ -44,7 +44,7 @@
       <transitions name="ltin_localised_move" reallocate="true" randomGenerator="true" nextState="//@agents.0/@states.1"/>
     </states>
   </agents>
-  <agents name="LTi" description="" initialState="//@agents.1/@states.0" bufferSize="1024">
+  <agents name="LTi" description="" initialState="//@agents.1/@states.0" bufferSize="4551">
     <memory name="x" type="Float"/>
     <memory name="y" type="Float"/>
     <memory name="velocity" type="Float"/>
@@ -56,7 +56,7 @@
     <states name="contact"/>
     <states name="adhesion"/>
   </agents>
-  <agents name="LTo" initialState="//@agents.2/@states.0" bufferSize="1024">
+  <agents name="LTo" initialState="//@agents.2/@states.0" bufferSize="64">
     <memory name="x" type="Float"/>
     <memory name="y" type="Float"/>
     <memory name="colour"/>
@@ -85,13 +85,13 @@
     </states>
     <differentiation agent="//@agents.2" state="//@agents.2/@states.5"/>
   </agents>
-  <messages name="location" description="A message holding the type and location of a cell" partitioning="//@partitions.0" bufferSize="1024">
+  <messages name="location" description="A message holding the type and location of a cell" partitioning="//@partitions.0" bufferSize="64">
     <variables name="x" type="Float"/>
     <variables name="y" type="Float"/>
     <variables name="z" type="Float"/>
     <variables name="cell_type"/>
   </messages>
-  <messages name="force" description="" partitioning="//@partitions.1" bufferSize="1024">
+  <messages name="force" description="" partitioning="//@partitions.1" bufferSize="64">
     <variables name="x"/>
     <variables name="y"/>
     <variables name="z"/>
