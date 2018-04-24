@@ -14,7 +14,7 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{4608}
+\wordcount{4695}
 
 
 %Approx 500 Words
@@ -141,7 +141,7 @@ These engineering techniques help to clearly show how the simulation is derived 
 \gls{abm} has been successfully used to simulate biological systems and develop new scientific knowledge\cite{kieran_thesis, flame_keratinocyte}.
 While traditional mathematical-based models are generally much more efficient to compute and produce good results when exploring how biological factors effect populations as a whole, \gls{abm} is particularly useful when considering how individuals and their interactions produce emergent system behaviour.
 Mathematical-based models are limited in this aspect as they assume that each individual within the population is identical.
-\gls{abm} explicitly represents each individual, meaning these can be independent, with state and attributes, and fully autonomous.
+\gls{abm} explicitly represents each individual, meaning these can have state and attributes and are independent and fully autonomous.
 %see Keratinocyte, Kieran's thesis..!
 Unfortunately, these agent-based simulations require significantly more compute resources, thus taking a long time to run, particularly as simulations become more and more complex.
 
@@ -149,12 +149,12 @@ Here, and throughout this report, the term complexity does not necessarily refer
 Rather, we discuss simulations that are made up of lots of simple components that interact with each other and the environment in such a way that the system behaviour is so elaborate that it can only be predicted by running the simulation.
 
 As these simulations often contain large quantities of non-deterministic behaviour, numerous runs are required to ensure that results are statistically significant.
-Consequently, it is important to ensure that the simulations make efficient use of the available of the available compute resources in order to gather these results in a reasonable amount of time.
+Consequently, it is important to ensure that the simulations make efficient use of the available of the available compute resources, in order to gather these results in a reasonable amount of time.
 This is one of the most significant constraints upon the current use of agent-based simulations within biological research.
 
 Another constraint affecting the adoption of \gls{abm} simulations is the ease with which they can be created.
 At present, domain experts with knowledge of a particular biological system produce domain models of the system.
-These domain models are then converted into platform models, with the aid of software developers.
+With the aid of software developers, these domain models are then converted into platform models.
 The domain experts verify that the platform models are reasonable abstraction of the system, and they are implemented in code by the software developers.
 This is the \gls{cosmos} process (Fig. \ref{fig:cosmos_process}).
 
@@ -165,9 +165,8 @@ This is the \gls{cosmos} process (Fig. \ref{fig:cosmos_process}).
 \label{fig:cosmos_process}
 \end{figure}
 
-The skills shortage is the current bottleneck in the adoption of the CoSMoS process.
-If the development process can be automated by creating general solutions for common biological processes, such as cell division, it will allow simulations to be created more easily.
-
+A shortage of software developers who are proficient at creating efficient, parallel simulations is the current bottleneck in the adoption of the \gls{abm} simulations of processes.
+If this development process can be automated by creating general solutions for common biological processes, such as cell division, it will allow simulations to be created by domain experts.
 %this report discusses limitations, that are preventing this process being used to its full potential
 %and explores potential solutions to this..!
 
@@ -178,17 +177,17 @@ If the development process can be automated by creating general solutions for co
 \section{Motivation}
 %What can be gained from better modelling.. particularly biology..?
 %Presentation- see justification slides!
-The motivation behind this project is the new knowledge that could be gained from the ability to create efficient parallel biological simulations more easily.
-While many biological systems can not be fully studied \gls{in-vitro}, simulations can provide a valid alternative.
+The motivation behind this project stems from the new knowledge that could be gained from the ability to easily create efficient, parallel biological simulations.
+As many biological systems cannot be fully studied \gls{in-vitro}, simulations can provide a valid alternative.
 Indeed previous work has been used to produce novel biological hypotheses which have been shown to be statistically similar to those observed in the laboratory\cite[p.174]{kieran_thesis}.
 
 %do we need citations/examples here if we are going to discuss this in more detail later on?
 %is it ok to reference a later chapter?
 However, these previous simulations of biological systems have had to make significant trade-offs in their implementation.
-For example, 3D environments have had to be mapped into 2-dimensions, cell migration into the system is random rather than systematic, and environmental growth has been ignored\cite{phil_diss}.
+For example, 3D environments have had to be mapped into 2-dimensional simulations, cell migration into the system has been modelled as random rather than systematic\cite{kieran_thesis}, and environmental growth has been ignored\cite{phil_diss}.
 %number of cell types have been reduced
 The impact that these trade-offs have on the validity of the platform model as a representation of the domain is currently unknown.
-Work in this area is needed to help reduce the number of trade-offs needed when designing platform models for simulations.
+This project aims to help reduce the number of trade-offs needed when designing platform models for simulations.
 %can also increase the scale of the simulation
 
 %outside of biological exploration, new understanding can..?
@@ -228,7 +227,7 @@ This report details the work done throughout the project and
 \begin{enumerate}
     \item Chapter \ref{lit_review} gives an overview of simulations and the benefits and limitations of their use particularly with regard to computational biology.
    %\item Chapter \ref{improvements} explores some of the limitations of simulations in additional detail and proposes future solutions for these.
-    \item Chapter \ref{methods} details the development of an improved, inherently parallel, implementation of PPSim (PPSim v2) and the \gls{mde} tools that were developed to aid this work.
+    \item Chapter \ref{methods} details the development of an improved, inherently parallel, implementation of PPSim (\textit{PPSim v2}) and the \gls{mde} tools that were developed to aid this work.
     \item Chapter \ref{results} evaluates the progress that this project has made towards making \textbf{fast}, parallel simulations more \textbf{accessible}.
 \end{enumerate}
 
@@ -248,20 +247,24 @@ This report details the work done throughout the project and
 \section{Simulation}
 \label{simulation}
 %Background, what are simulations used for generally
-Simulations are model-based imitations of a system which feature its key characteristics and behaviours. Computer simulations are used in a wide range of disciplines on applications such as video games, medicine, product development and even nuclear weapons.
+Simulations are model-based imitations of a system which feature its key characteristics and behaviours.
+The system being modelled is refered to as the domain, while this simulation is known as the platform.
+Computer simulations are used in a wide range of disciplines on applications such as video games, medicine, product development and even nuclear weapons.
 
-The models of systems used in simulations may have a varying amounts of abstraction. Simulations used for teaching will likely have models which remove significant amounts of complexity from the system. Removing complexity from the original system can also help to reduce the time it takes to run the simulation, a key focus of this project. Simulations used for video games tend to be as realistic as possible as realism has been shown to produce a higher level of immersion\cite{realism_immersion}, a highly desirable attribute of games.
-
+The models of systems used in simulations may have a varying amounts of abstraction.
+Simulations used for teaching will likely have models which remove significant amounts of complexity from the system.
+Using abstraction to remove some of the complexity present in the domain can also help to reduce the time it takes to run the simulation, a key focus of this project.
+Simulations used for video games tend to be as realistic as possible as realism has been shown to produce a higher level of immersion\cite{realism_immersion}, a highly desirable attribute of games.
 %mention speculation that we live in a simulation? - simulation hypothesis, The Matrix, Elon Musk
 
 %ABM...
-In particular this project will focus on simulations created using \gls{abm}.
+In particular this project will focus on simulations created using \acrfull{abm}.
 \gls{abm} is a technique that explores the autonomous behaviour and interaction between a number of individuals, known as agents.
 The aim of this is to show how the individuals' behaviours interact to produce the system as a whole.
 This is in contrast to more traditional mathematical top-down models which consist of a set of equations which establish relationships between a set of variables.
 
-This chapter begins by outlining the benefits and current limitations of using simulations generally.
-It then discusses some potential solutions to some of these limitations before applying this to some of the existing simulations that have been developed.
+This chapter begins by outlining the benefits and current limitations of using simulations \textit{generally}.
+It then discusses some potential solutions to some of these limitations before applying this to some of the existing simulations that have been developed using \gls{abm}.
 
 \subsection{Benefits}
 \subsubsection{Feasibility}
@@ -271,7 +274,8 @@ For example, car racing games are significantly cheaper and safer than real life
 
 Real-world scientific testing may not be feasible for a number of reasons.
 Simulating the aerodynamics of new car designs virtually is far quicker and cheaper than creating multiple different prototypes for physical tests.
-Morality may be a factor, animal testing for cosmetic products or medicine is a good example of this. With nuclear weapons, legality is a key issue, as some weapon testing is banned under a number of global treaties\cite{partial_nuclear_test_ban_treaty, threshold_test_ban_treaty}.
+Morality may be a factor, a good example of this is animal testing for cosmetic products or medicine.
+With nuclear weapons, legality too is a key issue, as some weapon testing is banned under a number of global treaties\cite{partial_nuclear_test_ban_treaty, threshold_test_ban_treaty}.
 Finally, some real-world tests may be too dangerous to perform, such as in the case of invasive medical examinations.
 %SO WHAT? %POINT, EVIDENCE, EXPLANATION:
 In all of these examples, computer simulation is routinely used to reduce or replace real-world testing.
@@ -281,16 +285,26 @@ In all of these examples, computer simulation is routinely used to reduce or rep
 Reducing complexity through abstraction allows better understanding of the system to be gained as the complexity may initially be overwhelming.
 %Removing complexity can help with understanding by removing aspects of the system that are not absolutely essential to the functionality being demonstrated.
 
+%todo: talk about abstracting to appropriate layers..
+%   clearly we only want to simulate the individuals at the level we are interested in
+%   i.e. we obviously don't want to simulate our models down to the atomic/quantum level, etc.
+
 \subsubsection{Environmental Control}
-Computer simulations allow for the environment to be more easily controlled. The ability to adjust external factors and independent variables that may affect the system on demand can be particularly useful. This ability can be used for illustrating why different variables in system processes are important.
+Computer simulations allow for the environment to be more easily controlled.
+While the initial setup of a realistic environment may be difficult, once this has been achieved the simulations can be run in a known, constant environmental context.
+It can be more easily ensured that the environment remains unaffected by any external factors.
+The ability to adjust external factors and independent variables that may affect the system on demand can also be particularly useful.
+This ability can be used for illustrating how different variables affect system processes.
+%GIVE EXAMPLE?
 
-Time can be manipulated to visualise system processes at more reasonable time scales.
-A chemical process that takes a fraction of a second can be slowed down to ensure that it can be seen. 
+%Time can be manipulated to visualise system processes at more reasonable time scales.
+%A chemical process that takes a fraction of a second can be slowed down to ensure that it can be seen. 
 %speed up, reverse the simulation
-
 %easier to measure?
 
-Simulations allow for additional tests to be easily added at a later date. If the researcher wants to discover how an additional variable is related to system behaviour, it can be added and the simulation can be easily re-run.%this is not the case with scientific experimentation, which may need to be fully-re-run
+Furthermore, simulations allow for additional tests to be easily added at a later date.
+For example, if measurements are not made for a particular variable, it can be easily added to the implementation and the simulation can be easily re-run.
+This is not the case with in-vivo experimentation, which would require the laboratory to be fully set-up again, with new test-subjects for repeat experiments.
 
 %clearly simulations may be more feasible but
 %WHY are they a good alternative to real world testing?!
@@ -299,12 +313,20 @@ Simulations allow for additional tests to be easily added at a later date. If th
     %relate this to laws of Physics, theoretical biology?
 
 \subsubsection{Visualisation}
-One of the biggest benefits of simulation is the ability to graphically visualise a system or its constituent parts. Using simulation for visualisation has number of benefits over attempting to demonstrate real world systems. Several of these benefits translate from the previous two sections- they can be more feasible to explore than a real world environment and featuring a reduced complexity can allow the key concepts to be understood without overwhelming the user.
+One of the biggest benefits of simulation is the ability to graphically visualise a system or its constituent parts.
+Using simulation for visualisation has number of benefits over attempting to demonstrate real world systems.
+Several of these benefits translate from the previous two sections- they can be more feasible to explore than a real world environment and featuring a reduced complexity can allow the key concepts to be understood without overwhelming the user.
 
 Simulation can be particularly useful for visualising concepts for education. 
-
-Particularly immersive visualisations can also be produced using virtual and augmented reality. The Virtuali-Tee is an educational tool that uses simulation and augmented reality to provide a view at the body's internal organs\cite{curiscope}. Little Journey aims to reduce kids' anxiety about surgery by providing a realistic tour of their hospital ward given by animated cartoon characters\cite{little_journey}.
+Particularly immersive educational visualisations can also be produced using virtual and augmented reality.
+The Virtuali-Tee is an educational tool that uses simulation and augmented reality to provide a view at the body's internal organs\cite{curiscope}.
+Little Journey aims to reduce kids' anxiety about surgery by providing a realistic tour of their hospital ward given by animated cartoon characters\cite{little_journey}.
 %use a paper to show that these are actually "immersive"
+
+%TODO: visualisations using the CPU are VERY computationally expensive
+
+%visualisations from the given models may not be fully accurate / may be misleading:
+%   often only time-series or single-time data is available to calibrate and test the simulation..!
 
 \subsection{Limitations and Constraints}
 %ARE THERE ANY CONS?
@@ -321,7 +343,7 @@ In order for the model to the be faithful to its original domain it must be able
 A lack of knowledge regarding the domain of the simulation is one of the most significant constraints regarding its implementation.
 If this is the case, the model produced may be incorrect or abstractions may remove necessary detail required for the system to function as expected.
 Unfaithful models can also be a result of \textit{incorrect} knowledge of the domain.
-For complex systems, having too many abstractions from the original domain may also invalidate the model and produce incorect results\cite[p.8]{cosmos}.
+For complex systems, having too many abstractions from the original domain may also invalidate the model and produce incorrect results\cite[p.8]{cosmos}.
 
 While knowledge of a system needs to be sufficient to produce reasonable assumptions, it need not be perfect.
 This is particularly the case with the type of simulation discussed later in this report.
@@ -347,9 +369,13 @@ Powerful hardware is expensive to access, so this may be a significant constrain
 
 \subsubsection{Skills Shortage}
 \label{skills_shortage}
-The previous section discussed reliance that complex simulations have on advanced hardware. However, advanced hardware alone will not necessarily allow a simulation to compute in a reasonable amount of time. 
+The previous section discussed reliance that complex simulations have on the latest advanced hardware capabilities.
+However, advanced hardware alone will not necessarily allow a simulation to compute in a reasonable amount of time. 
 %mention the concurrency- free lunch is over article findings
-With modern architectures which are becoming increasingly parallel, the simulation code must be tailored to take advantage of the computing power available. Efficient parallel programs that do this rely on the availability of experienced programmers. May recent studies have highlighted the existance of significant computer science skills shortages, across the world\cite{digital_skills_uk, microsoft_blog}. These skills shortages may be significantly limiting the possibility for cross-disciplinary work to utilise fast, advanced simulations.
+With modern architectures which are becoming increasingly parallel, the simulation code must be tailored to take advantage of the computing power available.
+Efficient parallel programs that do this rely on the availability of experienced programmers.
+May recent studies have highlighted the existance of significant computer science skills shortages, across the world\cite{digital_skills_uk, microsoft_blog}.
+These skills shortages may be significantly limiting the possibility for cross-disciplinary work to utilise fast, advanced simulations.
 
 %Computer science degrees, and related courses and apprenticeships, are proving less popular in recent years
 %These are worrying trends considering the demand for digital skills by employers
@@ -365,10 +391,12 @@ With modern architectures which are becoming increasingly parallel, the simulati
     %Other ongoing project under Kieran's supervision (GUI tool?)
 
 \subsubsection{Bugs}
-As with any form of computer program, mistakes can be made causing bugs to be present in the simulation code. Bugs may cause the simulation to be incorrect meaning any hypotheses and results are based on incorrect data.
-
-This is linked to, but not the same as, having insufficient domain knowledge. Both of these limitations will cause the simulations fail silently, produce incorrect results with no immediately obvious failure[CITE].
+As with any form of computer program, mistakes can be made causing bugs to be present in the simulation code.
+Bugs may cause the simulation to be incorrect meaning any hypotheses and results are based on incorrect data.
+This is linked to, but not the same as, having insufficient domain knowledge.
+Both of these limitations will cause the simulations fail silently, produce incorrect results with no immediately obvious failure[CITE].
 %Failing silently is interesting: no unexpected behaviour.. this should be discussed in more detail
+
 However, while these problems are specific to simulation, they are not dissimilar from the issues that can occur from poorly designed real-world testing.
 %GIVE MORE DETAIL HERE: how can poorly designed in-vitro testing affect results in similar ways?
 %As such, these limitations are no reason to dismiss simulation by themselves
@@ -376,30 +404,26 @@ However, while these problems are specific to simulation, they are not dissimila
 %Here we are talking about refining from an initial model, which we have shown to be correct:
 %This is the same concept as MDE - discussed later!
 If the simulation needs to be safety-critical, developing it using formal methods and refinement may be a good way to ensure that no bugs are introduced in the code.
-%CSP -> OccamPi/Java MASON -> Kieran is currently looking into this
-%Similar to the work described later in this report..
+%CSP -> OccamPi/MASON -> Kieran is currently looking into this
+%Similar to the work described later in this report: model-driven engineering!
 %ensures that artifacts are inline with each other
 
 \section{Improving Simulations}
 \label{improvements}
 %Section on what we need to support complex simulations
 %link this to the previous chapter- discussion on current constraints on simulation:
-Significant constraints on when simulations can be used were discussed in the previous chapter. In order for simulations to become more widely adopted, some of these constraints must be overcome. 
+Significant constraints on when simulations can be used were discussed in the previous chapter.
+In order for simulations to become more widely adopted, some of these constraints must be overcome. 
 In particular, this project focuses on two particular sections of which I believe will have the biggest immediate impact.
-
-Firstly, attempting to overcome the problems provided by the current computing skills shortage. 
-Initial work to help overcome the skills shortage will likely come by providing tools that can automate work done by technical users in order to increase their productivity.
-Eventually, if this technical work can be fully automated, non-technical users will be able to easily create advanced simulations.
-%As these simulations becoming more and more prevalent: tools need developing to allow less technical users to create these simulations easier and run faster...
-
-Secondly, simulations need to be able to generate results in a realistic amount of time.
-As many biological simulations include significant elements of randomness, they must be run a large number of times in order to produce reliable results.
-
 This chapter discusses the potential solutions to each of these problems.
 %which I believe is model-driven engineering
 
+
 \subsection{Ease of Creation}
-Ease of creation (and maintenance) is an important feature for future simulation particularly due to the aforementioned computer science skills shortage (Section \ref{skills_shortage}).
+Firstly, attempting to overcome the problems provided by the shortage of experienced programmers.
+Initial work to help overcome this skills shortage will likely come by providing tools that can automate work done by technical users in order to increase their productivity.
+Eventually, if this technical work can be fully automated, non-technical users will be able to easily create advanced simulations.
+%As these simulations becoming more and more prevalent: tools need developing to allow less technical users to create these simulations easier and run faster...
 
 %person-centric healthcare, custom simulations may be needed
 
@@ -408,13 +432,6 @@ Ease of creation (and maintenance) is an important feature for future simulation
 Many initiatives are being rolled out to address this issue.
 Computing was added to the National Curriculum in 2013\cite{national_curriculum, teacher_training} and numerous technology companies are also creating their own campaigns\cite{apple_education, microsoft_education}.
 It is likely that these will take a number of years to yield results, but should eventually mean that even domain-experts have a basic grasp of code.
-%initiatives are being rolled out
-    %computing as part of the national curriculum
-    %Swift Playgrounds
-    %will likely take a number of years to yield results
-
-    %but should eventually mean that many people have a basic grasp of code, even if they do not take Computer Science
-        %could mean biologist have a better grasp of programming?
 
 \subsubsection{Proprietary Solutions}
 Some proprietary solutions for simulation creation are available.
@@ -435,12 +452,20 @@ As software gets more complex, addition abstraction is generally needed in order
 %EPSILON, benefits of MDE?
 %Domain specific modelling, etc.
 
-\subsubsection{Flexible Modelling}
-Flexible Modelling tools could be a good method for allowing new simulations to be created more easily. Using flexible modelling, non-technical users would be able to create sketches which can be automatically processed by tools into formal models and prototype metamodels\cite{Paige2017}. FlexiSketch is a good example of this and provides a good tool for creating models and metamodels for software development\cite{flexisketch}.
+\paragraph{Epsilon}
+
+\paragraph{Flexible Modelling}
+Flexible Modelling tools could be a good method for allowing new simulations to be created more easily.
+Using flexible modelling, non-technical users would be able to create sketches which can be automatically processed by tools into formal models and prototype metamodels\cite{Paige2017}.
+FlexiSketch is a good example of this and provides a good tool for creating models and metamodels for software development\cite{flexisketch}.
+%however.. flexible modelling is a far off goal here.?
 
 \subsection{Speed Up}
+Simulations need to be able to generate results in a realistic amount of time.
+Many biological simulations include significant elements of randomness meaning must be run a large number of times in order to produce statistically significant results.
+With novel applications attempting to simulate increasingly complex models, it is becoming more and more difficult to ensure that they have reasonable runtimes.
+This section evaluates recent work into achieving faster simulations.
 %discussed compute power above, relate this specifically to biology now!
-%this speed up is needed to keep pace with the additional complexity required.
 %more complexity = more realistic = more data to process and more statistical analyses to evaluate = longer to run
 %additional complexity:
     %person centric healthcare- simulations must be customisable [machine learning paper]
@@ -463,6 +488,9 @@ Already an ongoing area of research..
 Parallelism fundamentally changes the game and allows computers to keep following Moore's law even has engineers are struggling to make transisters ever smaller and smaller\cite{concurrency_revolution}.
 As modern computers tend further towards parallelism to keep providing the speed-ups that have been inherent in the industry over recent years, new parallel algorithms need developing in order to take full advantage of the computing power available.
 
+Managing parallel implementations of algorithms has significant overheads due to the need to transfer data between parallel tasks.
+The different approaches to parallelism make different trade-offs, meaning some may be more suited to a particularly task than others.
+In order to ensure that the gains made by parallelising the task are not overshadowed by the overheads of managing a parallel implementation, the simulation programmer must have sufficient knowledge of the approach being used.
 %Different approaches to parallelism have different tradeoffs- we need to ensure that any gains here are not overshadowed by the overheads of managing a parallel implementation- programming difficulties, data transfer costs, partitioning, reduce phase, etc;
 
 \paragraph{Distributed Systems}
@@ -472,7 +500,7 @@ MapReduce is a programming model that is generally used for processing big data 
 
 \paragraph{\acrshort{cpu} vs \acrshort{gpu}}
 Modern computers provide two main methods for parallelising code.
-We are building on a previous project\cite{phil_diss} which layed the groudwork for this.
+We are building on a previous project\cite{phil_diss} which laid the groudwork for this.
 This previous project outlined the choice between \acrshort{cpu} and \acrshort{gpu} parallelism and makes the case for exploring \acrshort{gpu}s- simplisitically put, this is due to the significantly greater speed ups that can be achieved.
 Indeed it has been shown that \acrshort{gpu} simulation on a standard desktop computer can easily produce performance rates that are better than those of a high-performance computing cluster\cite{flame_simulation}.
 One case study even reduced the time taken for a simulation to be computed from hours on a \acrshort{cpu} to just seconds on a \acrshort{gpu}\cite{flame_keratinocyte}.
@@ -567,10 +595,7 @@ This means that programmers need not be concerned with communication between thr
 
 \subsection{Biological Simulations}
 Computational Biology is a relatively new field of study that has been growing signficantly over the last decade[CITATION NEEDED].
-
 Within Biology, simulation is often required as an alternative to invasive medical testing/animal testing
-
-
 Simulations have even been proposed as a method for exploring a potential set of first principles and mathematics that are specific to biology which could even constitute a new subject- theoretical biology\cite{rise_article}.
 
 \subsubsection{Genome}
@@ -590,29 +615,6 @@ It uses the existing simulation of Peyer's Patch\cite{kieran_thesis} and attempt
 Finally, I propose a new tool, which builds on existing work in order to make this power available to non-technical users.
 %or will I, probably not enough time for this!
 
-%Approx 1500 words for problem description and analysis
-%Approx 2500 words for design and implementation
-\chapter{Methods}
-\label{methods}
-
-%Intro Chapter:
-The chapter details the simulation experiment that has been performed and the development of new tools to aid the implementation of this, and future simulations.
-The experiment involved the development of a new \acrshort{gpu}-based PPSim platform implementation as well as a new tool for mapping and transforming biological models into \gls{FLAME GPU} simulations.
-Having previously established the current difficulties with biological simulation, this chapter also details how these are overcome in the implementation of this project.
-
-\section{Tools}
-This project was developed on a machine running Ubuntu 16.04 with Intel i5 (650 @ 3.20 GHz) and 8GB of RAM.
-The GPU utilised was an NVIDIA GeForce GTX 1050.
-GPU programming utilised the latest version of CUDA (9.1).
-
-In order to produce a working simulation of \gls{PP} formation, I have used an unreleased version (1.5) of \gls{FLAME GPU}.
-As \gls{FLAME GPU} is developed openly, this version is freely available online\cite{flame_github}.
-\gls{FLAME GPU} has been added to the project repository as a submodule, to ensure version compatibility between \gls{FLAME GPU} and PPSim v2.
-
-Eclipse Neon v4.6 and Epsilon v1.4 have been used with Java Runtime Environment 1.8.0 for developing the input XML model for \gls{FLAME GPU}.
-
-Version-control for both the simulation code and this report has been managed through Git and is available on \href{https://github.com/oliver-binns/PRIY.git}{GitHub}. As this is an individual project, Git has been an acceptable solution. If the scope of the project is to expand, it may become necessary to move the modelling section of the development into a more suitable version-control system, such as EMFStore\cite{emf_store} which is specifically designed for models.
-
 \section{The Domain Model}
 The domain model is taken from the existing sequential simulation of Peyer's patch development described in Section \ref{ppsim}.
 This model has been developed according to the \acrshort{cosmos} process\cite{cosmos}.
@@ -623,6 +625,29 @@ Peyer's patches are clusters of cells that form on the lining of the small intes
 In this simulation there are three types of agent which are all types of cells; \gls{LTo}, \gls{LTin} and \gls{LTi}.
 Stationary \gls{LTo} cells 
 %Environment.. 2D Plane- that wraps in the y direction?
+
+%Approx 1500 words for problem description and analysis
+%Approx 2500 words for design and implementation
+\chapter{Methods}
+\label{methods}
+
+%Intro Chapter:
+The chapter details the simulation experiment that has been performed and the development of new tools to aid the implementation of this, and future simulations.
+The experiment involved the development of a new \acrshort{gpu}-based \textit{PPSim v2} platform implementation as well as a new tool for mapping and transforming biological models into \gls{FLAME GPU} simulations.
+Having previously established the current difficulties with biological simulation, this chapter also details how these are overcome in the implementation of this project.
+
+\section{Tools}
+This project was developed on a machine running Ubuntu 16.04 with Intel i5 (650 @ 3.20 GHz) and 8GB of RAM.
+The GPU utilised was an NVIDIA GeForce GTX 1050.
+GPU programming utilised the latest version of CUDA (9.1).
+
+In order to produce a working simulation of \gls{PP} formation, I have used an unreleased version (1.5) of \gls{FLAME GPU}.
+As \gls{FLAME GPU} is developed openly, this version is freely available online\cite{flame_github}.
+\gls{FLAME GPU} has been added to the project repository as a submodule, to ensure version compatibility between \gls{FLAME GPU} and \textit{PPSim v2}.
+
+Eclipse Neon v4.6 and Epsilon v1.4 have been used with Java Runtime Environment 1.8.0 for developing the input XML model for \gls{FLAME GPU}.
+
+Version-control for both the simulation code and this report has been managed through Git and is available on \href{https://github.com/oliver-binns/PRIY.git}{GitHub}. As this is an individual project, Git has been an acceptable solution. If the scope of the project is to expand, it may become necessary to move the modelling section of the development into a more suitable version-control system, such as EMFStore\cite{emf_store} which is specifically designed for models.
 
 \section{The Platform Model}
 In the platform model there is a single \textit{active} \gls{LTo} cell in the centre of the environment.
@@ -734,17 +759,18 @@ Instead, a new hypothesis is that the platform model for the \gls{FLAME GPU} imp
 \section{Further Work}
 \subsection{Peyer's Patch Case Study}
 While the two Peyer's Patch simulations are both derived from the same domain model, there are clearly significant implementation differences between these.
-Future work will need to explore the meaning of these simulations and whether that have any effect on the validity of the model.
+Future work will need to explore the meaning of the differences between simulations and whether that have any effect on their validity against the domain model.
 %explore what the "differences" between the simulations "mean", specifically for PPSim and more generally
 
 %SPARTAN?
+%can we produce any new hypotheses from this?
 
 \subsection{Software Generalisibility}%IS THIS A WORD?
 %Expand project for more powerful cell based simulation
 %allow access to non-technical users
 %flexible modelling
 While the use of Epsilon has allowed for domain experts to be kept involved with the model implementation, there is still a final, most technically challenging, stage of the simulation creation where the agent behaviour is programmed.
-Further work will need to study agent behaviour in these forms of simulation generally.
+Further work will need to study general agent behaviour in these forms of biological simulation.
 The reuse of a previous simulation's implementation of cell division behaviour, has shown that at least some behaviour is common across different simulations.
 The power of \gls{mde} is such that this repeated behaviour should be generalised to reduce the time needed and prevent the mistakes that occur during reimplementation of the similar software features.
 
