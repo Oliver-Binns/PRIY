@@ -99,8 +99,9 @@
   <layers order="2" functions="//@agents.1/@states.0/@transitions.0 //@agents.0/@states.0/@transitions.1"/>
   <layers order="1" functions="//@agents.2/@states.0/@transitions.0"/>
   <layers order="3" functions="//@agents.0/@states.0/@transitions.0 //@agents.2/@states.0/@transitions.1"/>
-  <layers order="4"/>
-  <layers order="5"/>
+  <layers order="4" functions="//@agents.2/@states.5/@transitions.2"/>
+  <layers order="5" functions="//@agents.2/@states.5/@transitions.0"/>
+  <layers order="6" functions="//@agents.2/@states.5/@transitions.1"/>
   <partitions xsi:type="FLAME:SpatialPartition" radius="4" xmin="0" xmax="7304" ymin="0" ymax="256" zmin="0" zmax="4"/>
   <partitions xsi:type="FLAME:SpatialPartition" radius="4" xmin="0" xmax="7304" ymin="0" ymax="256" zmin="0" zmax="4"/>
 </FLAME:Simulation>

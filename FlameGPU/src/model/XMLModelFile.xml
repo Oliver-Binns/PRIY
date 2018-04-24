@@ -435,8 +435,19 @@
 			</gpu:layerFunction>
 		</layer>
 		<layer>
+			<gpu:layerFunction>
+				<name>output_force</name>
+			</gpu:layerFunction>
 		</layer>
 		<layer>
+			<gpu:layerFunction>
+				<name>resolve</name>
+			</gpu:layerFunction>
+		</layer>
+		<layer>
+			<gpu:layerFunction>
+				<name>resolved</name>
+			</gpu:layerFunction>
 		</layer>
 	</layers>
 </gpu:xmodel>
