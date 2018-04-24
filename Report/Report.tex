@@ -14,30 +14,38 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{4695}
+\wordcount{4801}
 
 
 %Approx 500 Words
 \abstract{
-More powerful computers are paving the way for sophisticated simulations of previously underexplored complex biological systems.
+More powerful computers are paving the way for sophisticated simulations of complex biological systems which are inaccessible to live \gls{in-vitro} study.
 \acrlong{abm} has been previously used to implement this type of simulation, showing how the behaviour of a number of individual agents can contribute to the system as a whole.
 
-As advancements in computing tend towards parallelism and distributed systems, these increasingly elaborate simulations must take full advantage of this change in order to be computed in a reasonable time period.
-Creating programs and simulations that make efficient use of this parallelism can be technically challenging. In particular it requires implementing an optimal distribution of tasks over the system and ensuring the integrity of any memory that is shared across multiple threads.
-Some significant problems, including a substantial computer science skills shortage, are slowing down the rate of progress in this area.
+The desire to create larger and more elaborate simulations, while still ensuring results can be obtained in a reasonable amount of time, makes it necessary to use parallel and distributed systems.
+Creating programs and simulations that make efficient use of this parallelism can be technically challenging.
+In particular it requires implementing an optimal distribution of tasks over the system and ensuring the integrity of any memory that is shared across multiple threads.
+Some significant problems, including a computer science skills shortage, are slowing down the rate of progress in this area.
 
-In this project 
-the \gls{FLAME GPU} framework is used to help mitigate some of the difficulties with implementing parallel programs, in order to build on an existing sequential \gls{MASON} simulation.
+This project investigates the challenges and advantages of using a parallel agent-based modelling platform, \gls{FLAME GPU}, by re-implementing an existing sequential simulation of the immune-system, developed using \gls{MASON}.
 During the building of the simulation, I have discovered that it is not trivial to compare between the old and new implementations, due to differences in the frameworks used.
 For this reason, the final comparison will be done directly to the domain model itself.
 
-Finally, I also propose \gls{mde} as a potential short-term solution to the computer science skills shortage, exploring some of the current \gls{mde} technologies for creating simulations and proposing further advancements to these tools for the future.
-These engineering techniques help to clearly show how the simulation is derived from the initial biological domain model. 
+Finally, in order to improve the mapping from the biological domain model to \gls{FLAME GPU} simulation code, I propose a \gls{mde} approach to development.
+This approach reduces the parallel computing skill required to develop \gls{FLAME GPU} implementations and improves traceability from the biological domain to the implementation.
 %add a little bit about the experiments you have carried out (very brief)
 %and a general account of the significant findings (including any drawbacks)
 }
 
-\acknowledgements{I would like to my supervisors, Fiona Polack and Kieran Alden, for their support and guidance throughout this project. I would also like to thank the \gls{FLAME GPU} development team at the University of Sheffield for their help in utilising the latest and pre-released features of this framework.}
+\acknowledgements{
+I would like to thank my supervisors, Fiona Polack and Kieran Alden, for their support and guidance throughout this project.
+\\
+
+I also express my thanks to Richard Paige for his pastoral support throughout this academic year, as well as his help in obtaining access to a suitable \acrshort{gpu} machine.
+\\
+
+Finally, I would also like to thank the \gls{FLAME GPU} development team at the University of Sheffield for their help in utilising the latest and pre-released features of this framework.
+}
 
 \makeglossaries
 \newacronym{abm}{ABM}{Agent-Based Modelling}
@@ -148,9 +156,9 @@ Unfortunately, these agent-based simulations require significantly more compute 
 Here, and throughout this report, the term complexity does not necessarily refer to simulations that contains several components that are difficult to engineer.
 Rather, we discuss simulations that are made up of lots of simple components that interact with each other and the environment in such a way that the system behaviour is so elaborate that it can only be predicted by running the simulation.
 
-As these simulations often contain large quantities of non-deterministic behaviour, numerous runs are required to ensure that results are statistically significant.
-Consequently, it is important to ensure that the simulations make efficient use of the available of the available compute resources, in order to gather these results in a reasonable amount of time.
-This is one of the most significant constraints upon the current use of agent-based simulations within biological research.
+As these simulations often contain non-deterministic behaviour, numerous runs are required to ensure that results are statistically significant.
+Consequently, it is important to ensure that the simulations make efficient use of the available compute resources, in order to gather these results in a reasonable amount of time.
+The inability to obtain simulation results in a reasonable time is one of the most significant constraints upon the current use of agent-based simulations within biological research.
 
 Another constraint affecting the adoption of \gls{abm} simulations is the ease with which they can be created.
 At present, domain experts with knowledge of a particular biological system produce domain models of the system.
@@ -186,16 +194,15 @@ Indeed previous work has been used to produce novel biological hypotheses which 
 However, these previous simulations of biological systems have had to make significant trade-offs in their implementation.
 For example, 3D environments have had to be mapped into 2-dimensional simulations, cell migration into the system has been modelled as random rather than systematic\cite{kieran_thesis}, and environmental growth has been ignored\cite{phil_diss}.
 %number of cell types have been reduced
-The impact that these trade-offs have on the validity of the platform model as a representation of the domain is currently unknown.
-This project aims to help reduce the number of trade-offs needed when designing platform models for simulations.
+The impact that these compromises have on the validity of the platform model as a representation of the domain is currently unknown.
+A core motivation of this project is that, by addressing the difficulties of creating efficient, parallel, agent-based simulations, we can support simulations with fewer trade-offs in their realisation.
 %can also increase the scale of the simulation
 
 %outside of biological exploration, new understanding can..?
-It is hoped that, in the future, this type of \gls{in-silico} experimentation could significantly improve the process by which drugs are developed.
-Extensive \gls{in-silico} testing can be performed much more quickly than the current \gls{in-vitro} testing, reducing the time it takes to research new drugs and cures.
+There are several compelling reasons for the interest in simulation of immune-related biology.
+Firstly, extensive \gls{in-silico} testing could be performed much more quickly than the current \gls{in-vitro} testing, reducing the time it takes to research new drugs and cures.
 Drugs and cures would be available for patients earlier, saving many lives.
-Additionally, the significant financial burden of drug development, which is estimated to be around \$2.9bn\cite{drug_cost}, could be reduced, freeing up heavily contested funds for additional research.
-Finally, the use of animal testing could be reduced and, in the long term, eliminated completely.
+Additionally, the significant financial burden of drug development, which is estimated to be around \$2.9bn\cite{drug_cost}, could be reduced, freeing up heavily contested funds for additional research. Finally, the use of animal testing could be reduced and, in the long term, eliminated completely.
 
 \section{Project Aims}
 In summary, the aims of this project are to
@@ -206,7 +213,7 @@ In summary, the aims of this project are to
         \item Discuss techniques for allowing non-technical users to easily create formal models that can be transformed into new simulation implementations.
     \end{enumerate}
     \item Develop a \textbf{parallel} implementation of an existing \textbf{sequential} simulation of \gls{PP} development and explore any speed increases that can be produced using \gls{gpgpu} programming.
-    \item Review of the use of simulations, with a particular focus on computational biology. This review should explore the advantages that in-silico testing provides over \gls{in-vitro} experimentation and the problems that must be overcome for the mass adoption of biological simulations.
+    \item Review the use of simulations, with a particular focus on computational biology. This review explores the advantages that in-silico testing provides over \gls{in-vitro} experimentation and the problems that must be overcome for the mass adoption of biological simulations.
     
 \end{enumerate}
 
@@ -215,11 +222,12 @@ This project was conducted in accordance with the University of York's code of p
 This project does not involve human participants, so guidelines on informed consent and confidentiality will be met. No confidential medical data or personal information has been used during the course of the project development. This project has involved no direct animal participation.
 %[Where did the data come from?!], how was the original model created, should this be mentioned?
 
-The simulation of the biological model is for the purpose of developing understanding of applying \gls{gpgpu} methods to an agent based model of a biological system. It will not be used its current form to publish novel biological findings and does not fully simulate a biological process.%WAIT, is this true?
+The ability to reduce, and ultimately replace, experimentation on animals is a positive ethical advantage of work on efficient immune-related simulation.
+
+The simulation of the biological model is for the purpose of developing understanding of applying \gls{gpgpu} methods to an agent based model of a biological system. It will not be used its current form to publish novel biological findings and does not fully simulate a biological process.
 %Software used and licences? FlameGPU is freely available / open source
 %Cuda is proprietary but freely available..
 %Hardware.. is this relevant?
-
 
 \section{Report Structure}
 This report details the work done throughout the project and 
@@ -488,7 +496,7 @@ Already an ongoing area of research..
 Parallelism fundamentally changes the game and allows computers to keep following Moore's law even has engineers are struggling to make transisters ever smaller and smaller\cite{concurrency_revolution}.
 As modern computers tend further towards parallelism to keep providing the speed-ups that have been inherent in the industry over recent years, new parallel algorithms need developing in order to take full advantage of the computing power available.
 
-Managing parallel implementations of algorithms has significant overheads due to the need to transfer data between parallel tasks.
+Managing parallel implementations of algorithms has significant overheads due to the need to ensure memory integrity when transfering data between parallel tasks.
 The different approaches to parallelism make different trade-offs, meaning some may be more suited to a particularly task than others.
 In order to ensure that the gains made by parallelising the task are not overshadowed by the overheads of managing a parallel implementation, the simulation programmer must have sufficient knowledge of the approach being used.
 %Different approaches to parallelism have different tradeoffs- we need to ensure that any gains here are not overshadowed by the overheads of managing a parallel implementation- programming difficulties, data transfer costs, partitioning, reduce phase, etc;
@@ -778,18 +786,17 @@ On top of this, with the current implementation, technical implementation detail
 Ideally these should be extracted from the model implementation and automated.
 
 \subsection{Hardware Availability}
+%Talk about difficulty getting access to the necessary NVIDIA hardware
 One of the greatest challenges of this project has been gaining access to GPU hardware.
 While these are available off the shelf in most high-street computer retailers, they are not commonly found as part of standard desktop PCs, which generally containing integrated graphics hardware.
 Indeed, none of the software lab PCs at the University of York contain the dedicated graphics chips required to run this software.
 %OpenGL could be something to discuss here
 %dismissed by Phil, but further exploration could be good!
 %ANDY is working on this
-%Talk about difficulty getting access to the necessary NVIDIA hardware
 
 \printbibliography
 \chapter{Appendix}
 \section{Simulation Parameters}
-
 
 \section{Cell Data Structures}
 
