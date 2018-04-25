@@ -25,7 +25,37 @@
   </children>
   <children xmi:type="notation:Shape" xmi:id="_KHTggzNiEeiDIcIOPXlY1Q" type="2001" fontName=".SF NS Text">
     <children xmi:type="notation:DecorationNode" xmi:id="_KHTghjNiEeiDIcIOPXlY1Q" type="5003"/>
-    <children xmi:type="notation:BasicCompartment" xmi:id="_KHTghzNiEeiDIcIOPXlY1Q" type="7001">
+    <children xmi:type="notation:BasicCompartment" xmi:id="_KHTghzNiEeiDIcIOPXlY1Q" type="7001" collapsed="true">
+      <children xmi:type="notation:Shape" xmi:id="_SGt34Eh7Eei-_9ZQkMWkOQ" type="3002" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_SGt34kh7Eei-_9ZQkMWkOQ" type="5002"/>
+        <element xmi:type="FLAME:Variable" href="PPSim.flame#//@agents.1/@memory.0"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_SGt34Uh7Eei-_9ZQkMWkOQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_SGt340h7Eei-_9ZQkMWkOQ" type="3002" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_SGue8Eh7Eei-_9ZQkMWkOQ" type="5002"/>
+        <element xmi:type="FLAME:Variable" href="PPSim.flame#//@agents.1/@memory.1"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_SGt35Eh7Eei-_9ZQkMWkOQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_SGue8Uh7Eei-_9ZQkMWkOQ" type="3002" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_SGue80h7Eei-_9ZQkMWkOQ" type="5002"/>
+        <element xmi:type="FLAME:Variable" href="PPSim.flame#//@agents.1/@memory.2"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_SGue8kh7Eei-_9ZQkMWkOQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_SGue9Eh7Eei-_9ZQkMWkOQ" type="3002" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_SGvGAEh7Eei-_9ZQkMWkOQ" type="5002"/>
+        <element xmi:type="FLAME:Variable" href="PPSim.flame#//@agents.1/@memory.3"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_SGue9Uh7Eei-_9ZQkMWkOQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_1LEWAEh8Eei-_9ZQkMWkOQ" type="3002" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_1LE9EEh8Eei-_9ZQkMWkOQ" type="5002"/>
+        <element xmi:type="FLAME:Variable" href="PPSim.flame#//@agents.1/@memory.4"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_1LEWAUh8Eei-_9ZQkMWkOQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_2PRlAEh8Eei-_9ZQkMWkOQ" type="3002" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_2PRlAkh8Eei-_9ZQkMWkOQ" type="5002"/>
+        <element xmi:type="FLAME:Variable" href="PPSim.flame#//@agents.1/@memory.5"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_2PRlAUh8Eei-_9ZQkMWkOQ"/>
+      </children>
       <styles xmi:type="notation:SortingStyle" xmi:id="_KHTgiDNiEeiDIcIOPXlY1Q"/>
       <styles xmi:type="notation:FilteringStyle" xmi:id="_KHTgiTNiEeiDIcIOPXlY1Q"/>
     </children>
@@ -38,23 +68,18 @@
       <children xmi:type="notation:Shape" xmi:id="_KI1xkzNiEeiDIcIOPXlY1Q" type="3001" fontName=".SF NS Text">
         <children xmi:type="notation:DecorationNode" xmi:id="_KI2YoDNiEeiDIcIOPXlY1Q" type="5001"/>
         <element xmi:type="FLAME:State" href="PPSim.flame#//@agents.1/@states.1"/>
-        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KI1xlDNiEeiDIcIOPXlY1Q" x="142"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KI1xlDNiEeiDIcIOPXlY1Q" x="230" y="41"/>
       </children>
-      <children xmi:type="notation:Shape" xmi:id="_KI2YoTNiEeiDIcIOPXlY1Q" type="3001" fontName=".SF NS Text">
-        <children xmi:type="notation:DecorationNode" xmi:id="_KI2YozNiEeiDIcIOPXlY1Q" type="5001"/>
+      <children xmi:type="notation:Shape" xmi:id="_l27gwEiAEei-_9ZQkMWkOQ" type="3001" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_l27gwkiAEei-_9ZQkMWkOQ" type="5001"/>
         <element xmi:type="FLAME:State" href="PPSim.flame#//@agents.1/@states.2"/>
-        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KI2YojNiEeiDIcIOPXlY1Q" x="238"/>
-      </children>
-      <children xmi:type="notation:Shape" xmi:id="_KI2YpDNiEeiDIcIOPXlY1Q" type="3001" fontName=".SF NS Text">
-        <children xmi:type="notation:DecorationNode" xmi:id="_KI2YpjNiEeiDIcIOPXlY1Q" type="5001"/>
-        <element xmi:type="FLAME:State" href="PPSim.flame#//@agents.1/@states.3"/>
-        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KI2YpTNiEeiDIcIOPXlY1Q" x="318"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_l27gwUiAEei-_9ZQkMWkOQ" x="120" y="123"/>
       </children>
     </children>
-    <children xmi:type="notation:BasicCompartment" xmi:id="_1UY8kDy0EeiW9LIoCFl3AA" type="7004"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_1UY8kDy0EeiW9LIoCFl3AA" type="7004" collapsed="true"/>
     <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_KHTghDNiEeiDIcIOPXlY1Q"/>
     <element xmi:type="FLAME:Agent" href="PPSim.flame#//@agents.1"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KHTghTNiEeiDIcIOPXlY1Q" x="464" y="16"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KHTghTNiEeiDIcIOPXlY1Q" x="500" y="15" width="361" height="351"/>
   </children>
   <children xmi:type="notation:Shape" xmi:id="_KHUHkTNiEeiDIcIOPXlY1Q" type="2001" fontName=".SF NS Text">
     <children xmi:type="notation:DecorationNode" xmi:id="_KHUHlDNiEeiDIcIOPXlY1Q" type="5003"/>
@@ -71,12 +96,12 @@
       <children xmi:type="notation:Shape" xmi:id="_KJkKUzNiEeiDIcIOPXlY1Q" type="3001" fontName=".SF NS Text">
         <children xmi:type="notation:DecorationNode" xmi:id="_KJkKVTNiEeiDIcIOPXlY1Q" type="5001"/>
         <element xmi:type="FLAME:State" href="PPSim.flame#//@agents.2/@states.1"/>
-        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KJkKVDNiEeiDIcIOPXlY1Q" x="94"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KJkKVDNiEeiDIcIOPXlY1Q" x="194" y="4"/>
       </children>
       <children xmi:type="notation:Shape" xmi:id="_KJkKVjNiEeiDIcIOPXlY1Q" type="3001" fontName=".SF NS Text">
         <children xmi:type="notation:DecorationNode" xmi:id="_KJkxYDNiEeiDIcIOPXlY1Q" type="5001"/>
         <element xmi:type="FLAME:State" href="PPSim.flame#//@agents.2/@states.2"/>
-        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KJkKVzNiEeiDIcIOPXlY1Q" x="238"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KJkKVzNiEeiDIcIOPXlY1Q" x="184" y="59"/>
       </children>
       <children xmi:type="notation:Shape" xmi:id="_KJkxYTNiEeiDIcIOPXlY1Q" type="3001" fontName=".SF NS Text">
         <children xmi:type="notation:DecorationNode" xmi:id="_KJkxYzNiEeiDIcIOPXlY1Q" type="5001"/>
@@ -117,17 +142,12 @@
         <element xmi:type="FLAME:Variable" href="PPSim.flame#//@messages.0/@variables.2"/>
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KKAPMjNiEeiDIcIOPXlY1Q"/>
       </children>
-      <children xmi:type="notation:Shape" xmi:id="_KKAPNDNiEeiDIcIOPXlY1Q" type="3003" fontName=".SF NS Text">
-        <children xmi:type="notation:DecorationNode" xmi:id="_KKAPNjNiEeiDIcIOPXlY1Q" type="5004"/>
-        <element xmi:type="FLAME:Variable" href="PPSim.flame#//@messages.0/@variables.3"/>
-        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KKAPNTNiEeiDIcIOPXlY1Q"/>
-      </children>
       <styles xmi:type="notation:SortingStyle" xmi:id="_KHUuojNiEeiDIcIOPXlY1Q"/>
       <styles xmi:type="notation:FilteringStyle" xmi:id="_KHUuozNiEeiDIcIOPXlY1Q"/>
     </children>
     <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_KHUHmjNiEeiDIcIOPXlY1Q"/>
     <element xmi:type="FLAME:Message" href="PPSim.flame#//@messages.0"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KHUHmzNiEeiDIcIOPXlY1Q" x="1680" y="16"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KHUHmzNiEeiDIcIOPXlY1Q" x="685" y="380" width="96"/>
   </children>
   <children xmi:type="notation:Shape" xmi:id="_KHVVsDNiEeiDIcIOPXlY1Q" type="2003" fontName=".SF NS Text">
     <children xmi:type="notation:DecorationNode" xmi:id="_KHVVsjNiEeiDIcIOPXlY1Q" type="5006"/>
@@ -237,7 +257,7 @@
   <children xmi:type="notation:Shape" xmi:id="_KHa1QDNiEeiDIcIOPXlY1Q" type="2004" fontName=".SF NS Text">
     <children xmi:type="notation:DecorationNode" xmi:id="_KHa1QjNiEeiDIcIOPXlY1Q" type="5007"/>
     <element xmi:type="FLAME:SpatialPartition" href="PPSim.flame#//@partitions.0"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KHa1QTNiEeiDIcIOPXlY1Q" x="1704" y="248"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KHa1QTNiEeiDIcIOPXlY1Q" x="715" y="575"/>
   </children>
   <children xmi:type="notation:Shape" xmi:id="_KHa1QzNiEeiDIcIOPXlY1Q" type="2006" fontName=".SF NS Text">
     <children xmi:type="notation:DecorationNode" xmi:id="_KHbcUDNiEeiDIcIOPXlY1Q" type="5009"/>
@@ -292,17 +312,47 @@
     </children>
     <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_hW0j8UfCEeiswbkt_wzMoQ"/>
     <element xmi:type="FLAME:Message" href="PPSim.flame#//@messages.1"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hW0j8kfCEeiswbkt_wzMoQ" x="480" y="380" width="197" height="161"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hW0j8kfCEeiswbkt_wzMoQ" x="555" y="380" width="96" height="156"/>
   </children>
   <children xmi:type="notation:Shape" xmi:id="_YKkk4EfEEeiswbkt_wzMoQ" type="2004" fontName=".SF NS Text">
     <children xmi:type="notation:DecorationNode" xmi:id="_YKlL8EfEEeiswbkt_wzMoQ" type="5007"/>
     <element xmi:type="FLAME:SpatialPartition" href="PPSim.flame#//@partitions.1"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_YKkk4UfEEeiswbkt_wzMoQ" x="552" y="576"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_YKkk4UfEEeiswbkt_wzMoQ" x="580" y="575"/>
   </children>
   <children xmi:type="notation:Shape" xmi:id="_JSuNkEfJEeiswbkt_wzMoQ" type="2006" fontName=".SF NS Text">
     <children xmi:type="notation:DecorationNode" xmi:id="_JSu0oEfJEeiswbkt_wzMoQ" type="5009"/>
     <element xmi:type="FLAME:Layer" href="PPSim.flame#//@layers.5"/>
     <layoutConstraint xmi:type="notation:Bounds" xmi:id="_JSuNkUfJEeiswbkt_wzMoQ" x="1704" y="636"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_C5w6oEh9Eei-_9ZQkMWkOQ" type="2002" fontName="Ubuntu">
+    <children xmi:type="notation:DecorationNode" xmi:id="_C5xhsEh9Eei-_9ZQkMWkOQ" type="5005"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_C5yIwEh9Eei-_9ZQkMWkOQ" type="7003">
+      <children xmi:type="notation:Shape" xmi:id="_FQloEEh9Eei-_9ZQkMWkOQ" type="3003" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_FQloEkh9Eei-_9ZQkMWkOQ" type="5004"/>
+        <element xmi:type="FLAME:Variable" href="PPSim.flame#//@messages.2/@variables.0"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_FQloEUh9Eei-_9ZQkMWkOQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_GFblYEh9Eei-_9ZQkMWkOQ" type="3003" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_GFcMcEh9Eei-_9ZQkMWkOQ" type="5004"/>
+        <element xmi:type="FLAME:Variable" href="PPSim.flame#//@messages.2/@variables.1"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_GFblYUh9Eei-_9ZQkMWkOQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_GrDa8Eh9Eei-_9ZQkMWkOQ" type="3003" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_GrECAEh9Eei-_9ZQkMWkOQ" type="5004"/>
+        <element xmi:type="FLAME:Variable" href="PPSim.flame#//@messages.2/@variables.2"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_GrDa8Uh9Eei-_9ZQkMWkOQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_OhsnEEh9Eei-_9ZQkMWkOQ" type="3003" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_OhtOIEh9Eei-_9ZQkMWkOQ" type="5004"/>
+        <element xmi:type="FLAME:Variable" href="PPSim.flame#//@messages.2/@variables.3"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_OhsnEUh9Eei-_9ZQkMWkOQ"/>
+      </children>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_C5yIwUh9Eei-_9ZQkMWkOQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_C5yIwkh9Eei-_9ZQkMWkOQ"/>
+    </children>
+    <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_C5w6oUh9Eei-_9ZQkMWkOQ"/>
+    <element xmi:type="FLAME:Message" href="PPSim.flame#//@messages.2"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_C5w6okh9Eei-_9ZQkMWkOQ" x="815" y="380"/>
   </children>
   <element xmi:type="FLAME:Simulation" href="PPSim.flame#/"/>
   <edges xmi:type="notation:Connector" xmi:id="_KK3K0DNiEeiDIcIOPXlY1Q" type="4001" source="_KIJ1EDNiEeiDIcIOPXlY1Q" target="_KIJ1EzNiEeiDIcIOPXlY1Q">
@@ -331,7 +381,7 @@
   </edges>
   <edges xmi:type="notation:Connector" xmi:id="_KK_tsDNiEeiDIcIOPXlY1Q" type="4001" source="_KI1xkDNiEeiDIcIOPXlY1Q" target="_KI1xkDNiEeiDIcIOPXlY1Q">
     <children xmi:type="notation:DecorationNode" xmi:id="_KLAUwDNiEeiDIcIOPXlY1Q" type="6001">
-      <layoutConstraint xmi:type="notation:Location" xmi:id="_KLAUwTNiEeiDIcIOPXlY1Q" x="28" y="5"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_KLAUwTNiEeiDIcIOPXlY1Q" x="17" y="12"/>
     </children>
     <styles xmi:type="notation:FontStyle" xmi:id="_KK_tsTNiEeiDIcIOPXlY1Q" fontName=".SF NS Text"/>
     <element xmi:type="FLAME:Transition" href="PPSim.flame#//@agents.1/@states.0/@transitions.0"/>
@@ -406,5 +456,52 @@
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_fwbjAkfEEeiswbkt_wzMoQ" points="[-87, 126, 19, -28]$[-102, 146, 4, -8]"/>
     <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_fwemUEfEEeiswbkt_wzMoQ" id="(0.4517766497461929,0.968944099378882)"/>
     <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_fwemUUfEEeiswbkt_wzMoQ" id="(0.5,0.0)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_9VnyEEh7Eei-_9ZQkMWkOQ" type="4001" source="_KI1xkDNiEeiDIcIOPXlY1Q" target="_KI1xkzNiEeiDIcIOPXlY1Q">
+    <children xmi:type="notation:DecorationNode" xmi:id="_9VpAMEh7Eei-_9ZQkMWkOQ" type="6001">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_9VpAMUh7Eei-_9ZQkMWkOQ" x="24" y="-9"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_9VnyEUh7Eei-_9ZQkMWkOQ" fontName="Ubuntu"/>
+    <element xmi:type="FLAME:Transition" href="PPSim.flame#//@agents.1/@states.0/@transitions.1"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_9VnyEkh7Eei-_9ZQkMWkOQ" points="[30, 8, -97, -31]$[127, 8, 0, -31]$[127, 30, 0, -9]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_9VtRoEh7Eei-_9ZQkMWkOQ" id="(0.8170731707317073,0.275)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_9Vt4sEh7Eei-_9ZQkMWkOQ" id="(0.336734693877551,0.225)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_Yo-OgEh8Eei-_9ZQkMWkOQ" type="4001" source="_KI1xkzNiEeiDIcIOPXlY1Q" target="_KI1xkzNiEeiDIcIOPXlY1Q">
+    <children xmi:type="notation:DecorationNode" xmi:id="_Yo-1kEh8Eei-_9ZQkMWkOQ" type="6001">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Yo-1kUh8Eei-_9ZQkMWkOQ" x="-55" y="17"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_Yo-OgUh8Eei-_9ZQkMWkOQ" fontName="Ubuntu"/>
+    <element xmi:type="FLAME:Transition" href="PPSim.flame#//@agents.1/@states.1/@transitions.0"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_Yo-Ogkh8Eei-_9ZQkMWkOQ" points="[49, 0, 49, 0]$[96, 0, 96, 0]$[96, 57, 96, 57]$[-9, 57, -9, 57]$[-9, 20, -9, 20]"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_pY6ZwEiAEei-_9ZQkMWkOQ" type="4001" source="_KI1xkzNiEeiDIcIOPXlY1Q" target="_l27gwEiAEei-_9ZQkMWkOQ">
+    <children xmi:type="notation:DecorationNode" xmi:id="_pY7A0EiAEei-_9ZQkMWkOQ" type="6001">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_pY7A0UiAEei-_9ZQkMWkOQ" x="1" y="1"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_pY6ZwUiAEei-_9ZQkMWkOQ" fontName="Ubuntu"/>
+    <element xmi:type="FLAME:Transition" href="PPSim.flame#//@agents.1/@states.1/@transitions.1"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_pY6ZwkiAEei-_9ZQkMWkOQ" points="[-9, 8, 45, -44]$[-51, 50, 3, -2]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_pY8O8EiAEei-_9ZQkMWkOQ" id="(0.1326530612244898,0.8)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_pY8O8UiAEei-_9ZQkMWkOQ" id="(0.8846153846153846,0.05)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_rGwboEiAEei-_9ZQkMWkOQ" type="4001" source="_l27gwEiAEei-_9ZQkMWkOQ" target="_KI1xkDNiEeiDIcIOPXlY1Q">
+    <children xmi:type="notation:DecorationNode" xmi:id="_rGxCsEiAEei-_9ZQkMWkOQ" type="6001">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_rGxCsUiAEei-_9ZQkMWkOQ" x="-1" y="8"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_rGwboUiAEei-_9ZQkMWkOQ" fontName="Ubuntu"/>
+    <element xmi:type="FLAME:Transition" href="PPSim.flame#//@agents.1/@states.2/@transitions.0"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_rGwbokiAEei-_9ZQkMWkOQ" points="[-2, -6, 17, 92]$[12, -89, 31, 9]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_rG0GAEiAEei-_9ZQkMWkOQ" id="(0.2692307692307692,0.15)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_rG0GAUiAEei-_9ZQkMWkOQ" id="(0.7317073170731707,0.775)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_tECAoEiAEei-_9ZQkMWkOQ" type="4001" source="_l27gwEiAEei-_9ZQkMWkOQ" target="_l27gwEiAEei-_9ZQkMWkOQ">
+    <children xmi:type="notation:DecorationNode" xmi:id="_tECAo0iAEei-_9ZQkMWkOQ" type="6001">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_tECApEiAEei-_9ZQkMWkOQ" x="1" y="6"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_tECAoUiAEei-_9ZQkMWkOQ" fontName="Ubuntu"/>
+    <element xmi:type="FLAME:Transition" href="PPSim.flame#//@agents.1/@states.2/@transitions.1"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_tECAokiAEei-_9ZQkMWkOQ" points="[-39, 0, -31, -13]$[-79, 0, -71, -13]$[-79, 36, -71, 23]$[-8, 36, 0, 23]$[-8, 20, 0, 7]"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_tEEc4EiAEei-_9ZQkMWkOQ" id="(0.3974358974358974,0.825)"/>
   </edges>
 </notation:Diagram>

@@ -49,14 +49,37 @@
     <memory name="y" type="Float"/>
     <memory name="velocity" type="Float"/>
     <memory name="colour"/>
+    <memory name="bind_x"/>
+    <memory name="bind_y"/>
     <states name="lti_random_movement">
       <transitions name="lti_random_move" reallocate="true" randomGenerator="true" nextState="//@agents.1/@states.0"/>
+      <transitions name="direction" reallocate="false" randomGenerator="false" nextState="//@agents.1/@states.1"/>
     </states>
-    <states name="responding"/>
-    <states name="contact"/>
-    <states name="adhesion"/>
+    <states name="chemotaxis">
+      <transitions name="direct_move" reallocate="false" randomGenerator="true" nextState="//@agents.1/@states.1"/>
+      <transitions name="contact" reallocate="false" randomGenerator="false" nextState="//@agents.1/@states.2">
+        <condition>
+          <lhs xsi:type="FLAME:ConditionEval">
+            <value>
+              <lhs xsi:type="FLAME:VariableEval" value="//@agents.1/@memory.4"/>
+              <rhs xsi:type="FLAME:VariableEval" value="//@agents.1/@memory.0"/>
+            </value>
+          </lhs>
+          <rhs xsi:type="FLAME:ConditionEval">
+            <value>
+              <lhs xsi:type="FLAME:VariableEval" value="//@agents.1/@memory.5"/>
+              <rhs xsi:type="FLAME:VariableEval" value="//@agents.1/@memory.1"/>
+            </value>
+          </rhs>
+        </condition>
+      </transitions>
+    </states>
+    <states name="adhesion">
+      <transitions name="escape" reallocate="false" randomGenerator="false" nextState="//@agents.1/@states.0"/>
+      <transitions name="check_escape" reallocate="false" randomGenerator="true" nextState="//@agents.1/@states.2"/>
+    </states>
   </agents>
-  <agents name="LTo" initialState="//@agents.2/@states.0" bufferSize="64">
+  <agents name="LTo" initialState="//@agents.2/@states.0" bufferSize="1024">
     <memory name="x" type="Float"/>
     <memory name="y" type="Float"/>
     <memory name="colour"/>
@@ -85,16 +108,21 @@
     </states>
     <differentiation agent="//@agents.2" state="//@agents.2/@states.5"/>
   </agents>
-  <messages name="location" description="A message holding the type and location of a cell" partitioning="//@partitions.0" bufferSize="64">
+  <messages name="location" description="A message holding the type and location of a cell" partitioning="//@partitions.0" bufferSize="1024">
     <variables name="x" type="Float"/>
     <variables name="y" type="Float"/>
     <variables name="z" type="Float"/>
-    <variables name="cell_type"/>
   </messages>
-  <messages name="force" description="" partitioning="//@partitions.1" bufferSize="64">
+  <messages name="force" description="" partitioning="//@partitions.1" bufferSize="1024">
     <variables name="x"/>
     <variables name="y"/>
     <variables name="z"/>
+  </messages>
+  <messages name="chemokine" description="The LTo Cells express chemokine to whole environment." bufferSize="1024">
+    <variables name="x"/>
+    <variables name="y"/>
+    <variables name="z"/>
+    <variables name="linearAdjust"/>
   </messages>
   <layers order="2" functions="//@agents.1/@states.0/@transitions.0 //@agents.0/@states.0/@transitions.1"/>
   <layers order="1" functions="//@agents.2/@states.0/@transitions.0"/>

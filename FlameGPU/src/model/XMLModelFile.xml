@@ -217,6 +217,14 @@
 					<type>int</type>
 					<name>colour</name>
 				</gpu:variable>
+				<gpu:variable>
+					<type>int</type>
+					<name>bind_x</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>int</type>
+					<name>bind_y</name>
+				</gpu:variable>
 			</memory>
 			<functions>
 				<gpu:function>
@@ -226,16 +234,49 @@
 					<gpu:reallocate>true</gpu:reallocate>
 					<gpu:RNG>true</gpu:RNG>
 				</gpu:function>
+				<gpu:function>
+					<name>direction</name>
+					<currentState>lti_random_movement</currentState>
+					<nextState>chemotaxis</nextState>
+					<gpu:reallocate>false</gpu:reallocate>
+					<gpu:RNG>false</gpu:RNG>
+				</gpu:function>
+				<gpu:function>
+					<name>direct_move</name>
+					<currentState>chemotaxis</currentState>
+					<nextState>chemotaxis</nextState>
+					<gpu:reallocate>false</gpu:reallocate>
+					<gpu:RNG>true</gpu:RNG>
+				</gpu:function>
+				<gpu:function>
+					<name>contact</name>
+					<currentState>chemotaxis</currentState>
+					<nextState>adhesion</nextState>
+						<condition><lhs><condition><lhs><agentVariable>bind_x</agentVariable></lhs><operator>==</operator><rhs><agentVariable>x</agentVariable></rhs></condition></lhs><operator>==</operator><rhs><condition><lhs><agentVariable>bind_y</agentVariable></lhs><operator>==</operator><rhs><agentVariable>y</agentVariable></rhs></condition></rhs></condition>
+					<gpu:reallocate>false</gpu:reallocate>
+					<gpu:RNG>false</gpu:RNG>
+				</gpu:function>
+				<gpu:function>
+					<name>escape</name>
+					<currentState>adhesion</currentState>
+					<nextState>lti_random_movement</nextState>
+					<gpu:reallocate>false</gpu:reallocate>
+					<gpu:RNG>false</gpu:RNG>
+				</gpu:function>
+				<gpu:function>
+					<name>check_escape</name>
+					<currentState>adhesion</currentState>
+					<nextState>adhesion</nextState>
+					<gpu:reallocate>false</gpu:reallocate>
+					<gpu:RNG>true</gpu:RNG>
+				</gpu:function>
 			</functions>
 			<states>
 				<gpu:state>
 					<name>lti_random_movement</name>
 				</gpu:state>
 				<gpu:state>
-					<name>responding</name>
-				</gpu:state>
-				<gpu:state>
-					<name>contact</name>
+					<name>chemotaxis</name>
 				</gpu:state>
 				<gpu:state>
 					<name>adhesion</name>
@@ -345,7 +386,7 @@
 				<initialState>expression</initialState>
 			</states>
 			<gpu:type>continuous</gpu:type>
-			<gpu:bufferSize>64</gpu:bufferSize>
+			<gpu:bufferSize>1024</gpu:bufferSize>
 		</gpu:xagent>
 	</xagents>
 	
@@ -366,10 +407,6 @@
 					<type>float</type>
 					<name>z</name>
 				</gpu:variable>
-				<gpu:variable>
-					<type>int</type>
-					<name>cell_type</name>
-				</gpu:variable>
 			</variables>
 			<gpu:partitioningSpatial>
 				<gpu:radius>4</gpu:radius>
@@ -380,7 +417,7 @@
 				<gpu:zmin>0</gpu:zmin>
 				<gpu:zmax>4</gpu:zmax>
 			</gpu:partitioningSpatial>
-			<gpu:bufferSize>64</gpu:bufferSize>
+			<gpu:bufferSize>1024</gpu:bufferSize>
 		</gpu:message>
 		<gpu:message>
 			<name>force</name>
@@ -408,7 +445,31 @@
 				<gpu:zmin>0</gpu:zmin>
 				<gpu:zmax>4</gpu:zmax>
 			</gpu:partitioningSpatial>
-			<gpu:bufferSize>64</gpu:bufferSize>
+			<gpu:bufferSize>1024</gpu:bufferSize>
+		</gpu:message>
+		<gpu:message>
+			<name>chemokine</name>
+			<description>The LTo Cells express chemokine to whole environment.</description>
+			<variables>
+				<gpu:variable>
+					<type>int</type>
+					<name>x</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>int</type>
+					<name>y</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>int</type>
+					<name>z</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>int</type>
+					<name>linearAdjust</name>
+				</gpu:variable>
+			</variables>
+			<gpu:partitioningNone/>
+			<gpu:bufferSize>1024</gpu:bufferSize>
 		</gpu:message>
 	</messages>
 	

@@ -171,6 +171,13 @@ operation Condition toXML(agent: Agent){
 			str += "&gt;";
 		case Operator#GreaterThanOrEqualTo :
 			str += "&gt;=";
+			
+		case Operator#And :
+			str += "&amp;&amp;";
+		case Operator#Or :
+			str += "||";
+		case Operator#Not :
+			str += "!";
 		
 		case Operator#Plus :
 			str += "+";
