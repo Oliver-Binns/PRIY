@@ -14,7 +14,7 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{5202}
+\wordcount{5546}
 
 
 %Approx 500 Words
@@ -63,7 +63,9 @@ Finally, I would also like to thank the \gls{FLAME GPU} development team at the 
 \newacronym{lti}{LTi}{Lymphoid Tissue inducer cell}
 \newacronym{mason}{MASON}{Multi-Agent Simulator Of Neighborhoods}
 \newacronym{mde}{MDE}{Model-Driven Engineering}
+\newacronym{mimd}{MIMD}{Multiple Instruction, Multiple Data}
 \newacronym{mpi}{MPI}{Message Passing Interface}
+\newacronym{simd}{SIMD}{Single Instruction, Multiple Data}
 
 %behavioural model
 %complex meaning
@@ -419,7 +421,6 @@ If the simulation needs to be safety-critical, developing it using formal method
 %Similar to the work described later in this report: model-driven engineering!
 %ensures that artifacts are inline with each other
 
-\newpage
 \section{Existing Simulations}
 %Previous implementations of simulations and their problems:
 %In order to achieve mass-market userbase, they must be:
@@ -487,6 +488,10 @@ This means the simulation can take full advantage of the power of modern NVIDIA 
 
 \gls{flame}'s use of \gls{mde} could gives domain experts with limited programming knowledge the ability to understand and help design the simulation models, however a software engineer is still needed for the final implementation.
 
+
+%partitioning is particularly effective if the vast majority of space is unpopulated
+%Other specifications of FLAME GPU?
+
 %REMEMBER, this section is on EXISTING SIMULATIONS: discuss what FLAME has been used for!
 
 %Disadvantages
@@ -515,13 +520,12 @@ Existing simulation models that are implemented on top of \gls{FLAME GPU} may re
 %In particular, it gives domain experts with limited programming knowledge the ability to understand and help design models.
 %Additionally, the auto-generation of artifacts, such as simulation code templates, significantly lowers the boundary to entry to less advanced programmers.
 
-Many other benefits of \gls{mde} are not exploited in the current implementation of \gls{FLAME GPU}.
+Some notable benefits of \gls{mde} are not exploited in the current implementation of \gls{FLAME GPU}.
 %TODO discuss these:
 %migration?
 %auto-generation
 %auto-validation fixes?
 
-\newpage
 \section{Improving Simulations}
 \label{improvements}
 %Section on what we need to support complex simulations
@@ -592,9 +596,9 @@ This technique also requires expertise in machine learning which conflicts with 
 \subsubsection{Parallelism}
 %Trade-off, Peak Performance vs Programming Ease, this can be related to the previous section
 %Complex to program, need to bear in mind:
-    %Radius of the agent messages, data transfer cost is HIGH
-    %Mindful of multi-thread data manipulation
-Parallelism fundamentally changes the game and allows computers to keep following Moore's law even has engineers are struggling to make transisters ever smaller and smaller\cite{concurrency_revolution}.
+%   Radius of the agent messages, data transfer cost is HIGH
+%   Mindful of multi-thread data manipulation
+Parallelism fundamentally changes the game and allows computers to keep following Moore's law even as engineers are struggling to make transisters ever smaller and smaller\cite{concurrency_revolution}.
 As modern computers tend further towards parallelism to keep providing the speed-ups that have been inherent in the industry over recent years, new parallel algorithms need developing in order to take full advantage of the computing power available.
 
 Managing parallel implementations of algorithms has significant overheads due to the need to ensure memory integrity when transfering data between parallel tasks.
@@ -604,55 +608,133 @@ In order to ensure that the gains made by parallelising the task are not oversha
 
 \paragraph{Distributed Systems}
 %MAPREDUCE for distributed systems could be mentioned
-MapReduce is a programming model that is generally used for processing big data in parallel using distributed systems.
-%DMASON
+A distributed system is a method for running a computer program across multiple computers on a network.
+Unlike parallelism that is local to a particular computer, with a distributed system there is generally no global clock to ensure that processors are kept in sync.
+In order for any distributed system model to provide speed improvements, the gains provided by parallelising the data processing step must be substantial enough to overcome the time taken for data transfer between computers.
+
+DMASON is an enhanced version of \gls{MASON} library which aims to harness unused PCs as a makeshift distributed system.
+DMASON can also be set up to run on a compute cluster.
 
 \paragraph{\acrshort{cpu} vs \acrshort{gpu}}
 \label{cpu_v_gpu}
-Modern computers provide two main methods for parallelising code.
+Modern computers provide two main means for parallelising code.
 We are building on a previous project\cite{phil_diss} which laid the groudwork for this.
 This previous project outlined the choice between \acrshort{cpu} and \acrshort{gpu} parallelism and makes the case for exploring \acrshort{gpu}s- simplisitically put, this is due to the significantly greater speed ups that can be achieved.
 Indeed it has been shown that \acrshort{gpu} simulation on a standard desktop computer can easily produce performance rates that are better than those of a high-performance computing cluster\cite{flame_simulation}.
 One case study even reduced the time taken for a simulation to be computed from hours on a \acrshort{cpu} to just seconds on a \acrshort{gpu}\cite{flame_keratinocyte}.
+%^^ performance
 
-%MENTION DIFFICULTY GETTING ACCESS TO A GPU FOR TESTING!
-Multiple \acrshort{cpu} cores are now commonplace in modern computers, including smartphones.
-\acrshort{gpu} normally only found in gaming PCs and consoles
-This is changing, Apple now includes a custom \acrshort{gpu} in many of its mobile devices- metal
+\begin{figure}[htp]
+\begin{subfigure}{0.50\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{Appendix/CPU}
+\caption{CPU}
+\label{fig:cpu_structure}
+\end{subfigure}
+\begin{subfigure}{0.50\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{Appendix/GPU}
+\caption{GPU}
+\label{fig:gpu_structure}
+\end{subfigure}
 
-%partitioning is particularly effective if the vast majority of space is unpopulated
-%otherwise nah?
+\caption{Silicon Space Allocation (Taken from \cite[p.2]{cuda_doc})}
+\label{fig:gpu_v_cpu}
+\end{figure}
+
+The key difference between \gls{cpu} and \gls{gpu} parallelism lies in the Flynn's taxonomy classification\cite{flynns_taxonomy} of architecture used by each.
+\gls{cpu}s use a \gls{mimd} paradigm- this is parallelism of instruction as different \gls{cpu} cores can each be running different instructions concurrently.
+Meanwhile, \gls{gpu}s use a \gls{simd} paradigm- this is parallelism of data as the same program is executed on a large quantity of data.
+These differences can be most starkly visualised by observing the difference in the allocation of transistors between the two components (Fig. \ref{fig:gpu_v_cpu}). While the \gls{cpu} devotes a large amount of space to data caching and flow control, the \gls{gpu} allocates the vast majority of its capacity to data processing.\cite[p.2]{cuda_doc}
 
 %briefly discuss jargon - device, host, etc.
+%overview of the main differences:
+%   parallelism of data vs parallelism of instruction
 %compare speed ups that can be gained, reference Phil's project for more details
+
+%MENTION DIFFICULTY GETTING ACCESS TO A GPU FOR TESTING:
+Multiple \acrshort{cpu} cores are now commonplace in modern computers, including smartphones.
+In contrast to this, dedicated \acrshort{gpu}s are normally only found in gaming PCs and consoles.
+%This is changing, Apple now includes a custom \acrshort{gpu} in many of its mobile devices- metal?
 
 \paragraph{OpenGL vs \acrshort{cuda}}
 A previous project compared OpenGL and \acrshort{cuda} in detail.
 %OpenGL runs on a wider number of devices, including mobile (iOS)
 %frameworks, such as Apple's Metal allow significant simulations to be run, even on mobile devices
 
-\newpage
-\section{PPSim}
-\label{ppsim}
-This project focuses on simulation as a tool for exploring biological systems at cell level.
-It uses the existing simulation of Peyer's Patch\cite{kieran_thesis} and attempts to use parallel computer architectures in order to speed this simulation up.
-%proof of concept- what new knowledge has PPSim created so far?
+\chapter{Tools and Platform}
+\section{Tools}
+This project was developed on a machine running Ubuntu 16.04 with Intel i5 (650 @ 3.20 GHz) and 8GB of RAM.
+The GPU utilised was an NVIDIA GeForce GTX 1050.
+GPU programming utilised the latest version of CUDA (9.1).
 
-Finally, I propose a new tool, which builds on existing work in order to make this power available to non-technical users.
-%or will I, probably not enough time for this!
+In order to produce a working simulation of \gls{PP} formation, I have used an unreleased version (v1.5) of \gls{FLAME GPU}.
+Amongst other features, \gls{FLAME GPU} v1.5 adds the ability to create agents from a host function between simulation steps.
+As \gls{FLAME GPU} is developed openly, this version is freely available online\cite{flame_github}.
+\gls{FLAME GPU} has been added to the project repository as a submodule, to ensure version compatibility between \gls{FLAME GPU} and \textit{PPSim v2}.
 
-\subsection{The Domain Model}
-The domain model is taken from the existing sequential simulation of Peyer's patch development described in Section \ref{ppsim}.
-This model has been developed according to the \acrshort{cosmos} process\cite{cosmos}.
-%Briefly detail how CoSMoS makes for better simulations
+Eclipse Neon v4.6 and Epsilon v1.4 have been used with Java Runtime Environment 1.8.0 for developing the input XML model for \gls{FLAME GPU}.
 
-Peyer's patches are clusters of cells that form on the lining of the small intestine.
-
-In this simulation there are three types of agent which are all types of cells; \gls{LTo}, \gls{LTin} and \gls{LTi}.
-Stationary \gls{LTo} cells 
-%Environment.. 2D Plane- that wraps in the y direction?
+Version-control for both the simulation code and this report has been managed through Git and is available on \href{https://github.com/oliver-binns/PRIY.git}{GitHub}. As this is an individual project, Git has been an acceptable solution. If the scope of the project is to expand, it may become necessary to move the modelling section of the development into a more suitable version-control system, such as EMFStore\cite{emf_store} which is specifically designed for models.
 
 %Approx 1500 words for problem description and analysis
+\section{\gls{PP} Case Study}
+\label{ppsim}
+This project focuses on simulation as a tool for exploring biological systems at cell level.
+It uses the existing simulation of \gls{PP} development\cite{kieran_thesis} and attempts to use parallel computer architectures in order to speed this simulation up.
+%proof of concept- what new knowledge has PPSim created so far?
+Finally, I propose a new tool, which builds on existing work, in order to take a first step towards making efficient, parallel simulations available to non-technical users.
+
+\subsection{The Domain Model}
+The domain model for this \gls{PP} simulation is taken from an existing sequential \gls{MASON} simulation.\cite{kieran_thesis}
+This model has been developed according to the \acrshort{cosmos} process.\cite{cosmos}
+%Briefly detail how CoSMoS makes for better simulations
+
+\begin{figure}[htp]
+\begin{subfigure}{0.70\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Appendix/Adult_PP}
+\caption{Adult Peyer's Patch}
+\label{fig:adult_pp}
+\end{subfigure}
+\begin{subfigure}{0.29\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Appendix/Foetal_PP}
+\caption{Foetal Peyer's Patch}
+\label{fig:foetal_pp}
+\end{subfigure}
+
+\caption{(Taken from \cite{})}
+\label{pp_imaging}
+\end{figure}
+
+\gls{PP}es are clusters of cells that form on the lining of the small intestine (Fig \ref{pp_imaging}).
+The enviroment of the model is a 3-dimensional tube modelled in 2-dimensions.
+%Environment.. 2D Plane- that wraps in the y direction?
+%Agents that leave the end of the tube are n
+%Agents 
+In this model there are three types of agent which are all types of cells; \gls{lto}, \gls{ltin} and \gls{lti}.
+
+Stationary \gls{lto} cells 
+
+
+The model begins when \gls{lti}/\gls{ltin} cells begin migrating into the environment.
+As such, at the beginning of the simulation, none of these cells are present.
+\gls{lti} and \gls{ltin} cells migrate into the environment at a constant rate, such that the correct number of cells is reached at the 12 hour time-step.
+
+Initially the \gls{lti} and \gls{ltin} cells move randomly around the environment.
+
+\section{The Platform Model}
+The simulation spans over the 72 hour period in which the \gls{PP} develops.
+In this platform model there is a single \textit{active} \gls{lto} cell in the centre of the environment.
+These \gls{lto} cells divide every 12 hours.
+A previous project on this topic stated that \gls{lto} cell division must be performed sequentially on a host function in order to prevent new cells occupying the same space\cite{phil_diss}.
+However, by adding a force resolution step, as used in previous \gls{FLAME GPU} simulations\cite{flame_keratinocyte}, this has been implemented in parallel, on the device.
+As well as the speed up from parallelising the division step, implementing it feature in this way has also removed the cost of data transfer between the \gls{Device} and \gls{Host}.
+
+There are no \gls{lto} and \gls{ltin} cells in the environment when the simulation is initialised.
+A \gls{Host} function manages the migration of \gls{lto} and \gls{ltin} cells into the environment by creating these cells in random positions at a constant rate.
+
 %Approx 2500 words for design and implementation
 \chapter{Methods}
 \label{methods}
@@ -661,29 +743,6 @@ Stationary \gls{LTo} cells
 The chapter details the simulation experiment that has been performed and the development of new tools to aid the implementation of this, and future simulations.
 The experiment involved the development of a new \acrshort{gpu}-based \textit{PPSim v2} platform implementation as well as a new tool for mapping and transforming biological models into \gls{FLAME GPU} simulations.
 Having previously established the current difficulties with biological simulation, this chapter also details how these are overcome in the implementation of this project.
-
-\section{Tools}
-This project was developed on a machine running Ubuntu 16.04 with Intel i5 (650 @ 3.20 GHz) and 8GB of RAM.
-The GPU utilised was an NVIDIA GeForce GTX 1050.
-GPU programming utilised the latest version of CUDA (9.1).
-
-In order to produce a working simulation of \gls{PP} formation, I have used an unreleased version (1.5) of \gls{FLAME GPU}.
-As \gls{FLAME GPU} is developed openly, this version is freely available online\cite{flame_github}.
-\gls{FLAME GPU} has been added to the project repository as a submodule, to ensure version compatibility between \gls{FLAME GPU} and \textit{PPSim v2}.
-
-Eclipse Neon v4.6 and Epsilon v1.4 have been used with Java Runtime Environment 1.8.0 for developing the input XML model for \gls{FLAME GPU}.
-
-Version-control for both the simulation code and this report has been managed through Git and is available on \href{https://github.com/oliver-binns/PRIY.git}{GitHub}. As this is an individual project, Git has been an acceptable solution. If the scope of the project is to expand, it may become necessary to move the modelling section of the development into a more suitable version-control system, such as EMFStore\cite{emf_store} which is specifically designed for models.
-
-\section{The Platform Model}
-In the platform model there is a single \textit{active} \gls{LTo} cell in the centre of the environment.
-There are no LTi and LTin cells in the environment when the simulation is initialised.
-A \gls{Host} function manages cell migration into the environment by creating these cells in random positions at a constant rate.
-
-A previous project on this topic stated that LTo cell division must be performed sequentially on a host function in order to prevent new cells occupying the same space\cite{phil_diss}.
-However, by adding a force resolution step, as used in previous \gls{FLAME GPU} simulations\cite{flame_keratinocyte}, this has been implemented in parallel, on the device.
-%host step function can be used for performing LTo cell division every 12 hours!
-%flame provides an API to access cells in a particular state from the Host
 
 \section{\gls{FLAME GPU}}
 %HOW DOES THIS RELATE TO THE COSMOS PROCESS (ABOVE)
@@ -714,7 +773,7 @@ This new process is shown as part of the \gls{cosmos} process in Fig. \ref{fig:f
 \label{fig:flame_improved}
 \end{figure}
 
-Figure \ref{fig:ppsim_gmf} shows the Peyer's Patch simulation created within this graphical editor. The XML model used for the final simulation was automatically generated from this diagram.
+Figure \ref{fig:ppsim_gmf} shows the \gls{PP} simulation created within this graphical editor. The XML model used for the final simulation was automatically generated from this diagram.
 
 The \gls{evl} has allowed well-formedness constraints to be implemented for the \gls{FLAME GPU} input model.
 This should provide intuitive feedback (Fig. \ref{fig:validation_gmf}) in cases where the model may be incorrect, in order to prevent an invalid XML model from being produced.
@@ -788,7 +847,7 @@ If our new platform model can be shown to be similar to the original PPSim domai
 
 \section{Further Work}
 \subsection{Peyer's Patch Case Study}
-While the two Peyer's Patch simulations are both derived from the same domain model, there are clearly significant implementation differences between these.
+While the two \gls{PP} simulations are both derived from the same domain model, there are clearly significant implementation differences between these.
 Future work will need to explore the meaning of the differences between simulations and whether that have any effect on their validity against the domain model.
 %explore what the "differences" between the simulations "mean", specifically for PPSim and more generally
 
