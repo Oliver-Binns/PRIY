@@ -14,7 +14,7 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{4864}
+\wordcount{4974}
 
 
 %Approx 500 Words
@@ -119,7 +119,7 @@ Finally, I would also like to thank the \gls{FLAME GPU} development team at the 
 \newglossaryentry{MASON}
 {
     name=\glslink{mason}{MASON},
-    description={A Java framework for producting simulations using \acrshort{abm}}
+    description={A Java framework for producing simulations using \acrshort{abm}}
 }
 \newglossaryentry{in-silico}
 {
@@ -212,7 +212,7 @@ In summary, the aims of this project are to
         \item Explore the findings of the new implementation and discuss how these can be generalised to new simulations.
         \item Discuss techniques for allowing non-technical users to easily create formal models that can be transformed into new simulation implementations.
     \end{enumerate}
-    \item Develop a \textbf{parallel} implementation of an existing \textbf{sequential} simulation of \gls{PP} development and explore any speed increases that can be produced using \gls{gpgpu} programming.
+    \item Develop a \textbf{parallel} implementation of an existing \textbf{sequential} simulation of \gls{PP} development and explore any speed increases that can be produced by using \gls{gpgpu}.
     \item Review the use of simulations, with a particular focus on computational biology. This review explores the advantages that in-silico testing provides over \gls{in-vitro} experimentation and the problems that must be overcome for the mass adoption of biological simulations.
     
 \end{enumerate}
@@ -252,7 +252,7 @@ This report details the work done throughout the project and
 % Determine which literature makes a significant contribution to your understanding of the topic
 % Point your way to further research on your topic
 
-\section{Simulation}
+\section{Simulation Background}
 \label{simulation}
 %Background, what are simulations used for generally
 Simulations are model-based imitations of a system which feature its key characteristics and behaviours.
@@ -416,6 +416,86 @@ If the simulation needs to be safety-critical, developing it using formal method
 %Similar to the work described later in this report: model-driven engineering!
 %ensures that artifacts are inline with each other
 
+\newpage
+\section{Existing Simulations}
+%Previous implementations of simulations and their problems:
+%In order to achieve mass-market userbase, they must be:
+%EASIER TO MAKE - less technical users can work on them
+%FASTER TO RUN. - more feasible, to use in experiments, more complex sims can be made
+
+\subsection{Biological Simulations}
+Computational Biology is a relatively new field of study that has been growing signficantly over the last decade[CITATION NEEDED].
+Within Biology, simulation is often required as an alternative to invasive medical testing/animal testing%NC3Rs
+Simulations have even been proposed as a method for exploring a potential set of first principles and mathematics that are specific to biology which could even constitute a new subject- theoretical biology\cite{rise_article}.
+
+\subsection{\acrlong{abm}}
+\label{abm}
+As previously mentioned, \gls{abm} models the autonomous behaviour of individual agents and the interaction between them.
+%Write comparison of AGENTS vs OBJECTS (OOP)
+Agents are often confused with objects, a commonly-used programming concept.
+However, it's important to emphasize the differences between them.
+In particular, while both agents and objects recognise the importance of interactions, objects are totally obediant to their method calls whereas agents have autonomy.
+This means that agents can interact and react to communications according to their own agenda.
+
+%WHY IS AGENT BASED MODELLING THE MOST RELEVANT FOR THIS PROJECT
+While, \acrlong{abm} is more computationally expensive than top-down mathematical modelling, it is also more natural to model and intuitive to parallelise\cite{flame_simulation}.
+Communication between individual agents can be difficult to implement in parallel but parallel communication is by no means limited to \gls{abm}.
+
+\subsubsection{Custom Code}
+While agent-based simulations have been created from scratch\cite{phil_diss} there are several distinct disadvantages to this.
+Firstly, %parallalism must be ensured.
+    not well tested
+Finally, unlike simulations that are created using \gls{abm} libraries, they do not inherit any support for new tools and hardware that come from updates to the library.
+Custom code simulations must each be updated separately with any enhancements required for.
+
+%discuss types (and existing) simulations..
+
+\subsubsection{\gls{MASON}}
+%mason usage
+\gls{MASON} is a multi-agent simulation library for Java.
+\gls{MASON} has been previously evaluated as the one of the fastest sequential ABM libraries available\cite{abm_platforms_review}, however this evaluation took place over a decade ago and does not factor in any of the recent work into \acrshort{gpu} parallelism.
+%supports CPU parallelism
+%peyers patch?
+%flame usage
+%keratinocyte?
+%particularly well suited for these cell-based simulations as can be visualised..
+%also not easy to use
+
+\subsubsection{\acrshort{flame}}
+Mention \acrshort{flame} (traditional) is an attempt to make simulations more accessible via \acrshort{abm}.
+%Flexible Large Scale Agent Modelling Environment
+%http://flame.ac.uk
+
+\subsubsection{\gls{FLAME GPU}}
+\acrfull{flamegpu} is an extension of the original version of \acrshort{flame}, where the simulations that are created are compiled down to parallelised CUDA code. This means the simulation can take full advantage of the significant power of modern NVIDIA \acrshort{gpu}s.
+%flame is built on top of CUDA, why?
+As its name suggests, \gls{FLAME GPU} uses \acrlong{abm} to implement simulations.
+
+%Disadvantages
+While relying on a framework such as \gls{FLAME GPU} can cause problems if support is stopped, \gls{FLAME GPU} is an open source project, so this should slightly be less of a concern.
+
+model based -> FlameGPU\cite{flame_keratinocyte}
+    restricted to the framework limitations
+    --step function host-based agent creation
+
+%Advantages
+The \gls{FLAME GPU} framework brings its own advantages.
+As it maps a model to simulation code, it brings with it many of the advantages of \acrlong{mde}.
+In particular, it gives domain experts with limited programming knowledge the ability to understand and help design models.
+Additionally, the auto-generation of artifacts, such as simulation code templates, significantly lowers the boundary to entry to less advanced programmers.
+Finally, As FLAME is continuously updated to support new hardware advances, such as multicore \acrshort{gpu} architectures\cite{flame_simulation}, the implementations can always be certain of taking advantage of the latest hardware optimisations and portability features that FLAME provides. Existing simulation models that are implemented on top of \gls{FLAME GPU} may receive these performance improvements without major code changes.
+
+%VISUALISATION COMES FREE!
+
+%overview of FlameGPU
+%http://www.flamegpu.com
+\gls{FLAME GPU} takes input in the form of an XMML model which defines the types of agents that feature in the simulation and their interactions%read XMML paper!
+%x-machine, etc.
+
+\gls{FLAME GPU} also provides a message passing interface which abstracts away from the underlying agent communication.
+This means that programmers need not be concerned with communication between threads which is one of the most difficult tasks in parallel programming.
+
+\newpage
 \section{Improving Simulations}
 \label{improvements}
 %Section on what we need to support complex simulations
@@ -455,12 +535,16 @@ This project has already discussed abstractions with regards to modelling for si
 Abstractions are also particularly useful in software engineering.
 As software gets more complex, addition abstraction is generally needed in order to extract the important details of the implementation\cite[p.24]{csapp}.
 
-\acrshort{mde} is a software abstraction for creating and exploiting domain models, such as those that have been previously discussed with regards to simulations.
-\acrshort{mde} has shown a promising increase in understanding between stakeholders and can produce productivity gains when models are reused across projects\cite{mde_industry_review}.
+\gls{mde} is a software abstraction for creating and exploiting domain models, such as those that have been previously discussed with regards to simulations.
+\gls{mde} has shown a promising increase in understanding between stakeholders and can produce productivity gains when models are reused across projects\cite{mde_industry_review}.
 %EPSILON, benefits of MDE?
 %Domain specific modelling, etc.
 
-\paragraph{Epsilon}
+\paragraph{Epsilon} Epsilon is a set of tools and languages for supporting \gls{mde}.
+It provides tools for creating metamodels, model validation, model-to-model transformation, code generation and more.\cite{epsilon_book}
+%Tools are a particularly important feature of mde.
+%According to its website, Epsilon has a wide range of industry support.
+
 
 \paragraph{Flexible Modelling}
 Flexible Modelling tools could be a good method for allowing new simulations to be created more easily.
@@ -529,92 +613,8 @@ A previous project compared OpenGL and \acrshort{cuda} in detail.
 %OpenGL runs on a wider number of devices, including mobile (iOS)
 %frameworks, such as Apple's Metal allow significant simulations to be run, even on mobile devices
 
-
-\section{Existing Simulations}
-%Previous implementations of simulations and their problems:
-%In order to achieve mass-market userbase, they must be:
-%EASIER TO MAKE - less technical users can work on them
-%FASTER TO RUN. - more feasible, to use in experiments, more complex sims can be made
-
-\subsection{\acrlong{abm}}
-\label{abm}
-As previously mentioned, \gls{abm} models the autonomous behaviour of individual agents and the interaction between them.
-%Write comparison of AGENTS vs OBJECTS (OOP)
-Agents are often confused with objects, a commonly-used programming concept.
-However, it's important to emphasize the differences between them.
-In particular, while both agents and objects recognise the importance of interactions, objects are totally obediant to their method calls whereas agents have autonomy.
-This means that agents can interact and react to communications according to their own agenda.
-
-Custom Code?\cite{phil_diss}
-    not well tested
-    less easy to update to support new tools and hardware, new CUDA GPUs
-        Each custom code simulation must be updated separately
-
-%WHY IS AGENT BASED MODELLING THE MOST RELEVANT FOR THIS PROJECT
-While, \acrlong{abm} is more computationally expensive than top-down mathematical modelling, it is also more natural to model and intuitive to parallelise\cite{flame_simulation}.
-Communication between individual agents can be difficult to implement in parallel but parallel communication is by no means limited to \gls{abm}.
-
-
-Mention \acrshort{flame} (traditional) is an attempt to make simulations more accessible via \acrshort{abm}.
-%Flexible Large Scale Agent Modelling Environment
-%http://flame.ac.uk
-
-%discuss types (and existing) simulations..
-
-\subsubsection{\gls{MASON}}
-%mason usage
-\gls{MASON} is a multi-agent simulation library for Java.
-\gls{MASON} has been previously evaluated as the one of the fastest sequential ABM libraries available\cite{abm_platforms_review}, however this evaluation took place over a decade ago and does not factor in any of the recent work into \acrshort{gpu} parallelism.
-%supports CPU parallelism
-%peyers patch?
-%flame usage
-%keratinocyte?
-%particularly well suited for these cell-based simulations as can be visualised..
-%also not easy to use
-
-\subsubsection{\gls{FLAME GPU}}
-\acrfull{flamegpu} is an extension of the original version of \acrshort{flame}, where the simulations that are created are compiled down to parallelised CUDA code. This means the simulation can take full advantage of the significant power of modern NVIDIA \acrshort{gpu}s.
-%flame is built on top of CUDA, why?
-As its name suggests, \gls{FLAME GPU} uses \acrlong{abm} to implement simulations.
-
-%Disadvantages
-While relying on a framework such as \gls{FLAME GPU} can cause problems if support is stopped, \gls{FLAME GPU} is an open source project, so this should slightly be less of a concern.
-
-model based -> FlameGPU\cite{flame_keratinocyte}
-    restricted to the framework limitations
-    --step function host-based agent creation
-
-%Advantages
-The \gls{FLAME GPU} framework brings its own advantages.
-As it maps a model to simulation code, it brings with it many of the advantages of \acrlong{mde}.
-In particular, it gives domain experts with limited programming knowledge the ability to understand and help design models.
-Additionally, the auto-generation of artifacts, such as simulation code templates, significantly lowers the boundary to entry to less advanced programmers.
-Finally, As FLAME is continuously updated to support new hardware advances, such as multicore \acrshort{gpu} architectures\cite{flame_simulation}, the implementations can always be certain of taking advantage of the latest hardware optimisations and portability features that FLAME provides. Existing simulation models that are implemented on top of \gls{FLAME GPU} may receive these performance improvements without major code changes.
-
-%VISUALISATION COMES FREE!
-
-%overview of FlameGPU
-%http://www.flamegpu.com
-\gls{FLAME GPU} takes input in the form of an XMML model which defines the types of agents that feature in the simulation and their interactions%read XMML paper!
-%x-machine, etc.
-
-\gls{FLAME GPU} also provides a message passing interface which abstracts away from the underlying agent communication.
-This means that programmers need not be concerned with communication between threads which is one of the most difficult tasks in parallel programming.
-
-\subsection{Biological Simulations}
-Computational Biology is a relatively new field of study that has been growing signficantly over the last decade[CITATION NEEDED].
-Within Biology, simulation is often required as an alternative to invasive medical testing/animal testing
-Simulations have even been proposed as a method for exploring a potential set of first principles and mathematics that are specific to biology which could even constitute a new subject- theoretical biology\cite{rise_article}.
-
-\subsubsection{Genome}
-
-%Katherine Denby, etc.
-
-\subsubsection{Cell Dynamics}
-%Keratinocyte
-%..?
-
-\subsection{PPSim}
+\newpage
+\section{PPSim}
 \label{ppsim}
 This project focuses on simulation as a tool for exploring biological systems at cell level.
 It uses the existing simulation of Peyer's Patch\cite{kieran_thesis} and attempts to use parallel computer architectures in order to speed this simulation up.
@@ -623,7 +623,7 @@ It uses the existing simulation of Peyer's Patch\cite{kieran_thesis} and attempt
 Finally, I propose a new tool, which builds on existing work in order to make this power available to non-technical users.
 %or will I, probably not enough time for this!
 
-\section{The Domain Model}
+\subsection{The Domain Model}
 The domain model is taken from the existing sequential simulation of Peyer's patch development described in Section \ref{ppsim}.
 This model has been developed according to the \acrshort{cosmos} process\cite{cosmos}.
 %Briefly detail how CoSMoS makes for better simulations
@@ -689,7 +689,8 @@ Due to time constraints, I have not been able to implement environmental growth.
 
 \subsection{Epsilon}
 In the creation of the \gls{FLAME GPU} XML model, I decided to implement a new tool, built using the Epsilon Modelling Framework.
-This new tool contains a graphical editor which allows the \gls{FLAME GPU} `XML Model File' to be created diagramatically.
+The decision to use this framework was simple, as it provides all the tools required and I am already familiar with it.
+The new tool contains a graphical editor which allows the \gls{FLAME GPU} `XML Model File' to be created diagramatically.
 If implemented correctly, the tool should \textit{directly map} the platform model structures into the \gls{FLAME GPU} domain model.
 This should significantly improve the model design experience and allow for domain experts to be kept more involved with the simulation creation.
 This new process is shown as part of the \gls{cosmos} process in Fig. \ref{fig:flame_improved}.
@@ -733,25 +734,31 @@ This proof of concept has shown that direct mappings from a biological domain mo
 Based on this, further work is now being developed with Paul Richmond's \gls{FLAME GPU} group, to enhance the accessibility of \gls{FLAME GPU} for simulation developers.
 This should allow the simulation developer to focus on getting their domain details correct, rather than battling the agent platform.
 An improved mapping, which abstracts away all implementation details, could bring additional benefits in this area, including ensuring that the simulation code always supports the latest hardware features.
+%Add figure, shows differences between an agent in domain model and GMF platform model-
+
 %Mention missing link in (incorrect) model from Kieran's paper 
-It also ensures that the platform model 
-This work is ongoing.
+An additional benefit of this mapping, provides traceability from the domain model through to the simulation code.
+We can have greater certainty that the simulation is faithful to the domain and no bugs have been produced during the implementation.
+\\\\
+\textit{This work is ongoing.}
 
 \subsection{Speed Up}
-%Model is too disimilar to Kieran's
-The differences between the \gls{MASON} and \gls{FLAME GPU} platforms have meant that it is not trivial to compare them.
-%RUN on YARCC for results..?
 
+
+An initial aim of this project was \textit{`to explore the speed increases that can be produced by using \gls{gpgpu} programming'}.
+%Model is too disimilar to Kieran's
+Unfortunately the differences between the \gls{MASON} and \gls{FLAME GPU} platforms have meant that it is not trivial to compare them.
+%WHY:
+%Different hardware used for running? RUN on YARCC for results..?
 %Mention difference between LTo cell division - force resolution step used
+This initial hypothesis of the platform models being comparable is untenable.
 
 %SPEED RESULTS..
-%TODO - ensure this is present in introduction
-The initial hypothesis of the platform models being comparable is untenable.
-
-%model is abstract from domain already, makes more sense to compare this to domain
 Instead, a new hypothesis is that the platform model for the \gls{FLAME GPU} implementation is comparable to the original biological model.
+If our new platform model can be shown to be similar to the original PPSim domain model, we can say that this simulation also shows Peyer's Patch development..?
+%model is abstract from domain already, makes more sense to compare this to domain
 
-\cite{statistical_tests} could be important for evaluating the performance of \gls{FLAME GPU} against original PPSim
+%\cite{statistical_tests} could be important for evaluating the performance of \gls{FLAME GPU} against original PPSim
 
 %Approx 1000 words
 \section{Conclusion}
