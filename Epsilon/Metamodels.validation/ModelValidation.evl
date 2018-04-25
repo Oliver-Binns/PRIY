@@ -148,6 +148,10 @@ operation createNewCondition(agent : Agent){
 		Operator#LessThanOrEqualTo,
 		Operator#GreaterThan,
 		Operator#GreaterThanOrEqualTo,
+		
+		Operator#And,
+		Operator#Or,
+		Operator#Not,
 	
 		Operator#Plus,
 		Operator#Subtract,

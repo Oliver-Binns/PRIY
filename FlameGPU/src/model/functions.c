@@ -241,6 +241,9 @@ __FLAME_GPU_FUNC__ glm::vec2 random_move(glm::vec2 position,
 __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* xmemory,
                                        RNG_rand48* rand48)
 {
+    //Detect chemotine expression before moving!
+    //If chemotine, then set bind_x, bind_y return.
+
 	glm::vec2 init_position = glm::vec2(xmemory->x, xmemory->y);
     glm::vec2 new_position = random_move(init_position, xmemory->velocity, rand48);
 
@@ -255,6 +258,63 @@ __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* xmemory,
     return 0;
 }
 
+/**
+ * The agent is now bound.
+ * It transitions to the chemotaxis state (see model file)
+ */
+__FLAME_GPU_FUNC__ int direction(xmachine_memory_LTi* agent){
+    return 0;
+}
+
+/**
+ * The cell is in the chemotaxis state
+ * It moves directly towards its "bind_x" and "bind_y" position
+ */
+__FLAME_GPU_FUNC__ int direct_move(xmachine_memory_LTi* agent, RNG_rand48* rand48){
+    float x_aim = agent->bind_x;
+    float y_aim = agent->bind_y;
+
+    float ratio = x_aim / y_aim;
+
+    float x_move = MAX_CELL_SPEED * agent->velocity * ratio;
+    float y_move = (MAX_CELL_SPEED * agent->velocity) / ratio;
+
+    agent->x += x_move;
+    agent->y += y_move;
+    //Y position should wrap
+    agent->y = fmod(agent->y, float(CIRCUMFERENCE));
+    
+    return 0;
+}
+
+/**
+ * The cell is in the adhesion state- no movement.
+ */
+__FLAME_GPU_FUNC__ int contact(xmachine_memory_LTi* agent){
+    //Random check to determine if the cell should escape adhesion
+    return 0;
+}
+
+/**
+ * The agent has escaped adhesion
+ * this transition changes state (see model file) to random_move
+ */
+__FLAME_GPU_FUNC__ int check_escape(xmachine_memory_LTi* agent, RNG_rand48* rand48){
+    return 0;
+}
+
+/**
+ * Cell transitions from adhesion to random movement
+ * See Model File
+ */
+__FLAME_GPU_FUNC__ int escape(xmachine_memory_LTi* agent){
+    return 0;
+}
+
+/**
+ * The agent is in the random movement state.
+ * It should move in a random direction at the predefined speed.
+ */
 __FLAME_GPU_FUNC__ int ltin_random_move(xmachine_memory_LTin* xmemory,
                                         xmachine_message_location_list* location_messages,
                                         xmachine_message_location_PBM* partition_matrix, 
@@ -310,8 +370,7 @@ __FLAME_GPU_FUNC__ int express(xmachine_memory_LTo* xmemory,
 	add_location_message(location_messages,
         xmemory->x,
         xmemory->y,
-        0.0,
-        LTO_AGENT_TYPE
+        0.0
     );
     
     return 0;
