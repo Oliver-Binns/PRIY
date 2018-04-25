@@ -14,7 +14,7 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{4974}
+\wordcount{5202}
 
 
 %Approx 500 Words
@@ -63,6 +63,7 @@ Finally, I would also like to thank the \gls{FLAME GPU} development team at the 
 \newacronym{lti}{LTi}{Lymphoid Tissue inducer cell}
 \newacronym{mason}{MASON}{Multi-Agent Simulator Of Neighborhoods}
 \newacronym{mde}{MDE}{Model-Driven Engineering}
+\newacronym{mpi}{MPI}{Message Passing Interface}
 
 %behavioural model
 %complex meaning
@@ -134,6 +135,7 @@ Finally, I would also like to thank the \gls{FLAME GPU} development team at the 
 
 
 \begin{document}
+\pagenumbering{roman}
 \maketitle
 \listoffigures
 \listoftables
@@ -143,6 +145,7 @@ Finally, I would also like to thank the \gls{FLAME GPU} development team at the 
 
 %Approx 1000 words
 \chapter{Introduction}
+\pagenumbering{arabic}
 %TELL THEM WHAT YOU WILL TELL THEM
 %LIT REVIEW: TELL THEM
 %RESULTS/EVAL: TELL THEM WHAT YOU TOLD THEM!
@@ -321,6 +324,7 @@ This is not the case with in-vivo experimentation, which would require the labor
     %relate this to laws of Physics, theoretical biology?
 
 \subsubsection{Visualisation}
+\label{visualisation}
 One of the biggest benefits of simulation is the ability to graphically visualise a system or its constituent parts.
 Using simulation for visualisation has number of benefits over attempting to demonstrate real world systems.
 Several of these benefits translate from the previous two sections- they can be more feasible to explore than a real world environment and featuring a reduced complexity can allow the key concepts to be understood without overwhelming the user.
@@ -393,10 +397,9 @@ These skills shortages may be significantly limiting the possibility for cross-d
 %Despite the growing importance of computer science, it is only taught in a small percentage of U.S. schools. 
     %Microsoft Corporate Blogs, https://blogs.microsoft.com/on-the-issues/2012/12/12/investing-in-american-innovation-and-the-next-generation/
 
-%As computers are getting easier to use, users are beginning to expect this even from advanced tools
-%some tools exist for non-technical users-
-    %FlameGPU - simplifies parallisation but still requires indepth programming knowledge
-    %Other ongoing project under Kieran's supervision (GUI tool?)
+Many initiatives are being rolled out to address this issue.
+Computing was added to the National Curriculum in 2013\cite{national_curriculum, teacher_training} and numerous technology companies are also creating their own campaigns\cite{apple_education, microsoft_education}.
+It is likely that these will take a number of years to yield results, but should eventually mean that even domain-experts have a basic grasp of code.
 
 \subsubsection{Bugs}
 As with any form of computer program, mistakes can be made causing bugs to be present in the simulation code.
@@ -425,8 +428,8 @@ If the simulation needs to be safety-critical, developing it using formal method
 
 \subsection{Biological Simulations}
 Computational Biology is a relatively new field of study that has been growing signficantly over the last decade[CITATION NEEDED].
-Within Biology, simulation is often required as an alternative to invasive medical testing/animal testing%NC3Rs
-Simulations have even been proposed as a method for exploring a potential set of first principles and mathematics that are specific to biology which could even constitute a new subject- theoretical biology\cite{rise_article}.
+Within Biology, simulation is often required as an alternative to invasive medical testing/animal testing.%NC3Rs
+Simulation has even been proposed as a method for exploring a potential set of first principles and mathematics that are specific to biology which could even constitute a new subject- theoretical biology\cite{rise_article}.
 
 \subsection{\acrlong{abm}}
 \label{abm}
@@ -442,7 +445,7 @@ While, \acrlong{abm} is more computationally expensive than top-down mathematica
 Communication between individual agents can be difficult to implement in parallel but parallel communication is by no means limited to \gls{abm}.
 
 \subsubsection{Custom Code}
-While agent-based simulations have been created from scratch\cite{phil_diss} there are several distinct disadvantages to this.
+While agent-based simulations can be created from scratch\cite{phil_diss} there are several distinct disadvantages to this.
 Firstly, %parallalism must be ensured.
     not well tested
 Finally, unlike simulations that are created using \gls{abm} libraries, they do not inherit any support for new tools and hardware that come from updates to the library.
@@ -450,85 +453,95 @@ Custom code simulations must each be updated separately with any enhancements re
 
 %discuss types (and existing) simulations..
 
+\subsubsection{Proprietary Solutions}
+Some proprietary solutions for simulation creation are available.
+One example of this, with a resonable level of industry support, is Biocellion\cite{biocellion}.
+While it is freely-available for non-profit use, it does not help with our aim of creating a simulation platform that is simple-to-use.
+It requires a level of proficiency with the Linux OS, C++ programming and familiarity with mathematical modelling concepts.
+In particular, we cannot expect domain experts to be proficient at C++ programming.
+%unfortunately, technical to understand- took several weeks to even install, how to cite conversation? CITE Jeff's report?
+
 \subsubsection{\gls{MASON}}
 %mason usage
+%REMEMBER, this section is on EXISTING SIMULATIONS: discuss what MASON has been used for!
 \gls{MASON} is a multi-agent simulation library for Java.
-\gls{MASON} has been previously evaluated as the one of the fastest sequential ABM libraries available\cite{abm_platforms_review}, however this evaluation took place over a decade ago and does not factor in any of the recent work into \acrshort{gpu} parallelism.
-%supports CPU parallelism
+\gls{MASON} has been previously evaluated as the one of the fastest ABM libraries available\cite{abm_platforms_review}, however this evaluation took place over a decade ago and does not factor in any of the recent work into \acrshort{gpu} parallelism.
+\gls{MASON} only supports \gls{cpu} parallelism, this will be discussed in more detail in Section \ref{cpu_v_gpu}.
 %peyers patch?
-%flame usage
-%keratinocyte?
 %particularly well suited for these cell-based simulations as can be visualised..
 %also not easy to use
 
-\subsubsection{\acrshort{flame}}
-Mention \acrshort{flame} (traditional) is an attempt to make simulations more accessible via \acrshort{abm}.
-%Flexible Large Scale Agent Modelling Environment
-%http://flame.ac.uk
-
 \subsubsection{\gls{FLAME GPU}}
-\acrfull{flamegpu} is an extension of the original version of \acrshort{flame}, where the simulations that are created are compiled down to parallelised CUDA code. This means the simulation can take full advantage of the significant power of modern NVIDIA \acrshort{gpu}s.
+The \gls{flame} project is an attempt to make \gls{gpu}-based \gls{abm} simulations more accessible.
+\gls{flame} simulations consist of two artefacts, an `XML Model File' containing the structure of agents and their channels of communication and C source code file of `Scripted Behaviour' which defines the actual behaviour of agents.
+\acrfull{flamegpu} is an extension of the original version of \acrshort{flame}, where the simulations that are created are compiled down to parallelised CUDA code.
 %flame is built on top of CUDA, why?
-As its name suggests, \gls{FLAME GPU} uses \acrlong{abm} to implement simulations.
+This means the simulation can take full advantage of the power of modern NVIDIA \acrshort{gpu}s.
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=0.6\textwidth]{Appendix/FLAME_Process}
+\caption{\gls{FLAME GPU} Development Process (Taken from \cite{flame_simulation})}
+\label{fig:flame_dev}
+\end{figure}
+
+\gls{flame}'s use of \gls{mde} could gives domain experts with limited programming knowledge the ability to understand and help design the simulation models, however a software engineer is still needed for the final implementation.
+
+%REMEMBER, this section is on EXISTING SIMULATIONS: discuss what FLAME has been used for!
 
 %Disadvantages
-While relying on a framework such as \gls{FLAME GPU} can cause problems if support is stopped, \gls{FLAME GPU} is an open source project, so this should slightly be less of a concern.
-
-model based -> FlameGPU\cite{flame_keratinocyte}
-    restricted to the framework limitations
-    --step function host-based agent creation
+While relying on a framework such as \gls{FLAME GPU} can cause problems if support is stopped, this should be slightly less of a concern as \gls{FLAME GPU} is an open source project.
+A more pressing concern with relying on any framework is that implementations are restricted by any of the framework's limitations.
+For example, the current stable release of \gls{FLAME GPU} does not allow new agents to be created by the \gls{Host} between simulation steps.
+%other limitations?
 
 %Advantages
-The \gls{FLAME GPU} framework brings its own advantages.
-As it maps a model to simulation code, it brings with it many of the advantages of \acrlong{mde}.
-In particular, it gives domain experts with limited programming knowledge the ability to understand and help design models.
-Additionally, the auto-generation of artifacts, such as simulation code templates, significantly lowers the boundary to entry to less advanced programmers.
-Finally, As FLAME is continuously updated to support new hardware advances, such as multicore \acrshort{gpu} architectures\cite{flame_simulation}, the implementations can always be certain of taking advantage of the latest hardware optimisations and portability features that FLAME provides. Existing simulation models that are implemented on top of \gls{FLAME GPU} may receive these performance improvements without major code changes.
+However, the \gls{FLAME GPU} framework does bring a number of advantages.
+Firstly, it provides a \gls{mpi} which abstracts away from the underlying agent communication.
+This \gls{mpi} supports spatial partitioning allowing messages to be passed only to nearby agents.
+Communication between threads which is one of the most difficult tasks in parallel programming.
+\gls{FLAME GPU} manages this communication in its entirety, meaning programmers can instead focus on ensuring the agent behaviour is correct.
 
 %VISUALISATION COMES FREE!
+\gls{FLAME GPU} also provides visualisations for simulations straight out of the box.
+The benefits of visualisation are discussed in Section \ref{visualisation}.
+Visualisations in \gls{FLAME GPU} run in real-time and can be useful for quickly verifying whether a simulation is behaving as expected.
+%SCREENSHOT FIGURE HERE?
 
-%overview of FlameGPU
-%http://www.flamegpu.com
-\gls{FLAME GPU} takes input in the form of an XMML model which defines the types of agents that feature in the simulation and their interactions%read XMML paper!
-%x-machine, etc.
+Many other advantages come directly from \gls{FLAME GPU}'s use of \gls{mde}.
+\gls{FLAME GPU} is continuously updated to support new hardware advances, such as multicore \acrshort{gpu} architectures\cite{flame_simulation}.
+\gls{FLAME GPU} simulations can always be certain of taking advantage of the latest hardware optimisations and portability features that the framework provides.
+Existing simulation models that are implemented on top of \gls{FLAME GPU} may receive these performance improvements without any major code changes.
+%In particular, it gives domain experts with limited programming knowledge the ability to understand and help design models.
+%Additionally, the auto-generation of artifacts, such as simulation code templates, significantly lowers the boundary to entry to less advanced programmers.
 
-\gls{FLAME GPU} also provides a message passing interface which abstracts away from the underlying agent communication.
-This means that programmers need not be concerned with communication between threads which is one of the most difficult tasks in parallel programming.
+Many other benefits of \gls{mde} are not exploited in the current implementation of \gls{FLAME GPU}.
+%TODO discuss these:
+%migration?
+%auto-generation
+%auto-validation fixes?
 
 \newpage
 \section{Improving Simulations}
 \label{improvements}
 %Section on what we need to support complex simulations
 %link this to the previous chapter- discussion on current constraints on simulation:
-Significant constraints on when simulations can be used were discussed in the previous chapter.
+Significant constraints on when simulations can be used were discussed in Section \ref{simulation}.
 In order for simulations to become more widely adopted, some of these constraints must be overcome. 
 In particular, this project focuses on two particular sections of which I believe will have the biggest immediate impact.
-This chapter discusses the potential solutions to each of these problems.
-%which I believe is model-driven engineering
-
+This section discusses the potential solutions to each of these problems.
 
 \subsection{Ease of Creation}
-Firstly, attempting to overcome the problems provided by the shortage of experienced programmers.
-Initial work to help overcome this skills shortage will likely come by providing tools that can automate work done by technical users in order to increase their productivity.
-Eventually, if this technical work can be fully automated, non-technical users will be able to easily create advanced simulations.
-%As these simulations becoming more and more prevalent: tools need developing to allow less technical users to create these simulations easier and run faster...
+A major constraint on the adoption of simulations is how difficult and time-consuming they are to create.
+This constraint is exacerbated by a current shortage of experienced programmers.
+Initial work to help overcome this skills shortage will likely come by providing tools that can automate work done undertaken by technical users in order to increase their productivity.
 
+Eventually, if this technical work can be fully automated, non-technical users will be able to easily create advanced simulations.
 %person-centric healthcare, custom simulations may be needed
 
 %difficult to create a framework that allows for easy modelling of BOTH state and interaction between agents[CITE NEEDED?, no but seriously]
 
-Many initiatives are being rolled out to address this issue.
-Computing was added to the National Curriculum in 2013\cite{national_curriculum, teacher_training} and numerous technology companies are also creating their own campaigns\cite{apple_education, microsoft_education}.
-It is likely that these will take a number of years to yield results, but should eventually mean that even domain-experts have a basic grasp of code.
-
-\subsubsection{Proprietary Solutions}
-Some proprietary solutions for simulation creation are available.
-
-One example of this, with a resonable level of industry support, is Biocellion.
-While it is freely-available for non-profit use, it is still not fit our requirements of being simple-to-use.
-%unfortunately, technical to understand- took several weeks to even install, how to cite conversation? CITE Jeff's report?
-It requires a level of proficiency with the Linux OS, C++ programming and familiarity with mathematical modelling concepts.
-\cite{biocellion}
+%As computers are getting easier to use, users are beginning to expect this even from advanced tools
 
 \subsubsection{\acrlong{mde}}
 This project has already discussed abstractions with regards to modelling for simulations.
@@ -542,6 +555,7 @@ As software gets more complex, addition abstraction is generally needed in order
 
 \paragraph{Epsilon} Epsilon is a set of tools and languages for supporting \gls{mde}.
 It provides tools for creating metamodels, model validation, model-to-model transformation, code generation and more.\cite{epsilon_book}
+
 %Tools are a particularly important feature of mde.
 %According to its website, Epsilon has a wide range of industry support.
 
@@ -564,13 +578,16 @@ This section evaluates recent work into achieving faster simulations.
 
 \subsubsection{Machine Learning}
 %Talk about Kieran's original thesis and how long it took to run, and to develop the results, etc.
-A solution to the speed problem that has been proposed recently is to use machine learning on a small set of results to produce\cite{kieran_machine_learning}
-%Kieran Machine Learning
-This has problems in that...
-likely affected by Standard Machine Learning issues? Bias? Overfitting?
+An upcoming paper explores the possible use of machine learning to emulate and predict the output of an existing simulator\cite{kieran_machine_learning}.
+This emulation method produced some very accurate results within seconds, however it still requires an initial training set, and so does not fully remove the desire for fast simulations.
+As the number of parameters increase, the training set size must also increase in order to produce accurate results.
+This technique also requires expertise in machine learning which conflicts with our other aim- to make simulations more accessible.
+%likely affected by Standard Machine Learning issues? Bias? Overfitting?
 %harder to verify and make argument-based validation?
 
-Already an ongoing area of research.. 
+%2.3.2: Machine learning was on a summary of 500 executions of 500 parameter sets, not a small set of results. 
+% the fact you are predicting the results of a simulator then trying to understand how that prediction relates back to the real world is another. 
+
 
 \subsubsection{Parallelism}
 %Trade-off, Peak Performance vs Programming Ease, this can be related to the previous section
@@ -591,6 +608,7 @@ MapReduce is a programming model that is generally used for processing big data 
 %DMASON
 
 \paragraph{\acrshort{cpu} vs \acrshort{gpu}}
+\label{cpu_v_gpu}
 Modern computers provide two main methods for parallelising code.
 We are building on a previous project\cite{phil_diss} which laid the groudwork for this.
 This previous project outlined the choice between \acrshort{cpu} and \acrshort{gpu} parallelism and makes the case for exploring \acrshort{gpu}s- simplisitically put, this is due to the significantly greater speed ups that can be achieved.
@@ -671,12 +689,6 @@ However, by adding a force resolution step, as used in previous \gls{FLAME GPU} 
 %HOW DOES THIS RELATE TO THE COSMOS PROCESS (ABOVE)
 Building \gls{FLAME GPU} simulations requires the creation of two artifacts (Fig. \ref{fig:flame_dev}), a structural `XML Model File' which defines the agents in the system and their allowed channels for communication and a C source code file of `Scripted Behaviour' which defines the actual behaviour of agents.
 
-\begin{figure}[htp]
-\centering
-\includegraphics[width=0.6\textwidth]{Appendix/FLAME_Process}
-\caption{\gls{FLAME GPU} Development Process (Taken from \cite{flame_simulation})}
-\label{fig:flame_dev}
-\end{figure}
 
 A state-based platform model design is already available- the domain model for the original \gls{MASON} implementation of this simulation.
 As \gls{FLAME GPU} uses state machines for each agent type in its implementation, these have been directly implemented into it.
@@ -735,6 +747,9 @@ Based on this, further work is now being developed with Paul Richmond's \gls{FLA
 This should allow the simulation developer to focus on getting their domain details correct, rather than battling the agent platform.
 An improved mapping, which abstracts away all implementation details, could bring additional benefits in this area, including ensuring that the simulation code always supports the latest hardware features.
 %Add figure, shows differences between an agent in domain model and GMF platform model-
+
+%FLAME GPU limitations?
+%future feature enhancements?
 
 %Mention missing link in (incorrect) model from Kieran's paper 
 An additional benefit of this mapping, provides traceability from the domain model through to the simulation code.
