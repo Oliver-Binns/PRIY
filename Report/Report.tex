@@ -14,7 +14,7 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{5546}
+\wordcount{6006}
 
 
 %Approx 500 Words
@@ -170,6 +170,7 @@ At present, domain experts with knowledge of a particular biological system prod
 With the aid of software developers, these domain models are then converted into platform models.
 The domain experts verify that the platform models are reasonable abstraction of the system, and they are implemented in code by the software developers.
 This is the \gls{cosmos} process (Fig. \ref{fig:cosmos_process}).
+\label{cosmos_intro}
 
 \begin{figure}[htp]
 \centering
@@ -572,7 +573,7 @@ FlexiSketch is a good example of this and provides a good tool for creating mode
 
 \subsection{Speed Up}
 Simulations need to be able to generate results in a realistic amount of time.
-Many biological simulations include significant elements of randomness meaning must be run a large number of times in order to produce statistically significant results.
+Many biological simulations include significant elements of randomness meaning must be run a large number of times in order to produce statistically significant results\cite{spartan}.
 With novel applications attempting to simulate increasingly complex models, it is becoming more and more difficult to ensure that they have reasonable runtimes.
 This section evaluates recent work into achieving faster simulations.
 %discussed compute power above, relate this specifically to biology now!
@@ -659,6 +660,7 @@ In contrast to this, dedicated \acrshort{gpu}s are normally only found in gaming
 
 \paragraph{OpenGL vs \acrshort{cuda}}
 A previous project compared OpenGL and \acrshort{cuda} in detail.
+The key advantage that OpenGL has over \acrshort{cuda} is its portability.
 %OpenGL runs on a wider number of devices, including mobile (iOS)
 %frameworks, such as Apple's Metal allow significant simulations to be run, even on mobile devices
 
@@ -675,20 +677,24 @@ As \gls{FLAME GPU} is developed openly, this version is freely available online\
 
 Eclipse Neon v4.6 and Epsilon v1.4 have been used with Java Runtime Environment 1.8.0 for developing the input XML model for \gls{FLAME GPU}.
 
-Version-control for both the simulation code and this report has been managed through Git and is available on \href{https://github.com/oliver-binns/PRIY.git}{GitHub}. As this is an individual project, Git has been an acceptable solution. If the scope of the project is to expand, it may become necessary to move the modelling section of the development into a more suitable version-control system, such as EMFStore\cite{emf_store} which is specifically designed for models.
+Version-control for both the simulation code and this report has been managed through Git and is available on \href{https://github.com/oliver-binns/PRIY.git}{GitHub}.
+As this is an individual project, Git has been an acceptable solution.
+If the scope of the project is to expand, it may become necessary to move the modelling section of the development into a more suitable version-control system, such as EMFStore\cite{emf_store} which is specifically designed for models.
 
 %Approx 1500 words for problem description and analysis
 \section{\gls{PP} Case Study}
 \label{ppsim}
 This project focuses on simulation as a tool for exploring biological systems at cell level.
-It uses the existing simulation of \gls{PP} development\cite{kieran_thesis} and attempts to use parallel computer architectures in order to speed this simulation up.
-%proof of concept- what new knowledge has PPSim created so far?
-Finally, I propose a new tool, which builds on existing work, in order to take a first step towards making efficient, parallel simulations available to non-technical users.
+It uses an existing sequential \gls{MASON} simulation of \gls{PP} development\cite{kieran_thesis, kieran_methodology, kieran_results, kieran_machine_learning, spartan} (\textit{PPSim}) and attempts to use parallel computer architectures in order to speed this simulation up.
+A previous statistical sampling technique \textit{PPSim} simulation required 585,000 executions of the simulation.
+Even with a significant amount of \gls{cpu} parallelism (138 processors) available, the combined runtime of these executions is intractable for larger scale simulations.\cite{kieran_machine_learning}
+As previously stated, \gls{FLAME GPU} can easily produce results to better a high-performance cluster, such as the one used to compute \textit{PPSim}, even on a standard desktop PC.
 
 \subsection{The Domain Model}
-The domain model for this \gls{PP} simulation is taken from an existing sequential \gls{MASON} simulation.\cite{kieran_thesis}
-This model has been developed according to the \acrshort{cosmos} process.\cite{cosmos}
+This domain model for \textit{PPSim} was developed according to the \acrshort{cosmos} process\cite{cosmos}, which was introduced in Section \ref{cosmos_intro}.
 %Briefly detail how CoSMoS makes for better simulations
+The model describes the cell behaviour over a 72 hour period in which \gls{PP}es develop.
+\gls{PP}es are clusters of cells that form on the lining of the small intestine (Fig \ref{pp_imaging}).
 
 \begin{figure}[htp]
 \begin{subfigure}{0.70\textwidth}
@@ -704,28 +710,34 @@ This model has been developed according to the \acrshort{cosmos} process.\cite{c
 \label{fig:foetal_pp}
 \end{subfigure}
 
-\caption{(Taken from \cite{})}
+\caption{Images of In-Vitro \gls{PP} (Provided by \href{mailto:mark.coles@york.ac.uk}{Mark Coles}, University of York)}
 \label{pp_imaging}
 \end{figure}
 
-\gls{PP}es are clusters of cells that form on the lining of the small intestine (Fig \ref{pp_imaging}).
+%ENVIRONMENT
 The enviroment of the model is a 3-dimensional tube modelled in 2-dimensions.
-%Environment.. 2D Plane- that wraps in the y direction?
+%2D Plane- that wraps in the y direction?
 %Agents that leave the end of the tube are n
 %Agents 
-In this model there are three types of agent which are all types of cells; \gls{lto}, \gls{ltin} and \gls{lti}.
 
+%AGENTS
+In this model there are three types of agent which are all types of cells; \gls{lto}, \gls{ltin} and \gls{lti}.
+State diagrams that describe the behaviour of each of these cells were presented alongside the original domain (Fig. \ref{fig:domain_state_diagrams}) and platform models (Fig. \ref{fig:platform_state_diagrams})\cite{kieran_thesis}.
+
+%LTo
 Stationary \gls{lto} cells 
 
-
-The model begins when \gls{lti}/\gls{ltin} cells begin migrating into the environment.
-As such, at the beginning of the simulation, none of these cells are present.
+%Migration
+The model starts when \gls{lti}/\gls{ltin} cells begin migrating into the environment.
+As such, at the beginning of the simulation, neither of these cells are present.
 \gls{lti} and \gls{ltin} cells migrate into the environment at a constant rate, such that the correct number of cells is reached at the 12 hour time-step.
 
+%LTin
 Initially the \gls{lti} and \gls{ltin} cells move randomly around the environment.
 
+%LTi
+
 \section{The Platform Model}
-The simulation spans over the 72 hour period in which the \gls{PP} develops.
 In this platform model there is a single \textit{active} \gls{lto} cell in the centre of the environment.
 These \gls{lto} cells divide every 12 hours.
 A previous project on this topic stated that \gls{lto} cell division must be performed sequentially on a host function in order to prevent new cells occupying the same space\cite{phil_diss}.
@@ -742,29 +754,115 @@ A \gls{Host} function manages the migration of \gls{lto} and \gls{ltin} cells in
 %Intro Chapter:
 The chapter details the simulation experiment that has been performed and the development of new tools to aid the implementation of this, and future simulations.
 The experiment involved the development of a new \acrshort{gpu}-based \textit{PPSim v2} platform implementation as well as a new tool for mapping and transforming biological models into \gls{FLAME GPU} simulations.
+%Finally, I propose a new tool, which builds on existing work, in order to take a first step towards making efficient, parallel simulations available to non-technical users.
 Having previously established the current difficulties with biological simulation, this chapter also details how these are overcome in the implementation of this project.
 
-\section{\gls{FLAME GPU}}
+\section{\gls{FLAME GPU} Simulation}
 %HOW DOES THIS RELATE TO THE COSMOS PROCESS (ABOVE)
-Building \gls{FLAME GPU} simulations requires the creation of two artifacts (Fig. \ref{fig:flame_dev}), a structural `XML Model File' which defines the agents in the system and their allowed channels for communication and a C source code file of `Scripted Behaviour' which defines the actual behaviour of agents.
+As previously mentioned the \gls{FLAME GPU} implementation requires the creation of two artifacts.
+A structural `XML Model File' which defines the agents in the system and their allowed channels for communication.
+A C source code file of `Scripted Behaviour' defines the actual behaviour of agents.
 
+\subsection{Structural Model}
+\gls{FLAME GPU} defines agents as X-machines in its XML model.
+X-machines are structurally identical to finite state machines, other than that they have memory, this means the platform model state diagrams can be implemented directly into the \gls{FLAME GPU} model (Fig. \ref{fig:gmf_flame_generation}).
 
-A state-based platform model design is already available- the domain model for the original \gls{MASON} implementation of this simulation.
-As \gls{FLAME GPU} uses state machines for each agent type in its implementation, these have been directly implemented into it.
+During the development of the model implementation, there were many occasions where the XML of the model because invalid because of mistakes.
+These mistakes either caused ill-formed XML or an XML model which did not conform the \gls{FLAME GPU} model schema.
+In order to mitigate the issues caused by these mistakes, a new tool was created using the Epsilon Modelling Framework.
+The new tool ensures that any XML files that are created are valid XML and conform the the \gls{FLAME GPU} model schema.
 
-Host cell creation into the system is a work in progress for next \gls{FLAME GPU} release?
+\gls{FLAME GPU} models created using the tool are built using a graphical interface (Figs. \ref{fig:ltin_gmf}, \ref{fig:ppsim_gmf}).
+Adding a GUI front end to \gls{FLAME GPU} is a step towards ensuring these parallel \gls{abm} simulations are more easily accessible by non-technical users.
+
+\begin{figure}[htp]
+\centering
+
+\begin{subfigure}{0.49\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Appendix/Models/LTin_Cropped}
+\caption{LTin Platform Model\cite{kieran_thesis}}
+\label{fig:ltin_cropped}
+\end{subfigure}
+\begin{subfigure}{0.49\textwidth}
+\centering
+\includegraphics[width=0.7\textwidth]{Appendix/Models/LTin_GMF}
+\caption{LTin Agent in Graphical Editor}
+\label{fig:ltin_gmf}
+\end{subfigure}
+
+\begin{subfigure}{0.75\textwidth}
+\centering
+\begin{lstlisting}[language=XML, basicstyle=\tiny]
+<gpu:xagent>
+    <name>LTin</name>
+    <description>Lymphoid Tissue initiator cell</description>
+    <memory>
+        <gpu:variable>
+            <type>float</type>
+            <name>x</name>
+        ...
+    </memory>
+    <functions>
+        <gpu:function>
+            <name>ltin_random_move</name>
+            <currentState>ltin_random_movement</currentState>
+            <nextState>ltin_random_movement</nextState>
+        ...
+    </functions>
+    <states>
+        <gpu:state>
+            <name>ltin_random_movement</name>
+        </gpu:state>
+        ...
+        <initialState>ltin_random_movement</initialState>
+    </states>
+    <gpu:type>continuous</gpu:type>
+    <gpu:bufferSize>5530</gpu:bufferSize>
+</gpu:xagent>
+\end{lstlisting}
+\caption{\textit{Autogenerated} \gls{FLAME GPU} XML Model for LTin Agent}
+\end{subfigure}
+
+\caption{Autogeneration of \gls{FLAME GPU} Model File}
+\label{fig:gmf_flame_generation}
+\end{figure}
+
+%SHOULD THIS BE IN THE CONCLUSION?
+In addition to ensuring that only valid models can be produced the graphical tool has a number of other benefits.
+The original platform model (Fig. \ref{fig:ltin_cropped}) and the \gls{FLAME GPU} implementation (Fig. \ref{fig:ltin_gmf}) can now be compared at a glance.
+For example, it is immediately obvious that the platform model has been refined to include only two states in the final implementation.
+The removal of the `Stable Contact' state is logical- this state is instantaneous and immediately transitions into either localised movement or random movement, meaning its transitions can be merged into those which already exist between the other two states.
+
+%for each agent type in its implementation, these have been directly implemented into it.
+%A state-based platform model design is already available- the domain model for the original \gls{MASON} implementation of this simulation.
+%
+
+\subsection{Behavioural Model}
+%Host cell creation into the system is a work in progress for next \gls{FLAME GPU} release?
+%
 
 Due to time constraints, I have not been able to implement environmental growth.
 %This isn't complex to implement within FLAME GPU itself.. a step function could be used to adjust each agent's position.
 %Unfortunately at present the FLAME GPU simulation sets the camera in the centre position of the environment bounds- these are determined by the INITIAL position of cells
 
-\subsection{Epsilon}
-In the creation of the \gls{FLAME GPU} XML model, I decided to implement a new tool, built using the Epsilon Modelling Framework.
-The decision to use this framework was simple, as it provides all the tools required and I am already familiar with it.
-The new tool contains a graphical editor which allows the \gls{FLAME GPU} `XML Model File' to be created diagramatically.
-If implemented correctly, the tool should \textit{directly map} the platform model structures into the \gls{FLAME GPU} domain model.
+\subsection{Testing}
+As the new simulation is a re-engineering of the existing PPSim, it can inherit the validation of the existing simulation.
+This requires the new simulation to be demonstrably similar with similar components, behaviours and results.
+%is this the case?
+
+Talk about how the model was tested to ensure correctness\\
+
+
+\section{Graphical Modelling Tool}
+In order to implement a tool to support my \gls{FLAME GPU} development, the Epsilon Modelling Framework was selected.
+The decision to use this framework was simple, as it provides all the tools required and I was already familiar with it.
+The aim was for the tool to \textit{directly} map the platform model structures into the required \gls{FLAME GPU} XML model.
 This should significantly improve the model design experience and allow for domain experts to be kept more involved with the simulation creation.
 This new process is shown as part of the \gls{cosmos} process in Fig. \ref{fig:flame_improved}.
+
+Figure \ref{fig:ppsim_gmf} shows the \gls{PP} simulation created within this graphical editor.
+The XML model used for the final simulation was automatically generated from this diagram.
 
 \begin{figure}[htp]
 \centering
@@ -773,12 +871,22 @@ This new process is shown as part of the \gls{cosmos} process in Fig. \ref{fig:f
 \label{fig:flame_improved}
 \end{figure}
 
-Figure \ref{fig:ppsim_gmf} shows the \gls{PP} simulation created within this graphical editor. The XML model used for the final simulation was automatically generated from this diagram.
+\subsection{Metamodel}
+The development of a metamodel was guided by the existing \gls{FLAME GPU} XML model schema.
+This model schema is itself a metamodel for the \gls{FLAME GPU} model file.
 
-The \gls{evl} has allowed well-formedness constraints to be implemented for the \gls{FLAME GPU} input model.
-This should provide intuitive feedback (Fig. \ref{fig:validation_gmf}) in cases where the model may be incorrect, in order to prevent an invalid XML model from being produced.
-Quick fixes (Fig. \ref{fig:validation_quickfix_gmf}) have also been implemented to guide the user through easily correcting their invalid model.
+%similarities:
+%top level simulation contains:
+%   variables
+Much of the new metamodel matches the \gls{FLAME GPU} schema.
+There is a top level simulation object which contains a list of agents, a list of messages that agents can send, a list of global variables, etc.
+The main difference in the new metamodel is its ability to utilise references to objects.
 
+Using references to objects ensures that the objects being referenced exist, which must be the case for model to be valid.
+
+\subsection{EuGENia}
+
+\subsection{Epsilon Generation Language}
 One final benefit of this new approach to model generation, is that it makes it far simpler to .
 %Hm?
 
@@ -787,12 +895,27 @@ One final benefit of this new approach to model generation, is that it makes it 
 %BUT generally, and particularly with biological models like this:
 %Transitions.. BETWEEN states require some form of external trigger?
 
-\subsection{Testing}
-As the new simulation is a re-engineering of the existing PPSim, it can inherit the validation of the existing simulation.
-This requires the new simulation to be demonstrably similar with similar components, behaviours and results.
-%is this the case?
+\subsection{\acrlong{evl}}
+\begin{figure}[htp]
+\centering
+\includegraphics[width=\textwidth]{Appendix/validation_gmf}
+\caption{Graphical validation using \gls{evl} constraints}
+\label{fig:validation_gmf}
+\end{figure}
 
-Talk about how the model was tested to ensure correctness\\
+The \gls{evl} has allowed well-formedness constraints to be implemented for the \gls{FLAME GPU} input model.
+This should provide intuitive feedback (Fig. \ref{fig:validation_gmf}) in cases where the model may be incorrect, in order to prevent an invalid XML model from being produced.
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=\textwidth]{Appendix/validation_quickfix_gmf}
+\caption{Quick fix of invalid model}
+\label{fig:validation_quickfix_gmf}
+\end{figure}
+
+Quick fixes (Fig. \ref{fig:validation_quickfix_gmf}) have also been implemented to guide the user through easily correcting their invalid model.
+The error feedback provided by these quick fixes is much more intuitive than that provided by \gls{FLAME GPU}.
+
 
 %Approx 2500 words for results and evalution
 \chapter{Results and Evaluation}
@@ -847,15 +970,21 @@ If our new platform model can be shown to be similar to the original PPSim domai
 
 \section{Further Work}
 \subsection{Peyer's Patch Case Study}
-While the two \gls{PP} simulations are both derived from the same domain model, there are clearly significant implementation differences between these.
+While the simulations are not entirely comparable, I have shown that fast, parallel implementations can be created using \gls{FLAME GPU}.
+Further work on this topic is needed to show that these implementations can also produce results quickly when scaled up.
+With this simulation in particular some options for increasing the scale include modelling in 3-dimensions, adding further cell types and biological factors and cell types into the model, and simulating the whole length of the gut rather than a small section.
+%SCALE- simulate the whole gut length,
+%       simulate in 3 dimensions
+%       see if runtime is still acceptable, does it scale, etc.
+
+While the two \gls{PP} simulations are both derived from the same domain model, there are clearly significant implementation differences between these, as is discussed earlier in this report.
 Future work will need to explore the meaning of the differences between simulations and whether that have any effect on their validity against the domain model.
 %explore what the "differences" between the simulations "mean", specifically for PPSim and more generally
 
 %SPARTAN?
+%can we produce any new hypotheses from this?
 Spartan is a tool for understanding relationships and providing novel biological insight into simulation behaviour.
 Spartan was use for analysing the results of the original PPSim implementation\cite{spartan} and may provide an insight into validity of the parallel \textit{PPSim v2} implementation.
-
-%can we produce any new hypotheses from this?
 
 \subsection{Software Generalisibility}%IS THIS A WORD?
 %Expand project for more powerful cell based simulation
@@ -881,40 +1010,72 @@ Future work could reevaluate whether the benefit of a cross-platform API, such a
 
 \printbibliography
 \chapter{Appendix}
-\section{Simulation Parameters}
-
-\section{Cell Data Structures}
-
-\section{Other}
 
 \begin{figure}[htp]
 \centering
-\begin{subfigure}{\textwidth}
+\begin{subfigure}{0.95\textwidth}
 \centering
-\includegraphics[width=\textwidth]{Appendix/ppsim_gmf}
-\caption{Graphically produced \gls{FLAME GPU} Simulation model for Peyer's Patch}
-\label{fig:ppsim_gmf}
-\end{subfigure}%
+\includegraphics[width=\textwidth]{Appendix/Models/Domain/LTin}
+\caption{LTin}
+\end{subfigure}
 \end{figure}
 
 \begin{figure}[htp]\ContinuedFloat
 \centering
-\begin{subfigure}{\textwidth}
+\begin{subfigure}{0.95\textwidth}
 \centering
-\includegraphics[width=\textwidth]{Appendix/validation_gmf}
-\caption{Graphical validation using \gls{evl} constraints}
-\label{fig:validation_gmf}
+\includegraphics[width=\textwidth]{Appendix/Models/Domain/LTi}
+\caption{LTi}
+\end{subfigure}
+\end{figure}
+
+\begin{figure}[htp]\ContinuedFloat
+\centering
+\begin{subfigure}{0.95\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Appendix/Models/Domain/LTo}
+\caption{LTo}
 \end{subfigure}
 
-\begin{subfigure}{\textwidth}
-\centering
-\includegraphics[width=\textwidth]{Appendix/validation_quickfix_gmf}
-\caption{Quick fix of invalid model}
-\label{fig:validation_quickfix_gmf}
-\end{subfigure}%
+\caption{Domain Model State Diagrams}
+\label{fig:domain_state_diagrams}
+\end{figure}
 
-\caption{Graphical Tool for creating \gls{FLAME GPU} models}
-\label{fig:gmf}
+\begin{figure}[htp]
+\centering
+\begin{subfigure}{0.95\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Appendix/Models/Platform/LTin}
+\caption{LTin}
+\end{subfigure}
+\end{figure}
+
+\begin{figure}[htp]\ContinuedFloat
+\centering
+\begin{subfigure}{0.95\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Appendix/Models/Platform/LTi}
+\caption{LTi}
+\end{subfigure}
+\end{figure}
+
+\begin{figure}[htp]\ContinuedFloat
+\centering
+\begin{subfigure}{0.95\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Appendix/Models/Platform/LTo}
+\caption{LTo}
+\end{subfigure}
+
+\caption{Platform Model State Diagrams\cite{kieran_thesis}}
+\label{fig:platform_state_diagrams}
+\end{figure}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=\textwidth]{Appendix/ppsim_gmf}
+\caption{Graphically produced \gls{FLAME GPU} Simulation model for Peyer's Patch}
+\label{fig:ppsim_gmf}
 \end{figure}
  
 \end{document}
