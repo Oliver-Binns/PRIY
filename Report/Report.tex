@@ -14,7 +14,7 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{6006}
+\wordcount{6161}
 
 
 %Approx 500 Words
@@ -112,7 +112,7 @@ Finally, I would also like to thank the \gls{FLAME GPU} development team at the 
 \newglossaryentry{LTo}
 {
     name=\glslink{lto}{LTo},
-    description={A static cell. Differentiates (divides) on stable bind with an \gls{LTin} and \gls{LTi} cell}
+    description={A static cell. Divides on stable bind with an \gls{LTin} and \gls{LTi} cell}
 }
 \newglossaryentry{Chemokine}
 {
@@ -357,19 +357,19 @@ In order for the model to the be faithful to its original domain it must be able
 
 A lack of knowledge regarding the domain of the simulation is one of the most significant constraints regarding its implementation.
 If this is the case, the model produced may be incorrect or abstractions may remove necessary detail required for the system to function as expected.
+With biological simulations in particular, it is often hard to make assumptions about how particular processes occur\cite{stepney_abm}.
 Unfaithful models can also be a result of \textit{incorrect} knowledge of the domain.
-For complex systems, having too many abstractions from the original domain may also invalidate the model and produce incorrect results\cite[p.8]{cosmos}.
+For complex systems, having too many abstractions from the original domain may also invalidate the model and produce incorrect results\cite[p.8]{cosmos}, \cite{stepney_abm}.
 
 While knowledge of a system needs to be sufficient to produce reasonable assumptions, it need not be perfect.
 This is particularly the case with the type of simulation discussed later in this report.
 In this case, assumptions about the domain are made %and hypotheses tested..?
 
 \subsubsection{Compute Power}
-Complex models with too few abstractions from their domain may require significant computing power to simulate. Additional abstractions may not be possible as they may invalidate the model. In these cases, cutting edge hardware may be needed for the simulation to be run in an acceptable time. 
-
+Complex models with too few abstractions from their domain may require significant computing power to simulate. Additional abstractions may not be possible as they may invalidate the model\cite{stepney_abm}.
+In these cases, cutting edge hardware may be needed for the simulation to be run in an acceptable time. 
 
 Powerful hardware is expensive to access, so this may be a significant constraint on the ability to simulate.
-
 %Agent-Based Modelling, which will be introduced in detail in Section \ref{abm}, models the system as a number of autonomous individuals. This technique requires significantly more compute power than the traditional top-down simulations.
 
 %Talk about the need to speed up
@@ -447,10 +447,24 @@ While, \acrlong{abm} is more computationally expensive than top-down mathematica
 Communication between individual agents can be difficult to implement in parallel but parallel communication is by no means limited to \gls{abm}.
 
 \subsubsection{Custom Code}
-While agent-based simulations can be created from scratch\cite{phil_diss} there are several distinct disadvantages to this.
-Firstly, %parallalism must be ensured.
-    not well tested
-Finally, unlike simulations that are created using \gls{abm} libraries, they do not inherit any support for new tools and hardware that come from updates to the library.
+A custom code \gls{abm} simulation was used to investigate the processes of auxin transport in plants.\cite{stepney_abm}
+%background:
+The simulation focussed on how the transport canals in the stems of plants develop.
+%findings:
+Unfortunately this simulation did not produce the auxin transportation canals that would be expected from the biological model.
+
+This report builds on an existing custom code example of \gls{abm} simulation which utilised \gls{gpu} parallelism.\cite{phil_diss}
+%quick background of this
+This simulation was built on a tried and tested domain model of \gls{PP} development\cite{kieran_thesis}.
+%findings
+The simulation was successful in demonstrating the development of \gls{PP}es described in its domain model.
+
+While it is clearly possible for agent-based simulations to be created from scratch there are several distinct disadvantages to doing so.
+Firstly, using existing frameworks avoid programmers having to reinvent the wheel, massively reducing the amount of code that they need to produce.
+As well as saving a significant amount of time, commonly used frameworks are often well tested making software bugs less likely.
+%parallelism must be ensured.
+%not well tested
+Furthermore, unlike simulations that are created using \gls{abm} libraries, they do not inherit any support for new tools and hardware that come from updates to the library.
 Custom code simulations must each be updated separately with any enhancements required for.
 
 %discuss types (and existing) simulations..
