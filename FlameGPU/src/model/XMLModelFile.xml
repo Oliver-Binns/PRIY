@@ -190,6 +190,14 @@
 					<gpu:reallocate>true</gpu:reallocate>
 					<gpu:RNG>true</gpu:RNG>
 				</gpu:function>
+				<gpu:function>
+					<name>ltin_escape</name>
+					<currentState>localised_movement</currentState>
+					<nextState>ltin_random_movement</nextState>
+						<condition><lhs><agentVariable>stable_contact</agentVariable></lhs><operator>==</operator><rhs><value>0</value></rhs></condition>
+					<gpu:reallocate>false</gpu:reallocate>
+					<gpu:RNG>false</gpu:RNG>
+				</gpu:function>
 			</functions>
 			<states>
 				<gpu:state>
@@ -224,12 +232,16 @@
 					<name>colour</name>
 				</gpu:variable>
 				<gpu:variable>
-					<type>int</type>
-					<name>bind_x</name>
+					<type>float</type>
+					<name>respond_x</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>float</type>
+					<name>respond_y</name>
 				</gpu:variable>
 				<gpu:variable>
 					<type>int</type>
-					<name>bind_y</name>
+					<name>stable_contact</name>
 				</gpu:variable>
 			</memory>
 			<functions>
@@ -249,6 +261,7 @@
 					<name>direction</name>
 					<currentState>lti_random_movement</currentState>
 					<nextState>chemotaxis</nextState>
+						<condition><lhs><condition><lhs><agentVariable>respond_x</agentVariable></lhs><operator>!=</operator><rhs><value>NULL</value></rhs></condition></lhs><operator>&amp;&amp;</operator><rhs><condition><lhs><agentVariable>respond_y</agentVariable></lhs><operator>!=</operator><rhs><value>NULL</value></rhs></condition></rhs></condition>
 					<gpu:reallocate>false</gpu:reallocate>
 					<gpu:RNG>false</gpu:RNG>
 				</gpu:function>
@@ -263,14 +276,15 @@
 					<name>contact</name>
 					<currentState>chemotaxis</currentState>
 					<nextState>adhesion</nextState>
-						<condition><lhs><condition><lhs><agentVariable>bind_x</agentVariable></lhs><operator>==</operator><rhs><agentVariable>x</agentVariable></rhs></condition></lhs><operator>==</operator><rhs><condition><lhs><agentVariable>bind_y</agentVariable></lhs><operator>==</operator><rhs><agentVariable>y</agentVariable></rhs></condition></rhs></condition>
+						<condition><lhs><agentVariable>stable_contact</agentVariable></lhs><operator>==</operator><rhs><value>1</value></rhs></condition>
 					<gpu:reallocate>false</gpu:reallocate>
 					<gpu:RNG>false</gpu:RNG>
 				</gpu:function>
 				<gpu:function>
-					<name>escape</name>
+					<name>lti_escape</name>
 					<currentState>adhesion</currentState>
 					<nextState>lti_random_movement</nextState>
+						<condition><lhs><condition><lhs><agentVariable>respond_x</agentVariable></lhs><operator>==</operator><rhs><value>NULL</value></rhs></condition></lhs><operator>&amp;&amp;</operator><rhs><condition><lhs><agentVariable>respond_y</agentVariable></lhs><operator>==</operator><rhs><value>NULL</value></rhs></condition></rhs></condition>
 					<gpu:reallocate>false</gpu:reallocate>
 					<gpu:RNG>false</gpu:RNG>
 				</gpu:function>
@@ -563,15 +577,24 @@
 			<gpu:layerFunction>
 				<name>output_location</name>
 			</gpu:layerFunction>
+			<gpu:layerFunction>
+				<name>contact</name>
+			</gpu:layerFunction>
 		</layer>
 		<layer>
 			<gpu:layerFunction>
 				<name>ltin_random_move</name>
 			</gpu:layerFunction>
+			<gpu:layerFunction>
+				<name>check_escape</name>
+			</gpu:layerFunction>
 		</layer>
 		<layer>
 			<gpu:layerFunction>
 				<name>ltin_adhesion</name>
+			</gpu:layerFunction>
+			<gpu:layerFunction>
+				<name>lti_escape</name>
 			</gpu:layerFunction>
 		</layer>
 		<layer>
@@ -592,6 +615,16 @@
 		<layer>
 			<gpu:layerFunction>
 				<name>lti_random_move</name>
+			</gpu:layerFunction>
+		</layer>
+		<layer>
+			<gpu:layerFunction>
+				<name>direction</name>
+			</gpu:layerFunction>
+		</layer>
+		<layer>
+			<gpu:layerFunction>
+				<name>direct_move</name>
 			</gpu:layerFunction>
 		</layer>
 		<layer>

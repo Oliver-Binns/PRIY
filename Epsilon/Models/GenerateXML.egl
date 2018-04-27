@@ -177,7 +177,7 @@ operation Condition toXML(agent: Agent){
 		case Operator#Or :
 			str += "||";
 		case Operator#Not :
-			str += "!";
+			str += "!=";
 		
 		case Operator#Plus :
 			str += "+";
@@ -210,6 +210,9 @@ operation VariableEval toXML(agent: Agent){
 	if (agent.memory.contains(self.value)){
 		return "<agentVariable>" + self.value.name + "</agentVariable>";
 	}
-	return "<value>" + self.value.name + "</value>";
+	if (self.value.isDefined()){
+		return "<value>" + self.value.name + "</value>";
+	}
+	return "<value>NULL</value>";
 }
 %]

@@ -67,16 +67,6 @@ __FLAME_GPU_INIT_FUNC__ void setConstants(){
 	set_PERCENT_LTI_FROM_FACS(&PERCENT_LTI_FROM_FACS);	
 }
 
-inline __device__ float dot(glm::vec2 a, glm::vec2 b)
-{
-    return a.x * b.x + a.y * b.y;
-}
-
-inline __device__ float length(glm::vec2 v)
-{
-    return sqrtf(dot(v, v));
-}
-
 inline __device__ float adhesionProbability(){
     float value = 0;
     return (value > MAX_ADHESION_PROBABILITY) ? value : MAX_ADHESION_PROBABILITY;
@@ -167,6 +157,8 @@ __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
 			agents[i]->y = randomUniform() * *get_CIRCUMFERENCE();
 			agents[i]->colour = *get_LTI_AGENT_TYPE();
             agents[i]->velocity = randomGaussian();
+            //agents[i]->respond_x = NULL;
+            //agents[i]->respond_y = NULL;
 		}
         h_add_agents_LTi_lti_random_movement(agents, count);
         h_free_agent_LTi_array(&agents, count);
@@ -243,7 +235,7 @@ __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* agent,
     RNG_rand48* rand48)
 {
     //Detect chemotine expression before moving!
-    //If chemotine, then set bind_x, bind_y return.
+    //If chemotine, then set respond_x, respond_y return.
     xmachine_message_chemokine* message = get_first_chemokine_message(chemokine_messages);
 
     const glm::vec2 init_position = glm::vec2(agent->x, agent->y);
@@ -251,11 +243,15 @@ __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* agent,
     while(message){
         //Check if expression is sufficient enough..
         const glm::vec2 lto_position = glm::vec2(message->x, message->y);
-        const float distance_to_lto = dot(init_position, lto_position); 
+        const float distance_to_lto = glm::distance(init_position, lto_position); 
         const float threshold = chemokineLevel(distance_to_lto, message->linear_adjust);
 
         if(CHEMO_THRESHOLD < threshold){
-            printf("Threshold: %f\n", threshold);
+            //Calculate 3x3 grid for movement direction from Kieran's thesis..
+            //Or even something more accurate?
+            agent->respond_x = message->x;
+            agent->respond_y = message->y;
+            //printf("Threshold: %f\n", threshold);
         }
 
         message = get_next_chemokine_message(message, chemokine_messages);
@@ -284,20 +280,30 @@ __FLAME_GPU_FUNC__ int direction(xmachine_memory_LTi* agent){
 
 /**
  * The cell is in the chemotaxis state
- * It moves directly towards its "bind_x" and "bind_y" position
+ * It moves directly towards its "respond_x" and "respond_y" position
  */
 __FLAME_GPU_FUNC__ int direct_move(xmachine_memory_LTi* agent, RNG_rand48* rand48){
     //TODO- this should follow grid method, described in Kieran's paper
-    float x_aim = agent->bind_x;
-    float y_aim = agent->bind_y;
+    const float x_aim = agent->respond_x;
+    const float y_aim = agent->respond_y;
 
-    float ratio = x_aim / y_aim;
+    const glm::vec2 target = glm::vec2(x_aim, y_aim);
+    const glm::vec2 current = glm::vec2(agent->x, agent->y);
+        
+    if(glm::distance(target, current) < ADHESION_DISTANCE_THRESHOLD){
+        agent->stable_contact = 1;
+        return 0;
+    }
 
-    float x_move = MAX_CELL_SPEED * agent->velocity * ratio;
-    float y_move = (MAX_CELL_SPEED * agent->velocity) / ratio;
+    //Vector between
+    glm::vec2 move = target - current;
+    //Distance = 1
+    move = glm::normalize(move);
+    //Can travel up to this speed!
+    move *= agent->velocity * MAX_CELL_SPEED;
 
-    agent->x += x_move;
-    agent->y += y_move;
+    agent->x += move.x;
+    agent->y += move.y;
     //Y position should wrap
     agent->y = fmod(agent->y, float(CIRCUMFERENCE));
     
@@ -309,6 +315,7 @@ __FLAME_GPU_FUNC__ int direct_move(xmachine_memory_LTi* agent, RNG_rand48* rand4
  */
 __FLAME_GPU_FUNC__ int contact(xmachine_memory_LTi* agent){
     //Random check to determine if the cell should escape adhesion
+
     return 0;
 }
 
@@ -317,9 +324,9 @@ __FLAME_GPU_FUNC__ int contact(xmachine_memory_LTi* agent){
  * this transition changes state (see model file) to random_move
  */
 __FLAME_GPU_FUNC__ int check_escape(xmachine_memory_LTi* agent, RNG_rand48* rand48){
-    if(0){
-        agent->bind_x = NULL;
-        agent->bind_y = NULL;
+    if(rnd<CONTINUOUS>(rand48) < 0.5){
+        agent->respond_x = NULL;
+        agent->respond_y = NULL;
     }
 
     return 0;
@@ -329,7 +336,7 @@ __FLAME_GPU_FUNC__ int check_escape(xmachine_memory_LTi* agent, RNG_rand48* rand
  * Cell transitions from adhesion to random movement
  * See Model File
  */
-__FLAME_GPU_FUNC__ int escape(xmachine_memory_LTi* agent){
+__FLAME_GPU_FUNC__ int lti_escape(xmachine_memory_LTi* agent){
     return 0;
 }
 
@@ -387,11 +394,15 @@ __FLAME_GPU_FUNC__ int ltin_adhesion(xmachine_memory_LTin* agent,
 	return 0;
 }
 
+__FLAME_GPU_FUNC__ int ltin_escape(xmachine_memory_LTin* agent){
+    return 0;
+}
+
 __FLAME_GPU_FUNC__ int ltin_localised_move(xmachine_memory_LTin* agent, RNG_rand48* rand48){
     //Move locally around the LTo cell.
 
     //If escape becomes more likely
-    if(0){
+    if(rnd<CONTINUOUS>(rand48) < 0.5){
         agent->stable_contact = 0;
     }
 
