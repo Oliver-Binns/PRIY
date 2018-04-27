@@ -32,7 +32,7 @@
     <memory name="colour"/>
     <memory name="stable_contact" description="Boolean flag, 1 if cell is in stable contact with an LTo cell."/>
     <states name="ltin_random_movement">
-      <transitions name="ltin_adhesion" reallocate="true" randomGenerator="true" nextState="//@agents.0/@states.1">
+      <transitions name="ltin_adhesion" outputs="//@messages.3" reallocate="true" randomGenerator="true" nextState="//@agents.0/@states.1">
         <condition>
           <lhs xsi:type="FLAME:LiteralEval" is_float="true" value="1.0"/>
           <rhs xsi:type="FLAME:VariableEval" value="//@agents.0/@memory.4"/>
@@ -52,7 +52,7 @@
     <memory name="bind_x"/>
     <memory name="bind_y"/>
     <states name="lti_random_movement">
-      <transitions name="lti_random_move" reallocate="true" randomGenerator="true" nextState="//@agents.1/@states.0"/>
+      <transitions name="lti_random_move" inputs="//@messages.2" reallocate="true" randomGenerator="true" nextState="//@agents.1/@states.0"/>
       <transitions name="direction" reallocate="false" randomGenerator="false" nextState="//@agents.1/@states.1"/>
     </states>
     <states name="chemotaxis">
@@ -83,9 +83,22 @@
     <memory name="x" type="Float"/>
     <memory name="y" type="Float"/>
     <memory name="colour"/>
+    <memory name="linear_adjust" type="Float"/>
+    <memory name="adhesion_probability" type="Float"/>
+    <memory name="divide_in_t"/>
     <states name="expression">
-      <transitions name="express" outputs="//@messages.0" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0"/>
-      <transitions name="divide" differentiation="//@agents.2/@differentiation.0" reallocate="false" randomGenerator="true" nextState="//@agents.2/@states.5">
+      <transitions name="output_location" outputs="//@messages.0" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0"/>
+      <transitions name="begin_chemokine" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.1">
+        <condition>
+          <lhs xsi:type="FLAME:VariableEval" value="//@variables.8"/>
+          <rhs xsi:type="FLAME:VariableEval" value="//@agents.2/@memory.3"/>
+        </condition>
+      </transitions>
+      <transitions name="detect_collision" inputs="//@messages.3" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0"/>
+    </states>
+    <states name="chemokine_upregulation">
+      <transitions name="mature" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.2"/>
+      <transitions name="divide" differentiation="//@agents.2/@differentiation.0" reallocate="false" randomGenerator="true" nextState="//@agents.2/@states.3">
         <condition>
           <lhs xsi:type="FLAME:LiteralEval" is_float="false" value="0.0"/>
           <rhs xsi:type="FLAME:ConditionEval">
@@ -96,22 +109,21 @@
           </rhs>
         </condition>
       </transitions>
+      <transitions name="express_chemokine" outputs="//@messages.2" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.1"/>
     </states>
-    <states name="adhesion_upregulation"/>
-    <states name="chemokine_upregulation"/>
-    <states name="mature"/>
-    <states name="downregulated"/>
+    <states name="matured"/>
     <states name="lto_resolve">
-      <transitions name="resolve" inputs="//@messages.1" reallocate="true" randomGenerator="false" nextState="//@agents.2/@states.5"/>
-      <transitions name="resolved" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0"/>
-      <transitions name="output_force" outputs="//@messages.1" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.5"/>
+      <transitions name="resolve" inputs="//@messages.1" reallocate="true" randomGenerator="false" nextState="//@agents.2/@states.3"/>
+      <transitions name="resolved" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.1"/>
+      <transitions name="output_force" outputs="//@messages.1" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.3"/>
     </states>
-    <differentiation agent="//@agents.2" state="//@agents.2/@states.5"/>
+    <differentiation agent="//@agents.2" state="//@agents.2/@states.3"/>
   </agents>
-  <messages name="location" description="A message holding the type and location of a cell" partitioning="//@partitions.0" bufferSize="1024">
+  <messages name="lto_location" description="A message holding the type and location of a cell" partitioning="//@partitions.0" bufferSize="1024">
     <variables name="x" type="Float"/>
     <variables name="y" type="Float"/>
     <variables name="z" type="Float"/>
+    <variables name="adhesion_probability"/>
   </messages>
   <messages name="force" description="" partitioning="//@partitions.1" bufferSize="1024">
     <variables name="x"/>
@@ -121,15 +133,25 @@
   <messages name="chemokine" description="The LTo Cells express chemokine to whole environment." bufferSize="1024">
     <variables name="x"/>
     <variables name="y"/>
-    <variables name="z"/>
-    <variables name="linearAdjust"/>
+    <variables name="linear_adjust"/>
   </messages>
-  <layers order="2" functions="//@agents.1/@states.0/@transitions.0 //@agents.0/@states.0/@transitions.1"/>
+  <messages name="ltin_location" partitioning="//@partitions.2" bufferSize="5530">
+    <variables name="x"/>
+    <variables name="y"/>
+    <variables name="z"/>
+  </messages>
+  <layers order="2" functions="//@agents.0/@states.0/@transitions.1"/>
   <layers order="1" functions="//@agents.2/@states.0/@transitions.0"/>
-  <layers order="3" functions="//@agents.0/@states.0/@transitions.0 //@agents.2/@states.0/@transitions.1"/>
-  <layers order="4" functions="//@agents.2/@states.5/@transitions.2"/>
-  <layers order="5" functions="//@agents.2/@states.5/@transitions.0"/>
-  <layers order="6" functions="//@agents.2/@states.5/@transitions.1"/>
+  <layers order="3" functions="//@agents.0/@states.0/@transitions.0"/>
+  <layers order="10" functions="//@agents.2/@states.3/@transitions.2"/>
+  <layers order="11" functions="//@agents.2/@states.3/@transitions.0"/>
+  <layers order="12" functions="//@agents.2/@states.3/@transitions.1"/>
+  <layers order="9" functions="//@agents.2/@states.1/@transitions.1"/>
+  <layers order="4" functions="//@agents.2/@states.0/@transitions.2"/>
+  <layers order="5" functions="//@agents.2/@states.0/@transitions.1"/>
+  <layers order="6" functions="//@agents.2/@states.1/@transitions.2"/>
+  <layers order="7" functions="//@agents.1/@states.0/@transitions.0"/>
+  <partitions xsi:type="FLAME:SpatialPartition" radius="4" xmin="0" xmax="7304" ymin="0" ymax="256" zmin="0" zmax="4"/>
   <partitions xsi:type="FLAME:SpatialPartition" radius="4" xmin="0" xmax="7304" ymin="0" ymax="256" zmin="0" zmax="4"/>
   <partitions xsi:type="FLAME:SpatialPartition" radius="4" xmin="0" xmax="7304" ymin="0" ymax="256" zmin="0" zmax="4"/>
 </FLAME:Simulation>

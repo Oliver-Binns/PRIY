@@ -49,7 +49,9 @@ for i in range(1):
 		'name': 'LTo',
 		'x': 7303 / 2,
 		'y': 254 / 2,
-		'colour': LTo_TYPE
+		'colour': LTo_TYPE,
+		'linear_adjust': 0,
+		'adhesion_probability': 0
 	}))
 
 tree = etree.ElementTree(root)

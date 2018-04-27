@@ -161,6 +161,12 @@
 					<name>ltin_adhesion</name>
 					<currentState>ltin_random_movement</currentState>
 					<nextState>localised_movement</nextState>
+					<outputs>
+						<gpu:output>
+							<messageName>ltin_location</messageName>
+							<gpu:type>single_message</gpu:type>
+						</gpu:output>
+					</outputs>
 						<condition><lhs><value>1.0</value></lhs><operator>==</operator><rhs><agentVariable>stable_contact</agentVariable></rhs></condition>
 					<gpu:reallocate>true</gpu:reallocate>
 					<gpu:RNG>true</gpu:RNG>
@@ -171,7 +177,7 @@
 					<nextState>ltin_random_movement</nextState>
 					<inputs>
 						<gpu:input>
-							<messageName>location</messageName>
+							<messageName>lto_location</messageName>
 						</gpu:input>
 					</inputs>
 					<gpu:reallocate>true</gpu:reallocate>
@@ -231,6 +237,11 @@
 					<name>lti_random_move</name>
 					<currentState>lti_random_movement</currentState>
 					<nextState>lti_random_movement</nextState>
+					<inputs>
+						<gpu:input>
+							<messageName>chemokine</messageName>
+						</gpu:input>
+					</inputs>
 					<gpu:reallocate>true</gpu:reallocate>
 					<gpu:RNG>true</gpu:RNG>
 				</gpu:function>
@@ -302,15 +313,27 @@
 					<type>int</type>
 					<name>colour</name>
 				</gpu:variable>
+				<gpu:variable>
+					<type>float</type>
+					<name>linear_adjust</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>float</type>
+					<name>adhesion_probability</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>int</type>
+					<name>divide_in_t</name>
+				</gpu:variable>
 			</memory>
 			<functions>
 				<gpu:function>
-					<name>express</name>
+					<name>output_location</name>
 					<currentState>expression</currentState>
 					<nextState>expression</nextState>
 					<outputs>
 						<gpu:output>
-							<messageName>location</messageName>
+							<messageName>lto_location</messageName>
 							<gpu:type>single_message</gpu:type>
 						</gpu:output>
 					</outputs>
@@ -318,8 +341,35 @@
 					<gpu:RNG>false</gpu:RNG>
 				</gpu:function>
 				<gpu:function>
-					<name>divide</name>
+					<name>begin_chemokine</name>
 					<currentState>expression</currentState>
+					<nextState>chemokine_upregulation</nextState>
+						<condition><lhs><value>CHEMO_UPPER_ADJUST</value></lhs><operator>==</operator><rhs><agentVariable>linear_adjust</agentVariable></rhs></condition>
+					<gpu:reallocate>false</gpu:reallocate>
+					<gpu:RNG>false</gpu:RNG>
+				</gpu:function>
+				<gpu:function>
+					<name>detect_collision</name>
+					<currentState>expression</currentState>
+					<nextState>expression</nextState>
+					<inputs>
+						<gpu:input>
+							<messageName>ltin_location</messageName>
+						</gpu:input>
+					</inputs>
+					<gpu:reallocate>false</gpu:reallocate>
+					<gpu:RNG>false</gpu:RNG>
+				</gpu:function>
+				<gpu:function>
+					<name>mature</name>
+					<currentState>chemokine_upregulation</currentState>
+					<nextState>matured</nextState>
+					<gpu:reallocate>false</gpu:reallocate>
+					<gpu:RNG>false</gpu:RNG>
+				</gpu:function>
+				<gpu:function>
+					<name>divide</name>
+					<currentState>chemokine_upregulation</currentState>
 					<nextState>lto_resolve</nextState>
 					<xagentOutputs>
 						<gpu:xagentOutput>
@@ -330,6 +380,19 @@
 						<condition><lhs><value>0</value></lhs><operator>==</operator><rhs><condition><lhs><value>SIM_STEP</value></lhs><operator>%</operator><rhs><value>720</value></rhs></condition></rhs></condition>
 					<gpu:reallocate>false</gpu:reallocate>
 					<gpu:RNG>true</gpu:RNG>
+				</gpu:function>
+				<gpu:function>
+					<name>express_chemokine</name>
+					<currentState>chemokine_upregulation</currentState>
+					<nextState>chemokine_upregulation</nextState>
+					<outputs>
+						<gpu:output>
+							<messageName>chemokine</messageName>
+							<gpu:type>single_message</gpu:type>
+						</gpu:output>
+					</outputs>
+					<gpu:reallocate>false</gpu:reallocate>
+					<gpu:RNG>false</gpu:RNG>
 				</gpu:function>
 				<gpu:function>
 					<name>resolve</name>
@@ -346,7 +409,7 @@
 				<gpu:function>
 					<name>resolved</name>
 					<currentState>lto_resolve</currentState>
-					<nextState>expression</nextState>
+					<nextState>chemokine_upregulation</nextState>
 					<gpu:reallocate>false</gpu:reallocate>
 					<gpu:RNG>false</gpu:RNG>
 				</gpu:function>
@@ -369,16 +432,10 @@
 					<name>expression</name>
 				</gpu:state>
 				<gpu:state>
-					<name>adhesion_upregulation</name>
-				</gpu:state>
-				<gpu:state>
 					<name>chemokine_upregulation</name>
 				</gpu:state>
 				<gpu:state>
-					<name>mature</name>
-				</gpu:state>
-				<gpu:state>
-					<name>downregulated</name>
+					<name>matured</name>
 				</gpu:state>
 				<gpu:state>
 					<name>lto_resolve</name>
@@ -392,7 +449,7 @@
 	
 	<messages>
 		<gpu:message>
-			<name>location</name>
+			<name>lto_location</name>
 			<description>A message holding the type and location of a cell</description>
 			<variables>
 				<gpu:variable>
@@ -406,6 +463,10 @@
 				<gpu:variable>
 					<type>float</type>
 					<name>z</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>int</type>
+					<name>adhesion_probability</name>
 				</gpu:variable>
 			</variables>
 			<gpu:partitioningSpatial>
@@ -461,28 +522,49 @@
 				</gpu:variable>
 				<gpu:variable>
 					<type>int</type>
-					<name>z</name>
-				</gpu:variable>
-				<gpu:variable>
-					<type>int</type>
-					<name>linearAdjust</name>
+					<name>linear_adjust</name>
 				</gpu:variable>
 			</variables>
 			<gpu:partitioningNone/>
 			<gpu:bufferSize>1024</gpu:bufferSize>
+		</gpu:message>
+		<gpu:message>
+			<name>ltin_location</name>
+			<description></description>
+			<variables>
+				<gpu:variable>
+					<type>int</type>
+					<name>x</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>int</type>
+					<name>y</name>
+				</gpu:variable>
+				<gpu:variable>
+					<type>int</type>
+					<name>z</name>
+				</gpu:variable>
+			</variables>
+			<gpu:partitioningSpatial>
+				<gpu:radius>4</gpu:radius>
+				<gpu:xmin>0</gpu:xmin>
+				<gpu:xmax>7304</gpu:xmax>
+				<gpu:ymin>0</gpu:ymin>
+				<gpu:ymax>256</gpu:ymax>
+				<gpu:zmin>0</gpu:zmin>
+				<gpu:zmax>4</gpu:zmax>
+			</gpu:partitioningSpatial>
+			<gpu:bufferSize>5530</gpu:bufferSize>
 		</gpu:message>
 	</messages>
 	
 	<layers>
 		<layer>
 			<gpu:layerFunction>
-				<name>express</name>
+				<name>output_location</name>
 			</gpu:layerFunction>
 		</layer>
 		<layer>
-			<gpu:layerFunction>
-				<name>lti_random_move</name>
-			</gpu:layerFunction>
 			<gpu:layerFunction>
 				<name>ltin_random_move</name>
 			</gpu:layerFunction>
@@ -491,6 +573,28 @@
 			<gpu:layerFunction>
 				<name>ltin_adhesion</name>
 			</gpu:layerFunction>
+		</layer>
+		<layer>
+			<gpu:layerFunction>
+				<name>detect_collision</name>
+			</gpu:layerFunction>
+		</layer>
+		<layer>
+			<gpu:layerFunction>
+				<name>begin_chemokine</name>
+			</gpu:layerFunction>
+		</layer>
+		<layer>
+			<gpu:layerFunction>
+				<name>express_chemokine</name>
+			</gpu:layerFunction>
+		</layer>
+		<layer>
+			<gpu:layerFunction>
+				<name>lti_random_move</name>
+			</gpu:layerFunction>
+		</layer>
+		<layer>
 			<gpu:layerFunction>
 				<name>divide</name>
 			</gpu:layerFunction>
