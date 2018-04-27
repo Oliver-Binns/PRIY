@@ -14,7 +14,7 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{6161}
+\wordcount{6375}
 
 
 %Approx 500 Words
@@ -463,26 +463,30 @@ While it is clearly possible for agent-based simulations to be created from scra
 Firstly, using existing frameworks avoid programmers having to reinvent the wheel, massively reducing the amount of code that they need to produce.
 As well as saving a significant amount of time, commonly used frameworks are often well tested making software bugs less likely.
 %parallelism must be ensured.
-%not well tested
+%not well tested?
 Furthermore, unlike simulations that are created using \gls{abm} libraries, they do not inherit any support for new tools and hardware that come from updates to the library.
 Custom code simulations must each be updated separately with any enhancements required for.
 
-%discuss types (and existing) simulations..
-
 \subsubsection{Proprietary Solutions}
-Some proprietary solutions for simulation creation are available.
-One example of this, with a resonable level of industry support, is Biocellion\cite{biocellion}.
+Some proprietary solutions are available to aid the creation of efficient \gls{abm} simulations.
+One example of this, with a reasonable level of industry support, is Biocellion\cite{biocellion_paper}.
 While it is freely-available for non-profit use, it does not help with our aim of creating a simulation platform that is simple-to-use.
-It requires a level of proficiency with the Linux OS, C++ programming and familiarity with mathematical modelling concepts.
+While it makes the task of creating efficient parallel simulations which are portable far simpler, it requires a level of proficiency with the Linux OS, C++ programming and familiarity with mathematical modelling concepts.
 In particular, we cannot expect domain experts to be proficient at C++ programming.
+Software engineers will still be required in the simulation development process.
+In the future productivity layers which allow simulations to be created by less technical users will be added to Biocellion, but these are not yet available.\cite{biocellion_paper}
+Biocellion's closed source approach rules out the ability for us to build on this work, while a license agreement has hindered adoption\cite{physicell}
+
 %unfortunately, technical to understand- took several weeks to even install, how to cite conversation? CITE Jeff's report?
 
 \subsubsection{\gls{MASON}}
 %mason usage
 %REMEMBER, this section is on EXISTING SIMULATIONS: discuss what MASON has been used for!
 \gls{MASON} is a multi-agent simulation library for Java.
-\gls{MASON} has been previously evaluated as the one of the fastest ABM libraries available\cite{abm_platforms_review}, however this evaluation took place over a decade ago and does not factor in any of the recent work into \acrshort{gpu} parallelism.
-\gls{MASON} only supports \gls{cpu} parallelism, this will be discussed in more detail in Section \ref{cpu_v_gpu}.
+\gls{MASON} has been previously evaluated as the one of the fastest ABM libraries available\cite{abm_platforms_review}, however this evaluation took place over a decade ago and does not factor in any of the recent work into \acrshort{gpu} parallelism\cite{flame_simulation, biocellion_paper, physicell}.
+Meanwhile, \gls{MASON} only supports \gls{cpu} parallelism, this will be discussed in more detail in Section \ref{cpu_v_gpu}.
+
+
 %peyers patch?
 %particularly well suited for these cell-based simulations as can be visualised..
 %also not easy to use
@@ -502,7 +506,6 @@ This means the simulation can take full advantage of the power of modern NVIDIA 
 \end{figure}
 
 \gls{flame}'s use of \gls{mde} could gives domain experts with limited programming knowledge the ability to understand and help design the simulation models, however a software engineer is still needed for the final implementation.
-
 
 %partitioning is particularly effective if the vast majority of space is unpopulated
 %Other specifications of FLAME GPU?
@@ -779,15 +782,15 @@ A C source code file of `Scripted Behaviour' defines the actual behaviour of age
 
 \subsection{Structural Model}
 \gls{FLAME GPU} defines agents as X-machines in its XML model.
-X-machines are structurally identical to finite state machines, other than that they have memory, this means the platform model state diagrams can be implemented directly into the \gls{FLAME GPU} model (Fig. \ref{fig:gmf_flame_generation}).
+X-machines are structurally identical to finite state machines, other than that they have memory, which means it was possible to directly implement most of the platform model state diagrams directly into the \gls{FLAME GPU} model (Fig. \ref{fig:gmf_flame_generation}).
 
 During the development of the model implementation, there were many occasions where the XML of the model because invalid because of mistakes.
 These mistakes either caused ill-formed XML or an XML model which did not conform the \gls{FLAME GPU} model schema.
 In order to mitigate the issues caused by these mistakes, a new tool was created using the Epsilon Modelling Framework.
 The new tool ensures that any XML files that are created are valid XML and conform the the \gls{FLAME GPU} model schema.
 
-\gls{FLAME GPU} models created using the tool are built using a graphical interface (Figs. \ref{fig:ltin_gmf}, \ref{fig:ppsim_gmf}).
-Adding a GUI front end to \gls{FLAME GPU} is a step towards ensuring these parallel \gls{abm} simulations are more easily accessible by non-technical users.
+In the tool \gls{FLAME GPU} models are designed using a graphical interface (Figs. \ref{fig:ltin_gmf}, \ref{fig:ppsim_gmf}) and then exported to the required XML file format.
+Adding this GUI front end to \gls{FLAME GPU} is a major step towards ensuring these parallel \gls{abm} simulations are more easily accessible by non-technical users.
 
 \begin{figure}[htp]
 \centering
@@ -850,11 +853,16 @@ The removal of the `Stable Contact' state is logical- this state is instantaneou
 
 %for each agent type in its implementation, these have been directly implemented into it.
 %A state-based platform model design is already available- the domain model for the original \gls{MASON} implementation of this simulation.
-%
+A number of other differences were made to the platform model, mainly because of the time limitations of the project.
+The decision to only include a single central \gls{LTo} cell in the simulation meant that the `No Expression of RET-Ligand' state could be removed, as it cannot be reached.
+
+The platform model diagram for \gls{LTi} cells has a missing transition.
+As \gls{LTo} cells do not constantly release chemokines, it is possible for the cell to make contact with an \gls{LTo} cell without first transitioning through the response to chemokine state.
+This transition was present into the original \gls{MASON} implementation of \textit{PPSim}, but was never corrected in the state diagram.
+It has also been added into the new \gls{FLAME GPU} implementation.
 
 \subsection{Behavioural Model}
 %Host cell creation into the system is a work in progress for next \gls{FLAME GPU} release?
-%
 
 Due to time constraints, I have not been able to implement environmental growth.
 %This isn't complex to implement within FLAME GPU itself.. a step function could be used to adjust each agent's position.
