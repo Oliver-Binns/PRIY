@@ -187,6 +187,11 @@
 					<name>ltin_localised_move</name>
 					<currentState>localised_movement</currentState>
 					<nextState>localised_movement</nextState>
+					<inputs>
+						<gpu:input>
+							<messageName>lto_location</messageName>
+						</gpu:input>
+					</inputs>
 					<gpu:reallocate>true</gpu:reallocate>
 					<gpu:RNG>true</gpu:RNG>
 				</gpu:function>
@@ -292,6 +297,11 @@
 					<name>check_escape</name>
 					<currentState>adhesion</currentState>
 					<nextState>adhesion</nextState>
+					<inputs>
+						<gpu:input>
+							<messageName>lto_location</messageName>
+						</gpu:input>
+					</inputs>
 					<gpu:reallocate>false</gpu:reallocate>
 					<gpu:RNG>true</gpu:RNG>
 				</gpu:function>
@@ -337,7 +347,7 @@
 				</gpu:variable>
 				<gpu:variable>
 					<type>int</type>
-					<name>divide_in_t</name>
+					<name>created_at</name>
 				</gpu:variable>
 			</memory>
 			<functions>
@@ -378,7 +388,7 @@
 					<name>mature</name>
 					<currentState>chemokine_upregulation</currentState>
 					<nextState>matured</nextState>
-						<condition><lhs><agentVariable>linear_adjust</agentVariable></lhs><operator>==</operator><rhs><value>CHEMO_LOWER_ADJUST</value></rhs></condition>
+						<condition><lhs><condition><lhs><value>CHEMO_LOWER_ADJUST</value></lhs><operator>==</operator><rhs><agentVariable>linear_adjust</agentVariable></rhs></condition></lhs><operator>&amp;&amp;</operator><rhs><condition><lhs><value>MAX_ADHESION_PROBABILITY</value></lhs><operator>==</operator><rhs><agentVariable>adhesion_probability</agentVariable></rhs></condition></rhs></condition>
 					<gpu:reallocate>false</gpu:reallocate>
 					<gpu:RNG>false</gpu:RNG>
 				</gpu:function>
@@ -392,7 +402,7 @@
 							<state>lto_resolve</state>
 						</gpu:xagentOutput>
 					</xagentOutputs>
-						<condition><lhs><value>0</value></lhs><operator>==</operator><rhs><condition><lhs><value>SIM_STEP</value></lhs><operator>%</operator><rhs><value>720</value></rhs></condition></rhs></condition>
+						<condition><lhs><value>0</value></lhs><operator>==</operator><rhs><condition><lhs><condition><lhs><value>SIM_STEP</value></lhs><operator>-</operator><rhs><agentVariable>created_at</agentVariable></rhs></condition></lhs><operator>%</operator><rhs><value>720</value></rhs></condition></rhs></condition>
 					<gpu:reallocate>false</gpu:reallocate>
 					<gpu:RNG>true</gpu:RNG>
 				</gpu:function>

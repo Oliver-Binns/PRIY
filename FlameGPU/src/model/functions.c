@@ -67,13 +67,14 @@ __FLAME_GPU_INIT_FUNC__ void setConstants(){
 	set_PERCENT_LTI_FROM_FACS(&PERCENT_LTI_FROM_FACS);	
 }
 
-__device__ float adhesionProbability(){
-    float value = 0;
-    return (value > MAX_ADHESION_PROBABILITY) ? value : MAX_ADHESION_PROBABILITY;
+__device__ float adhesionProbability(float lto_adhesion_level){
+    float thresholded = fminf(MAX_ADHESION_PROBABILITY, lto_adhesion_level);
+    return ADHESION_SLOPE * lto_adhesion_level;
 }
 
 __device__ float chemokineLevel(float distanceToLTo, float lto_expression_level){
-    float value = -(-lto_expression_level * distanceToLTo + CHEMO_CURVE_ADJUST);
+    float thresholded = fmaxf(CHEMO_LOWER_ADJUST, lto_expression_level);
+    float value = -(-thresholded * distanceToLTo + CHEMO_CURVE_ADJUST);
     value = expf(value);
     value = 1 + value;
     return 1 / value;
@@ -234,8 +235,8 @@ __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* agent,
     xmachine_message_chemokine_list* chemokine_messages,
     RNG_rand48* rand48)
 {
-    //Detect chemotine expression before moving!
-    //If chemotine, then set respond_x, respond_y return.
+    //Detect chemokine expression before moving!
+    //If chemokine, then set respond_x, respond_y return.
     xmachine_message_chemokine* message = get_first_chemokine_message(chemokine_messages);
 
     const glm::vec2 init_position = glm::vec2(agent->x, agent->y);
@@ -339,10 +340,22 @@ __FLAME_GPU_FUNC__ int contact(xmachine_memory_LTi* agent){
  * The agent has escaped adhesion
  * this transition changes state (see model file) to random_move
  */
-__FLAME_GPU_FUNC__ int check_escape(xmachine_memory_LTi* agent, RNG_rand48* rand48){
-    if(rnd<CONTINUOUS>(rand48) < 0.5){
-        agent->respond_x = NULL;
-        agent->respond_y = NULL;
+__FLAME_GPU_FUNC__ int check_escape(xmachine_memory_LTi* agent,
+    xmachine_message_lto_location_list* lto_location_messages,
+    xmachine_message_lto_location_PBM* partition_matrix,
+    RNG_rand48* rand48){
+    //Move locally around the LTo cell.
+    xmachine_message_lto_location* message = get_first_lto_location_message(
+        lto_location_messages, partition_matrix,
+        agent->x, agent->y, 0
+    );
+    while(message){
+        //If escape becomes more likely
+        if(rnd<CONTINUOUS>(rand48) < adhesionProbability(message->adhesion_probability)){
+            agent->respond_x = NULL;
+            agent->respond_y = NULL;
+        }
+        message = get_next_lto_location_message(message, lto_location_messages, partition_matrix);
     }
 
     return 0;
@@ -414,12 +427,21 @@ __FLAME_GPU_FUNC__ int ltin_escape(xmachine_memory_LTin* agent){
     return 0;
 }
 
-__FLAME_GPU_FUNC__ int ltin_localised_move(xmachine_memory_LTin* agent, RNG_rand48* rand48){
+__FLAME_GPU_FUNC__ int ltin_localised_move(xmachine_memory_LTin* agent,
+    xmachine_message_lto_location_list* lto_location_messages,
+    xmachine_message_lto_location_PBM* partition_matrix,
+    RNG_rand48* rand48){
     //Move locally around the LTo cell.
-
-    //If escape becomes more likely
-    if(rnd<CONTINUOUS>(rand48) < 0.5){
-        agent->stable_contact = 0;
+    xmachine_message_lto_location* message = get_first_lto_location_message(
+        lto_location_messages, partition_matrix,
+        agent->x, agent->y, 0
+    );
+    while(message){
+        //If escape becomes more likely
+        if(rnd<CONTINUOUS>(rand48) < adhesionProbability(message->adhesion_probability)){
+            agent->stable_contact = 0;
+        }
+        message = get_next_lto_location_message(message, lto_location_messages, partition_matrix);
     }
 
 	return 0;
@@ -440,7 +462,7 @@ __FLAME_GPU_FUNC__ int output_location(xmachine_memory_LTo* agent,
 
 __FLAME_GPU_FUNC__ int output_location2(xmachine_memory_LTo* agent,
     xmachine_message_lto_location_list* lto_location_messages){
-    //Duplicate of above function for CHEMOTINE state
+    //Duplicate of above function for CHEMOKINE state
     add_lto_location_message(lto_location_messages,
         agent->x,
         agent->y,
@@ -463,7 +485,7 @@ __FLAME_GPU_FUNC__ int divide(xmachine_memory_LTo* agent,
 
     add_LTo_agent(LTo_agents,
         x, y, LTO_AGENT_TYPE,
-        CHEMO_UPPER_ADJUST, agent->adhesion_probability, 60 * 12
+        CHEMO_UPPER_ADJUST, INITIAL_ADHESION, (SIM_STEP - 1)
     );
 
     return 0;
@@ -471,6 +493,7 @@ __FLAME_GPU_FUNC__ int divide(xmachine_memory_LTo* agent,
 
 __FLAME_GPU_FUNC__ int begin_chemokine(xmachine_memory_LTo* agent){
     //Placeholder transition:
+    agent->created_at = SIM_STEP - 1;
     //LTo moves to emit chemokine state
     return 0;
 }
@@ -487,6 +510,7 @@ __FLAME_GPU_FUNC__ int express_chemokine(xmachine_memory_LTo* agent,
     );
     while(message){
         agent->linear_adjust -= INCREASE_CHEMO_EXPRESSION;
+        agent->adhesion_probability += ADHESION_INCREMENT;
         message = get_next_ltin_location_message(message, ltin_location_messages, partition_matrix);
     }
 

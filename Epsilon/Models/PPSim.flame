@@ -41,7 +41,7 @@
       <transitions name="ltin_random_move" inputs="//@messages.0" reallocate="true" randomGenerator="true" nextState="//@agents.0/@states.0"/>
     </states>
     <states name="localised_movement">
-      <transitions name="ltin_localised_move" reallocate="true" randomGenerator="true" nextState="//@agents.0/@states.1"/>
+      <transitions name="ltin_localised_move" inputs="//@messages.0" reallocate="true" randomGenerator="true" nextState="//@agents.0/@states.1"/>
       <transitions name="ltin_escape" reallocate="false" randomGenerator="false" nextState="//@agents.0/@states.0">
         <condition>
           <lhs xsi:type="FLAME:VariableEval" value="//@agents.0/@memory.4"/>
@@ -103,7 +103,7 @@
           </rhs>
         </condition>
       </transitions>
-      <transitions name="check_escape" reallocate="false" randomGenerator="true" nextState="//@agents.1/@states.2"/>
+      <transitions name="check_escape" inputs="//@messages.0" reallocate="false" randomGenerator="true" nextState="//@agents.1/@states.2"/>
     </states>
   </agents>
   <agents name="LTo" initialState="//@agents.2/@states.0" bufferSize="1024">
@@ -112,7 +112,7 @@
     <memory name="colour"/>
     <memory name="linear_adjust" type="Float"/>
     <memory name="adhesion_probability" type="Float"/>
-    <memory name="divide_in_t"/>
+    <memory name="created_at"/>
     <states name="expression">
       <transitions name="output_location" outputs="//@messages.0" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0"/>
       <transitions name="begin_chemokine" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.1">
@@ -125,9 +125,19 @@
     </states>
     <states name="chemokine_upregulation">
       <transitions name="mature" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.2">
-        <condition>
-          <lhs xsi:type="FLAME:VariableEval" value="//@agents.2/@memory.3"/>
-          <rhs xsi:type="FLAME:VariableEval" value="//@variables.9"/>
+        <condition operator="And">
+          <lhs xsi:type="FLAME:ConditionEval">
+            <value>
+              <lhs xsi:type="FLAME:VariableEval" value="//@variables.9"/>
+              <rhs xsi:type="FLAME:VariableEval" value="//@agents.2/@memory.3"/>
+            </value>
+          </lhs>
+          <rhs xsi:type="FLAME:ConditionEval">
+            <value>
+              <lhs xsi:type="FLAME:VariableEval" value="//@variables.14"/>
+              <rhs xsi:type="FLAME:VariableEval" value="//@agents.2/@memory.4"/>
+            </value>
+          </rhs>
         </condition>
       </transitions>
       <transitions name="divide" differentiation="//@agents.2/@differentiation.0" reallocate="false" randomGenerator="true" nextState="//@agents.2/@states.3">
@@ -135,7 +145,12 @@
           <lhs xsi:type="FLAME:LiteralEval" is_float="false" value="0.0"/>
           <rhs xsi:type="FLAME:ConditionEval">
             <value operator="Modulo">
-              <lhs xsi:type="FLAME:VariableEval" value="//@variables.21"/>
+              <lhs xsi:type="FLAME:ConditionEval">
+                <value operator="Subtract">
+                  <lhs xsi:type="FLAME:VariableEval" value="//@variables.21"/>
+                  <rhs xsi:type="FLAME:VariableEval" value="//@agents.2/@memory.5"/>
+                </value>
+              </lhs>
               <rhs xsi:type="FLAME:LiteralEval" is_float="false" value="720.0"/>
             </value>
           </rhs>
