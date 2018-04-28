@@ -14,7 +14,7 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{6375}
+\wordcount{6578}
 
 
 %Approx 500 Words
@@ -107,7 +107,7 @@ Finally, I would also like to thank the \gls{FLAME GPU} development team at the 
 \newglossaryentry{LTin}
 {
     name=\glslink{ltin}{LTin},
-    description={A moving cell that can bind to any static cell. Reponds to chemokine expression}
+    description={A moving cell that can bind to any static cell. Responds to chemokine expression}
 }
 \newglossaryentry{LTo}
 {
@@ -298,7 +298,10 @@ In all of these examples, computer simulation is routinely used to reduce or rep
 \subsubsection{Reducing Complexity}
 Reducing complexity through abstraction allows better understanding of the system to be gained as the complexity may initially be overwhelming.
 %Removing complexity can help with understanding by removing aspects of the system that are not absolutely essential to the functionality being demonstrated.
-
+Abstractions need to be made to an appropriate layer, models should represent the layer being investigated, but remove any unnecessary further detail.
+For example, attempting to model simulations exploring cell development down to the atomic or quantum level or up to an entire organism would be completely unnecessary.
+Attempting to do so with current technology would also be completely intractable.
+This is an important balancing act as, if too much detail is abstracted away, simulations will likely fail to produce the expected emergent behaviour\cite{stepney_abm}.
 %todo: talk about abstracting to appropriate layers..
 %   clearly we only want to simulate the individuals at the level we are interested in
 %   i.e. we obviously don't want to simulate our models down to the atomic/quantum level, etc.
@@ -389,7 +392,7 @@ However, advanced hardware alone will not necessarily allow a simulation to comp
 %mention the concurrency- free lunch is over article findings
 With modern architectures which are becoming increasingly parallel, the simulation code must be tailored to take advantage of the computing power available.
 Efficient parallel programs that do this rely on the availability of experienced programmers.
-May recent studies have highlighted the existance of significant computer science skills shortages, across the world\cite{digital_skills_uk, microsoft_blog}.
+May recent studies have highlighted the existence of significant computer science skills shortages, across the world\cite{digital_skills_uk, microsoft_blog}.
 These skills shortages may be significantly limiting the possibility for cross-disciplinary work to utilise fast, advanced simulations.
 
 %Computer science degrees, and related courses and apprenticeships, are proving less popular in recent years
@@ -429,7 +432,7 @@ If the simulation needs to be safety-critical, developing it using formal method
 %FASTER TO RUN. - more feasible, to use in experiments, more complex sims can be made
 
 \subsection{Biological Simulations}
-Computational Biology is a relatively new field of study that has been growing signficantly over the last decade[CITATION NEEDED].
+Computational Biology is a relatively new field of study that has been growing significantly over the last decade[CITATION NEEDED].
 Within Biology, simulation is often required as an alternative to invasive medical testing/animal testing.%NC3Rs
 Simulation has even been proposed as a method for exploring a potential set of first principles and mathematics that are specific to biology which could even constitute a new subject- theoretical biology\cite{rise_article}.
 
@@ -439,7 +442,7 @@ As previously mentioned, \gls{abm} models the autonomous behaviour of individual
 %Write comparison of AGENTS vs OBJECTS (OOP)
 Agents are often confused with objects, a commonly-used programming concept.
 However, it's important to emphasize the differences between them.
-In particular, while both agents and objects recognise the importance of interactions, objects are totally obediant to their method calls whereas agents have autonomy.
+In particular, while both agents and objects recognise the importance of interactions, objects are totally obedient to their method calls whereas agents have autonomy.
 This means that agents can interact and react to communications according to their own agenda.
 
 %WHY IS AGENT BASED MODELLING THE MOST RELEVANT FOR THIS PROJECT
@@ -675,17 +678,23 @@ Multiple \acrshort{cpu} cores are now commonplace in modern computers, including
 In contrast to this, dedicated \acrshort{gpu}s are normally only found in gaming PCs and consoles.
 %This is changing, Apple now includes a custom \acrshort{gpu} in many of its mobile devices- metal?
 
-\paragraph{OpenGL vs \acrshort{cuda}}
-A previous project compared OpenGL and \acrshort{cuda} in detail.
-The key advantage that OpenGL has over \acrshort{cuda} is its portability.
-%OpenGL runs on a wider number of devices, including mobile (iOS)
+\paragraph{\acrshort{cuda} vs OpenCL}
+A previous project compared \acrshort{cuda} and OpenCL in detail.
+The key advantage that OpenCL has over \acrshort{cuda} is its portability.
+Where \acrshort{cuda} is proprietary and runs only on NVIDIA hardware, OpenCL implementations are available for the majority of \gls{gpu} hardware including AMD, Apple\cite{apple_opencl}, Imagination and NVIDIA.\cite{opencl_conformance}
+Nevertheless, this portability comes with a cost, code for different hardware must be tailored specifically to each hardware platform and performance has been shown to be consistently poorer\cite{cuda_v_opencl}.
+The previous report also concluded that \gls{cuda} has better library support and is simpler to use\cite{phil_diss}.
+
+%OpenCL runs on a wider number of devices, including mobile (iOS)
 %frameworks, such as Apple's Metal allow significant simulations to be run, even on mobile devices
 
 \chapter{Tools and Platform}
 \section{Tools}
 This project was developed on a machine running Ubuntu 16.04 with Intel i5 (650 @ 3.20 GHz) and 8GB of RAM.
 The GPU utilised was an NVIDIA GeForce GTX 1050.
-GPU programming utilised the latest version of CUDA (9.1).
+GPU programming utilised the latest version of \gls{cuda} (9.1).
+\gls{cuda} was selected over OpenCL due to it being a requirement of \gls{FLAME GPU}.
+Minimal knowledge of \gls{cuda} was needed for the development of the project as \gls{FLAME GPU} handles the majority of the \gls{gpu} hardware management.
 
 In order to produce a working simulation of \gls{PP} formation, I have used an unreleased version (v1.5) of \gls{FLAME GPU}.
 Amongst other features, \gls{FLAME GPU} v1.5 adds the ability to create agents from a host function between simulation steps.
@@ -703,8 +712,8 @@ If the scope of the project is to expand, it may become necessary to move the mo
 \label{ppsim}
 This project focuses on simulation as a tool for exploring biological systems at cell level.
 It uses an existing sequential \gls{MASON} simulation of \gls{PP} development\cite{kieran_thesis, kieran_methodology, kieran_results, kieran_machine_learning, spartan} (\textit{PPSim}) and attempts to use parallel computer architectures in order to speed this simulation up.
-A previous statistical sampling technique \textit{PPSim} simulation required 585,000 executions of the simulation.
-Even with a significant amount of \gls{cpu} parallelism (138 processors) available, the combined runtime of these executions is intractable for larger scale simulations.\cite{kieran_machine_learning}
+The sequential \textit{PPSim} had a runtime of \texttt{94.265} seconds and \texttt{585,000} executions were required for the statistical sampling technique being used.
+Even with a significant amount of \gls{cpu} parallelism (138 processors) available, the combined runtime of these executions is inconvenient and would be intractable for larger scale simulations.\cite{kieran_machine_learning}
 As previously stated, \gls{FLAME GPU} can easily produce results to better a high-performance cluster, such as the one used to compute \textit{PPSim}, even on a standard desktop PC.
 
 \subsection{The Domain Model}
@@ -732,14 +741,13 @@ The model describes the cell behaviour over a 72 hour period in which \gls{PP}es
 \end{figure}
 
 %ENVIRONMENT
-The enviroment of the model is a 3-dimensional tube modelled in 2-dimensions.
-%2D Plane- that wraps in the y direction?
-%Agents that leave the end of the tube are n
-%Agents 
+The environment of the model is a 3-dimensional tube modelled in 2-dimensions.
+Agents leaving the environment in the x-direction are removed from the population and no longer considered.
+Agents leaving the environment in the y-direction wrap around to the origin.
 
 %AGENTS
 In this model there are three types of agent which are all types of cells; \gls{lto}, \gls{ltin} and \gls{lti}.
-State diagrams that describe the behaviour of each of these cells were presented alongside the original domain (Fig. \ref{fig:domain_state_diagrams}) and platform models (Fig. \ref{fig:platform_state_diagrams})\cite{kieran_thesis}.
+State diagrams that describe the behaviour of each of these cells were presented as part of the original domain (Fig. \ref{fig:domain_state_diagrams}) and platform models (Fig. \ref{fig:platform_state_diagrams})\cite{kieran_thesis}.
 
 %LTo
 Stationary \gls{lto} cells 
@@ -756,10 +764,11 @@ Initially the \gls{lti} and \gls{ltin} cells move randomly around the environmen
 
 \section{The Platform Model}
 In this platform model there is a single \textit{active} \gls{lto} cell in the centre of the environment.
+
 These \gls{lto} cells divide every 12 hours.
 A previous project on this topic stated that \gls{lto} cell division must be performed sequentially on a host function in order to prevent new cells occupying the same space\cite{phil_diss}.
 However, by adding a force resolution step, as used in previous \gls{FLAME GPU} simulations\cite{flame_keratinocyte}, this has been implemented in parallel, on the device.
-As well as the speed up from parallelising the division step, implementing it feature in this way has also removed the cost of data transfer between the \gls{Device} and \gls{Host}.
+As well as the speed up from parallelising the division step, implementing the feature in this way has also removed the cost of data transfer between the \gls{Device} and \gls{Host}.
 
 There are no \gls{lto} and \gls{ltin} cells in the environment when the simulation is initialised.
 A \gls{Host} function manages the migration of \gls{lto} and \gls{ltin} cells into the environment by creating these cells in random positions at a constant rate.
@@ -869,8 +878,40 @@ Due to time constraints, I have not been able to implement environmental growth.
 %Unfortunately at present the FLAME GPU simulation sets the camera in the centre position of the environment bounds- these are determined by the INITIAL position of cells
 
 \subsection{Testing}
+%INPUT FILE: how is the set up?
+%additional LTi cell to set environment bounds
+%likely to leave the environment, due to random movement.
+%will not have a significant impact on the simulation behaviour.
+
 As the new simulation is a re-engineering of the existing PPSim, it can inherit the validation of the existing simulation.
 This requires the new simulation to be demonstrably similar with similar components, behaviours and results.
+
+\begin{figure}[htp]
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Appendix/Sim/Start}
+\caption{Beginning of simulation, one central \gls{lto} cell is present.}
+\label{fig:adult_pp}
+\end{subfigure}
+
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Appendix/Sim/Migration}
+\caption{\gls{ltin} \& \gls{lti} cells migrate into the environment and activate \gls{lto} cell.}
+\label{fig:foetal_pp}
+\end{subfigure}
+
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Appendix/Sim/Patch}
+\caption{Chemokine emission \& \gls{LTo} cell division causes \gls{PP} to form.}
+\label{fig:foetal_pp}
+\end{subfigure}
+
+
+\caption{Visualisation of \textit{PPSim v2} produced using \gls{FLAME GPU}}
+\label{pp_imaging}
+\end{figure}
 %is this the case?
 
 Talk about how the model was tested to ensure correctness\\
@@ -956,6 +997,63 @@ An improved mapping, which abstracts away all implementation details, could brin
 %future feature enhancements?
 
 %Mention missing link in (incorrect) model from Kieran's paper 
+%This difference is IMMEDIATELY obvious in the FLAME GPU implementation, we can correct the original model!
+\begin{figure}[htp]
+\begin{subfigure}{0.5\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Appendix/LTo_Trace}
+\caption{Section of \gls{domain}}
+\end{subfigure}
+\begin{subfigure}{0.5\textwidth}
+\centering
+\begin{lstlisting}[language=XML, basicstyle=\tiny]
+<gpu:function>
+    <name>mature</name>
+    <currentState>chemokine_upregulation</currentState>
+    <nextState>matured</nextState>
+        <condition>
+            <lhs>
+                <condition>
+                    <lhs>
+                        <value>
+                            CHEMO_LOWER_ADJUST
+                        </value>
+                    </lhs>
+                    <operator>==</operator>
+                    <rhs>
+                        <agentVariable>
+                            linear_adjust
+                        </agentVariable>
+                    </rhs>
+                </condition>
+            </lhs>
+            <operator>&amp;&amp;</operator>
+            <rhs>
+                <condition>
+                    <lhs>
+                        <value>
+                            MAX_ADHESION_PROBABILITY
+                        </value>
+                    </lhs>
+                    <operator>==</operator>
+                    <rhs>
+                        <agentVariable>
+                            adhesion_probability
+                        </agentVariable>
+                    </rhs>
+                </condition>
+            </rhs>
+        </condition>
+    ...
+</gpu:function>
+\end{lstlisting}
+\caption{Fragment of \gls{FLAME GPU} Model}
+\end{subfigure}
+
+\caption{Traceability from \gls{domain} to \gls{FLAME GPU} Implementation}
+\label{fig:traceability_condition}
+\end{figure}
+
 An additional benefit of this mapping, provides traceability from the domain model through to the simulation code.
 We can have greater certainty that the simulation is faithful to the domain and no bugs have been produced during the implementation.
 \\\\
@@ -989,6 +1087,12 @@ If our new platform model can be shown to be similar to the original PPSim domai
 %Develop a parallel implementation of an existing sequential simulation of Peyer’s Patch development and explore any speed increases that can be produced using General Purpose GPU programming (GPGPU) programming.
 
 %Review of the use of simulations, with a particular focus on computational biology. This review should explore the advantages that in-silico testing provides over in-vitro experimentation and the problems that must be overcome for the mass adoption of biological simulations.
+
+%faster.. but not yet complete-
+%94s to 19 is significant decrease..
+%further testing needed
+%combine this approach with others- parallism of different runs on multiple PC/GPUs..
+%Machine Learning approach- which requires training data?
 
 \section{Further Work}
 \subsection{Peyer's Patch Case Study}
@@ -1025,8 +1129,8 @@ Ideally these should be extracted from the model implementation and automated.
 One of the greatest challenges of this project has been gaining access to NVIDIA GPU hardware.
 While these are available off the shelf in most high-street computer retailers, they are not commonly found as part of standard desktop PCs, which generally containing integrated graphics hardware.
 Indeed, none of the software lab PCs at the University of York contain the dedicated graphics chips required to run this software.
-Future work could reevaluate whether the benefit of a cross-platform API, such as OpenGL, could outweigh the performance benefit provided by \acrshort{cuda}.
-%OpenGL could be something to discuss here
+Future work could reevaluate whether the benefit of a cross-platform API, such as OpenCL, could outweigh the performance benefit provided by \acrshort{cuda}.
+%OpenCL could be something to discuss here
 %dismissed by Phil, but further exploration could be good!
 %ANDY is working on this
 
