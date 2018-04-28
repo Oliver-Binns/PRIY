@@ -655,4 +655,13 @@
     <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_hZoQQEpHEeiUnbhBVpZqzQ" id="(0.019867549668874173,0.525)"/>
     <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ihqPUEpHEeiUnbhBVpZqzQ" id="(0.8372093023255814,0.9)"/>
   </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_10fv8EpdEeiUnbhBVpZqzQ" type="4001" source="_KJkKVjNiEeiDIcIOPXlY1Q" target="_KJkKVjNiEeiDIcIOPXlY1Q">
+    <children xmi:type="notation:DecorationNode" xmi:id="_10fv80pdEeiUnbhBVpZqzQ" type="6001">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_10fv9EpdEeiUnbhBVpZqzQ" x="21" y="9"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_10fv8UpdEeiUnbhBVpZqzQ" fontName="Ubuntu"/>
+    <element xmi:type="FLAME:Transition" href="PPSim.flame#//@agents.2/@states.1/@transitions.3"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_10fv8kpdEeiUnbhBVpZqzQ" points="[-4, 1, -31, 20]$[-4, 53, -31, 72]$[34, 53, 7, 72]$[34, 1, 7, 20]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_FLH7sEpeEeiUnbhBVpZqzQ" id="(0.34831460674157305,0.975)"/>
+  </edges>
 </notation:Diagram>

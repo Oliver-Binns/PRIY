@@ -378,6 +378,7 @@
 					<name>mature</name>
 					<currentState>chemokine_upregulation</currentState>
 					<nextState>matured</nextState>
+						<condition><lhs><agentVariable>linear_adjust</agentVariable></lhs><operator>==</operator><rhs><value>CHEMO_LOWER_ADJUST</value></rhs></condition>
 					<gpu:reallocate>false</gpu:reallocate>
 					<gpu:RNG>false</gpu:RNG>
 				</gpu:function>
@@ -399,9 +400,27 @@
 					<name>express_chemokine</name>
 					<currentState>chemokine_upregulation</currentState>
 					<nextState>chemokine_upregulation</nextState>
+					<inputs>
+						<gpu:input>
+							<messageName>ltin_location</messageName>
+						</gpu:input>
+					</inputs>
 					<outputs>
 						<gpu:output>
 							<messageName>chemokine</messageName>
+							<gpu:type>single_message</gpu:type>
+						</gpu:output>
+					</outputs>
+					<gpu:reallocate>false</gpu:reallocate>
+					<gpu:RNG>false</gpu:RNG>
+				</gpu:function>
+				<gpu:function>
+					<name>output_location2</name>
+					<currentState>chemokine_upregulation</currentState>
+					<nextState>chemokine_upregulation</nextState>
+					<outputs>
+						<gpu:output>
+							<messageName>lto_location</messageName>
 							<gpu:type>single_message</gpu:type>
 						</gpu:output>
 					</outputs>
@@ -479,7 +498,7 @@
 					<name>z</name>
 				</gpu:variable>
 				<gpu:variable>
-					<type>int</type>
+					<type>float</type>
 					<name>adhesion_probability</name>
 				</gpu:variable>
 			</variables>
@@ -527,15 +546,15 @@
 			<description>The LTo Cells express chemokine to whole environment.</description>
 			<variables>
 				<gpu:variable>
-					<type>int</type>
+					<type>float</type>
 					<name>x</name>
 				</gpu:variable>
 				<gpu:variable>
-					<type>int</type>
+					<type>float</type>
 					<name>y</name>
 				</gpu:variable>
 				<gpu:variable>
-					<type>int</type>
+					<type>float</type>
 					<name>linear_adjust</name>
 				</gpu:variable>
 			</variables>
@@ -579,6 +598,12 @@
 			</gpu:layerFunction>
 			<gpu:layerFunction>
 				<name>contact</name>
+			</gpu:layerFunction>
+			<gpu:layerFunction>
+				<name>ltin_escape</name>
+			</gpu:layerFunction>
+			<gpu:layerFunction>
+				<name>output_location2</name>
 			</gpu:layerFunction>
 		</layer>
 		<layer>

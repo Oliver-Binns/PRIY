@@ -124,7 +124,12 @@
       <transitions name="detect_collision" inputs="//@messages.3" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.0"/>
     </states>
     <states name="chemokine_upregulation">
-      <transitions name="mature" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.2"/>
+      <transitions name="mature" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.2">
+        <condition>
+          <lhs xsi:type="FLAME:VariableEval" value="//@agents.2/@memory.3"/>
+          <rhs xsi:type="FLAME:VariableEval" value="//@variables.9"/>
+        </condition>
+      </transitions>
       <transitions name="divide" differentiation="//@agents.2/@differentiation.0" reallocate="false" randomGenerator="true" nextState="//@agents.2/@states.3">
         <condition>
           <lhs xsi:type="FLAME:LiteralEval" is_float="false" value="0.0"/>
@@ -136,7 +141,8 @@
           </rhs>
         </condition>
       </transitions>
-      <transitions name="express_chemokine" outputs="//@messages.2" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.1"/>
+      <transitions name="express_chemokine" inputs="//@messages.3" outputs="//@messages.2" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.1"/>
+      <transitions name="output_location2" outputs="//@messages.0" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.1"/>
     </states>
     <states name="matured"/>
     <states name="lto_resolve">
@@ -150,7 +156,7 @@
     <variables name="x" type="Float"/>
     <variables name="y" type="Float"/>
     <variables name="z" type="Float"/>
-    <variables name="adhesion_probability"/>
+    <variables name="adhesion_probability" type="Float"/>
   </messages>
   <messages name="force" description="" partitioning="//@partitions.1" bufferSize="1024">
     <variables name="x"/>
@@ -158,9 +164,9 @@
     <variables name="z"/>
   </messages>
   <messages name="chemokine" description="The LTo Cells express chemokine to whole environment." bufferSize="1024">
-    <variables name="x"/>
-    <variables name="y"/>
-    <variables name="linear_adjust"/>
+    <variables name="x" type="Float"/>
+    <variables name="y" type="Float"/>
+    <variables name="linear_adjust" type="Float"/>
   </messages>
   <messages name="ltin_location" partitioning="//@partitions.2" bufferSize="5530">
     <variables name="x"/>
@@ -168,7 +174,7 @@
     <variables name="z"/>
   </messages>
   <layers order="2" functions="//@agents.0/@states.0/@transitions.1 //@agents.1/@states.2/@transitions.1"/>
-  <layers order="1" functions="//@agents.2/@states.0/@transitions.0 //@agents.1/@states.1/@transitions.1"/>
+  <layers order="1" functions="//@agents.2/@states.0/@transitions.0 //@agents.1/@states.1/@transitions.1 //@agents.0/@states.1/@transitions.1 //@agents.2/@states.1/@transitions.3"/>
   <layers order="3" functions="//@agents.0/@states.0/@transitions.0 //@agents.1/@states.2/@transitions.0"/>
   <layers order="13" functions="//@agents.2/@states.3/@transitions.2"/>
   <layers order="14" functions="//@agents.2/@states.3/@transitions.0"/>
