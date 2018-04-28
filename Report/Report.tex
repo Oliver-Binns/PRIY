@@ -14,7 +14,7 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{6578}
+\wordcount{6748}
 
 
 %Approx 500 Words
@@ -716,7 +716,7 @@ The sequential \textit{PPSim} had a runtime of \texttt{94.265} seconds and \text
 Even with a significant amount of \gls{cpu} parallelism (138 processors) available, the combined runtime of these executions is inconvenient and would be intractable for larger scale simulations.\cite{kieran_machine_learning}
 As previously stated, \gls{FLAME GPU} can easily produce results to better a high-performance cluster, such as the one used to compute \textit{PPSim}, even on a standard desktop PC.
 
-\subsection{The Domain Model}
+\subsection{The \gls{domain}}
 This domain model for \textit{PPSim} was developed according to the \acrshort{cosmos} process\cite{cosmos}, which was introduced in Section \ref{cosmos_intro}.
 %Briefly detail how CoSMoS makes for better simulations
 The model describes the cell behaviour over a 72 hour period in which \gls{PP}es develop.
@@ -746,32 +746,31 @@ Agents leaving the environment in the x-direction are removed from the populatio
 Agents leaving the environment in the y-direction wrap around to the origin.
 
 %AGENTS
-In this model there are three types of agent which are all types of cells; \gls{lto}, \gls{ltin} and \gls{lti}.
+In this model there are three types of agent which are all types of cells; \gls{LTo}, \gls{LTin} and \gls{LTi}.
 State diagrams that describe the behaviour of each of these cells were presented as part of the original domain (Fig. \ref{fig:domain_state_diagrams}) and platform models (Fig. \ref{fig:platform_state_diagrams})\cite{kieran_thesis}.
 
-%LTo
-Stationary \gls{lto} cells 
-
 %Migration
-The model starts when \gls{lti}/\gls{ltin} cells begin migrating into the environment.
-As such, at the beginning of the simulation, neither of these cells are present.
-\gls{lti} and \gls{ltin} cells migrate into the environment at a constant rate, such that the correct number of cells is reached at the 12 hour time-step.
-
+The model starts when \gls{LTi} and \gls{LTin} cells begin migrating into the environment.
+As such, at the beginning of the development process, neither of these cells are present.
+\gls{LTi} and \gls{LTin} cells migrate into the environment at a constant rate, such that the correct number of cells is reached at the 12 hour time-step.
 %LTin
-Initially the \gls{lti} and \gls{ltin} cells move randomly around the environment.
+Initially the \gls{LTi} and \gls{LTin} cells move randomly around the environment.
+
+%LTo
+Stationary \gls{LTo} cells are randomly distributed around the environment.
+These cells are present at the start of the development, but are dormant until an \gls{LTin} cell collides with them.
+When this collision occurs, the \gls{LTin} may bind to the \gls{LTo} cell and the \gls{LTo} cell begins secreting a chemokine signalling protein.
+Once the \gls{LTo} move into this new state, they will also divide every 12 hours, resulting in new \gls{LTo} cells.
 
 %LTi
+\gls{LTi} cells respond to the chemokine when the level in their local environment is great enough.
+When this happens, they move towards the \gls{LTo} cell and eventually collide.
 
-\section{The Platform Model}
-In this platform model there is a single \textit{active} \gls{lto} cell in the centre of the environment.
 
-These \gls{lto} cells divide every 12 hours.
-A previous project on this topic stated that \gls{lto} cell division must be performed sequentially on a host function in order to prevent new cells occupying the same space\cite{phil_diss}.
-However, by adding a force resolution step, as used in previous \gls{FLAME GPU} simulations\cite{flame_keratinocyte}, this has been implemented in parallel, on the device.
-As well as the speed up from parallelising the division step, implementing the feature in this way has also removed the cost of data transfer between the \gls{Device} and \gls{Host}.
-
-There are no \gls{lto} and \gls{ltin} cells in the environment when the simulation is initialised.
-A \gls{Host} function manages the migration of \gls{lto} and \gls{ltin} cells into the environment by creating these cells in random positions at a constant rate.
+\section{The \gls{platform}}
+The platform model refines the domain model and states how non-deterministic biological behaviour can be modelled \gls{in-silico}.
+In particular, the platform model specifies models for adhesion between cells and how \gls{LTo} cells react to chemokine levels in their local environment\cite{kieran_thesis, kieran_methodology}
+The original \gls{platform} will be further refined in our \gls{FLAME GPU} implementation.
 
 %Approx 2500 words for design and implementation
 \chapter{Methods}
@@ -779,13 +778,13 @@ A \gls{Host} function manages the migration of \gls{lto} and \gls{ltin} cells in
 
 %Intro Chapter:
 The chapter details the simulation experiment that has been performed and the development of new tools to aid the implementation of this, and future simulations.
-The experiment involved the development of a new \acrshort{gpu}-based \textit{PPSim v2} platform implementation as well as a new tool for mapping and transforming biological models into \gls{FLAME GPU} simulations.
+The experiment involved the development of a new \acrshort{gpu}-based \textit{PPSim v2} implementation as well as a new tool for mapping and transforming biological platform models into \gls{FLAME GPU} simulations.
 %Finally, I propose a new tool, which builds on existing work, in order to take a first step towards making efficient, parallel simulations available to non-technical users.
 Having previously established the current difficulties with biological simulation, this chapter also details how these are overcome in the implementation of this project.
 
 \section{\gls{FLAME GPU} Simulation}
 %HOW DOES THIS RELATE TO THE COSMOS PROCESS (ABOVE)
-As previously mentioned the \gls{FLAME GPU} implementation requires the creation of two artifacts.
+As previously mentioned a \gls{FLAME GPU} implementation requires the creation of two artifacts.
 A structural `XML Model File' which defines the agents in the system and their allowed channels for communication.
 A C source code file of `Scripted Behaviour' defines the actual behaviour of agents.
 
@@ -793,12 +792,12 @@ A C source code file of `Scripted Behaviour' defines the actual behaviour of age
 \gls{FLAME GPU} defines agents as X-machines in its XML model.
 X-machines are structurally identical to finite state machines, other than that they have memory, which means it was possible to directly implement most of the platform model state diagrams directly into the \gls{FLAME GPU} model (Fig. \ref{fig:gmf_flame_generation}).
 
-During the development of the model implementation, there were many occasions where the XML of the model because invalid because of mistakes.
+During the development of the model implementation, there were many occasions where the XML of the model because invalid because of human error.
 These mistakes either caused ill-formed XML or an XML model which did not conform the \gls{FLAME GPU} model schema.
 In order to mitigate the issues caused by these mistakes, a new tool was created using the Epsilon Modelling Framework.
 The new tool ensures that any XML files that are created are valid XML and conform the the \gls{FLAME GPU} model schema.
 
-In the tool \gls{FLAME GPU} models are designed using a graphical interface (Figs. \ref{fig:ltin_gmf}, \ref{fig:ppsim_gmf}) and then exported to the required XML file format.
+In the tool, \gls{FLAME GPU} models can be designed using a graphical interface (Figs. \ref{fig:ltin_gmf}, \ref{fig:ppsim_gmf}) and then exported to the required XML file format.
 Adding this GUI front end to \gls{FLAME GPU} is a major step towards ensuring these parallel \gls{abm} simulations are more easily accessible by non-technical users.
 
 \begin{figure}[htp]
@@ -866,55 +865,75 @@ A number of other differences were made to the platform model, mainly because of
 The decision to only include a single central \gls{LTo} cell in the simulation meant that the `No Expression of RET-Ligand' state could be removed, as it cannot be reached.
 
 The platform model diagram for \gls{LTi} cells has a missing transition.
-As \gls{LTo} cells do not constantly release chemokines, it is possible for the cell to make contact with an \gls{LTo} cell without first transitioning through the response to chemokine state.
+\gls{LTi} cells may collide with \gls{LTo} cells, without reacting to chemokine emission.
+In this case the \gls{LTi} cell would transition directly from its random movement state, to the contact with \gls{LTo} state.
 This transition was present into the original \gls{MASON} implementation of \textit{PPSim}, but was never corrected in the state diagram.
 It has also been added into the new \gls{FLAME GPU} implementation.
 
 \subsection{Behavioural Model}
+The agent behaviour is defined in a \gls{cuda} source code file.
+Code may be run on the \gls{Host} between simulation steps, or on the \gls{Device} during steps.
+
+The migration of \gls{LTi}(n) cells is managed by a host function.
+The ability to create agents from a host function is currently only available in a pre-release version of \gls{FLAME GPU}, which is why this version was selected.
+
 %Host cell creation into the system is a work in progress for next \gls{FLAME GPU} release?
+%Again, this is IMPLEMENTATION:
+These \gls{LTo} cells divide every 12 hours.
+A previous project on this topic stated that \gls{LTo} cell division must be performed sequentially on a host function in order to prevent new cells occupying the same space\cite{phil_diss}.
+However, by adding a force resolution step, as used in previous \gls{FLAME GPU} simulations\cite{flame_keratinocyte}, this has been implemented in parallel, on the device.
+As well as the speed up from parallelising the division step, implementing the feature in this way has also removed the cost of data transfer between the \gls{Device} and \gls{Host}.
 
 Due to time constraints, I have not been able to implement environmental growth.
 %This isn't complex to implement within FLAME GPU itself.. a step function could be used to adjust each agent's position.
 %Unfortunately at present the FLAME GPU simulation sets the camera in the centre position of the environment bounds- these are determined by the INITIAL position of cells
 
-\subsection{Testing}
+\subsection{Execution}
+\subsubsection{Initialisation}
+\gls{FLAME GPU} simulations are initialised using another XML file specifying which, if any, agents are present at the beginning of the execution.
 %INPUT FILE: how is the set up?
+In this platform model there is a single \textit{active} \gls{LTo} cell in the centre of the environment.
 %additional LTi cell to set environment bounds
 %likely to leave the environment, due to random movement.
 %will not have a significant impact on the simulation behaviour.
 
+\subsubsection{Testing}
 As the new simulation is a re-engineering of the existing PPSim, it can inherit the validation of the existing simulation.
 This requires the new simulation to be demonstrably similar with similar components, behaviours and results.
 
+
+The simulation produces much of the expected emergent behaviour from the domain.
+It has not been verified by a domain expert.
 \begin{figure}[htp]
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=\textwidth]{Appendix/Sim/Start}
-\caption{Beginning of simulation, one central \gls{lto} cell is present.}
-\label{fig:adult_pp}
+\caption{Beginning of simulation, one central \gls{LTo} cell is present.}
+\label{fig:sim_start}
 \end{subfigure}
 
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=\textwidth]{Appendix/Sim/Migration}
-\caption{\gls{ltin} \& \gls{lti} cells migrate into the environment and activate \gls{lto} cell.}
-\label{fig:foetal_pp}
+\caption{\gls{LTin} \& \gls{LTi} cells migrate into the environment and activate \gls{LTo} cell.}
+\label{fig:sim_contact}
 \end{subfigure}
 
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=\textwidth]{Appendix/Sim/Patch}
 \caption{Chemokine emission \& \gls{LTo} cell division causes \gls{PP} to form.}
-\label{fig:foetal_pp}
+\label{fig:sim_patch}
 \end{subfigure}
 
 
 \caption{Visualisation of \textit{PPSim v2} produced using \gls{FLAME GPU}}
-\label{pp_imaging}
+\label{fig:ppsimv2_vis}
 \end{figure}
 %is this the case?
 
 Talk about how the model was tested to ensure correctness\\
+%flame gpu provides a visualisation which can be used to demonstrate the appearance of the expected emergent behaviour\ref{fig:ppsimv2_vis}
 
 
 \section{Graphical Modelling Tool}
@@ -1000,9 +1019,20 @@ An improved mapping, which abstracts away all implementation details, could brin
 %This difference is IMMEDIATELY obvious in the FLAME GPU implementation, we can correct the original model!
 \begin{figure}[htp]
 \begin{subfigure}{0.5\textwidth}
+\begin{subfigure}{\textwidth}
 \centering
-\includegraphics[width=\textwidth]{Appendix/LTo_Trace}
+\includegraphics[width=\textwidth]{Appendix/LTo_Domain_Trace}
 \caption{Section of \gls{domain}}
+\bigskip
+\bigskip
+\end{subfigure}
+
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Appendix/LTo_Platform_Trace}
+\caption{Section of \gls{platform}}
+\end{subfigure}
+
 \end{subfigure}
 \begin{subfigure}{0.5\textwidth}
 \centering
@@ -1050,7 +1080,7 @@ An improved mapping, which abstracts away all implementation details, could brin
 \caption{Fragment of \gls{FLAME GPU} Model}
 \end{subfigure}
 
-\caption{Traceability from \gls{domain} to \gls{FLAME GPU} Implementation}
+\caption{Traceability of \texttt{Mature} transition from \gls{domain} to \gls{FLAME GPU} Implementation}
 \label{fig:traceability_condition}
 \end{figure}
 
