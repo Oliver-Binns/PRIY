@@ -16,7 +16,7 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{7941}
+\wordcount{8477}
 
 
 %Approx 500 Words
@@ -74,12 +74,12 @@ Finally, I would also like to thank the \gls{FLAME GPU} development team at the 
 \newglossaryentry{domain}
 {
     name=Domain Model,
-    description={}
+    description={A conceptual model which details the behaviour and data of a real-world system}
 }
 \newglossaryentry{platform}
 {
     name=Platform Model,
-    description={}
+    description={A formal specification stating how ambiguous aspects of a domain model should be implemented in simulation code}
 }
 \newglossaryentry{FLAME GPU}
 {
@@ -213,11 +213,12 @@ Drugs and cures would be available for patients earlier, saving many lives.
 Additionally, the significant financial burden of drug development, which is estimated to be around \$2.9bn\cite{drug_cost}, could be reduced, freeing up heavily contested funds for additional research. Finally, the use of animal testing could be reduced and, in the long term, eliminated completely.
 
 \section{Project Aims}
+\label{aims}
 In summary, the aims of this project are to
 \begin{enumerate}
     \item Establish a firm grounding for the future development of new tools to allow fast, parallel simulations of biological systems to be easily created by non-technical users.
     \begin{enumerate}
-        \item Explore the findings of the new implementation and discuss how these can be generalised to new simulations.
+        \item Explore the findings of the new implementation and discuss how these can be generalised between different simulations.
         \item Discuss techniques for allowing non-technical users to easily create formal models that can be transformed into new simulation implementations.
     \end{enumerate}
     \item Develop a \textbf{parallel} implementation of an existing \textbf{sequential} simulation of \gls{PP} development and explore any speed increases that can be produced by using \gls{gpgpu}.
@@ -240,12 +241,12 @@ The simulation of the biological model is for the purpose of developing understa
 \section{Report Structure}
 This report details the work done throughout the project and 
 
-\begin{enumerate}
+\begin{itemize}
     \item Chapter \ref{lit_review} gives an overview of simulations and the benefits and limitations of their use particularly with regard to computational biology.
-   %\item Chapter \ref{improvements} explores some of the limitations of simulations in additional detail and proposes future solutions for these.
+    \item Chapter \ref{tools} states the tools used to facilitate the implementation of the new \gls{FLAME GPU} simulation and presents details of model that was simulated.
     \item Chapter \ref{methods} details the development of an improved, inherently parallel, implementation of PPSim (\textit{PPSim v2}) and the \gls{mde} tools that were developed to aid this work.
     \item Chapter \ref{results} evaluates the progress that this project has made towards making \textbf{fast}, parallel simulations more \textbf{accessible}.
-\end{enumerate}
+\end{itemize}
 
 %Approx 3000 words for literature review
 \chapter{Literature Review}
@@ -394,7 +395,7 @@ However, advanced hardware alone will not necessarily allow a simulation to comp
 %mention the concurrency- free lunch is over article findings
 With modern architectures which are becoming increasingly parallel, the simulation code must be tailored to take advantage of the computing power available.
 Efficient parallel programs that do this rely on the availability of experienced programmers.
-May recent studies have highlighted the existence of significant computer science skills shortages, across the world\cite{digital_skills_uk, microsoft_blog}.
+Many recent studies have highlighted the existence of significant computer science skills shortages, across the world\cite{digital_skills_uk, microsoft_blog}.
 These skills shortages may be significantly limiting the possibility for cross-disciplinary work to utilise fast, advanced simulations.
 
 %Computer science degrees, and related courses and apprenticeships, are proving less popular in recent years
@@ -413,7 +414,7 @@ It is likely that these will take a number of years to yield results, but should
 As with any form of computer program, mistakes can be made causing bugs to be present in the simulation code.
 Bugs may cause the simulation to be incorrect meaning any hypotheses and results are based on incorrect data.
 This is linked to, but not the same as, having insufficient domain knowledge.
-Both of these limitations will cause the simulations fail silently, produce incorrect results with no immediately obvious failure[CITE].
+Both of these limitations will cause the simulations to fail silently, produce incorrect results with no immediately obvious failure[CITE].
 %Failing silently is interesting: no unexpected behaviour.. this should be discussed in more detail
 
 However, while these problems are specific to simulation, they are not dissimilar from the issues that can occur from poorly designed real-world testing.
@@ -691,6 +692,7 @@ The previous report also concluded that \gls{cuda} has better library support an
 %frameworks, such as Apple's Metal allow significant simulations to be run, even on mobile devices
 
 \chapter{Tools and Platform}
+\label{tools}
 \section{Tools}
 This project was developed on a machine running Ubuntu 16.04 with Intel i5 (650 @ 3.20 GHz) and 8GB of RAM.
 The GPU utilised was an NVIDIA GeForce GTX 1050.
@@ -775,6 +777,7 @@ Neither \gls{LTin} and \gls{LTi} binds are permanent as the \gls{LTo}'s adhesion
 Each successive contact with an \gls{LTin} cell increases the \gls{LTo}'s adhesion level, meaning that prolonged contact eventually becomes inevitable and the \gls{PP} is formed.
 
 \section{The \gls{platform}}
+%platform-independent model
 The platform model (Figs. \ref{fig:platform_state_diagrams} \& \ref{table:simulation_params}) refines the domain model and states how unknown or non-deterministic biological behaviour can be modelled \gls{in-silico}.
 In particular, the platform model specifies models for adhesion between cells and how \gls{LTo} cells react to chemokine levels in their local environment\cite{kieran_thesis, kieran_methodology}.
 
@@ -792,6 +795,7 @@ Having previously established the current difficulties with biological simulatio
 
 \section{\gls{FLAME GPU} Simulation}
 %HOW DOES THIS RELATE TO THE COSMOS PROCESS (ABOVE)
+%platform-specific model
 As previously mentioned a \gls{FLAME GPU} implementation requires the creation of two artifacts.
 A structural `XML Model File' which defines the agents in the system and their allowed channels for communication.
 A C source code file of `Scripted Behaviour' defines the actual behaviour of agents.
@@ -875,6 +879,7 @@ The behaviour still exactly matches the platform model.
 A number of other deviations were made from the platform model, mainly because of the time limitations of the project.
 The decision to only include a single central \gls{LTo} cell in the simulation meant that the `No Expression of RET-Ligand' state could be removed, as it cannot be reached.
 
+\label{missing_link}
 Both the domain and platform model diagrams for \gls{LTi} cells are missing a transition from the `random movement' to `contact' state.
 This is because \gls{LTi} cells may collide with \gls{LTo} cells, without having reacted to chemokine emission.
 This transition was present into the original \gls{MASON} implementation of \textit{PPSim}, but was never corrected in the state diagram.
@@ -990,7 +995,7 @@ Transitions not visible on GMF, tree-based editor is required.
 This was recommended as the best approach in personal communication with Dimitris Kolovos, one of the members of the Epsilon team.
 Due to the limitations in Epsilon
 
-\subsection{\gls{egl}}
+\subsection{\acrfull{egl}}
 \begin{wrapfigure}{r}{0.63\textwidth}
 \centering
 \begin{lstlisting}[language=XML, basicstyle=\tiny]
@@ -1054,19 +1059,11 @@ The error feedback provided by these quick fixes is much more intuitive to non-t
 
 \section{Findings}
 \subsection{Ease of Creation}
-This proof of concept has shown that direct mappings from a biological domain model to a platform implementation are possible.
+The new Epsilon tool has shown that direct mappings from a biological platform model to a simulation code are possible.
 Based on this, further work is now being developed with Paul Richmond's \gls{FLAME GPU} group, to enhance the accessibility of \gls{FLAME GPU} for simulation developers.
-This should allow the simulation developer to focus on getting their domain details correct, rather than battling the agent platform.
-An improved mapping, which abstracts away all implementation details, could bring additional benefits in this area, including ensuring that the simulation code always supports the latest hardware features.
-%Add figure, shows differences between an agent in domain model and GMF platform model-
+This should allow the simulation developer to focus ensuring domain details are correct, rather than battling the agent platform.
+An improved version of this mapping, which abstracts away all \gls{FLAME GPU} implementation details such as partitioning, could bring additional benefits in this area, including ensuring that the simulation code always supports the latest hardware features.
 
-%evl used to prevent BASIC mistakes..
-%significant resources, but MDE gains not normally realised until tool/model reuse
-%FLAME GPU limitations?
-%future feature enhancements?
-
-%Mention missing link in (incorrect) model from Kieran's paper 
-%This difference is IMMEDIATELY obvious in the FLAME GPU implementation, we can correct the original model!
 \begin{figure}[htbp]
 \begin{subfigure}{0.5\textwidth}
 \begin{subfigure}{\textwidth}
@@ -1085,7 +1082,6 @@ An improved mapping, which abstracts away all implementation details, could brin
 
 \end{subfigure}
 \begin{subfigure}{0.5\textwidth}
-\centering
 \begin{lstlisting}[language=XML, basicstyle=\tiny]
 <gpu:function>
     <name>mature</name>
@@ -1113,7 +1109,6 @@ An improved mapping, which abstracts away all implementation details, could brin
         </condition></rhs>
     </condition>
     ...
-</gpu:function>
 \end{lstlisting}
 \caption{Fragment of \gls{FLAME GPU} Model}
 \end{subfigure}
@@ -1123,11 +1118,14 @@ An improved mapping, which abstracts away all implementation details, could brin
 
 An additional benefit of this mapping, provides traceability from the domain model through to the simulation code.
 This can be clearly seen in Fig. \ref{fig:traceability_condition}, which shows how the transition from `Upregulation of Chemokines' to `Mature \gls{LTo}' is refined from the \gls{domain} to \gls{platform} and then implemented in \gls{FLAME GPU}.
-We can have greater certainty that the simulation is faithful to the domain and no bugs have been produced during the implementation.
-%MENTION THE MISSING LINK- discussed early
-%OTHER MDE benefits-
-%   changes to platform model (perhaps as a result of new biological knowledge found?) can be automatically realised in the simulation code
-%   previously a developer would have been needed to make this change!
+This traceability results in greater certainty that the simulation is faithful to the domain and no bugs have been produced during the implementation.
+
+Furthermore, additional traceability helps to ensure that all artifacts contained in the domain model, platform model and simulation code are kept up-to-date with new information.
+In Section \ref{missing_link}, a transition which was missing in the original domain and platform models was discussed.
+In the new process, where \gls{FLAME GPU} model implementations are generated from the platform model, this transition could not be added into the implementation without first being aded to the platform model.
+
+This also tool aids development by finding and correcting model mistakes using \gls{evl}, this reduce the amount of time that developers spend debugging their code and increase productivity.
+Clearly this shows that the new process could help to detect mistakes in both the domain and platform models.
 \\\\
 \textit{This work is ongoing.}
 
@@ -1150,10 +1148,10 @@ This initial hypothesis of the platform models being comparable is untenable.
 \subsubsection{Comparison}
 %SPEED RESULTS..
 Instead, a new hypothesis is that the platform model for the \gls{FLAME GPU} implementation is comparable to the original biological model.
-If our new platform model can be shown to be similar to the original PPSim domain model, we can say that this simulation also shows Peyer's Patch development..?
-%model is abstract from domain already, makes more sense to compare this to domain
+If our new platform model can be shown to be refined from the original PPSim domain model, we can say that this simulation also shows Peyer's Patch development, and thus is a faster representation of this biological process.
+%Pragmatically, it makes more sense to compare this implementation to its original domain, as this is the entire aim of the process?
 
-\begin{figure}[htp]
+\begin{figure}[htpb]
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=\textwidth]{Appendix/Sim/Start}
@@ -1184,37 +1182,55 @@ If our new platform model can be shown to be similar to the original PPSim domai
 \label{fig:ppsimv2_vis}
 \end{figure}
 
-The new version of the simulation has an average runtime of 
+The expected emergent behaviour of the simulation is that the \gls{PP} cell clusters form around the initial \gls{LTo} cell.
+This behaviour is clearly present in the \textit{PPSim v2} simulation, as shown by Fig. \ref{fig:ppsimv2_vis}.
+
+The new version of the simulation has an average runtime of 19.352.
 
 %\cite{statistical_tests} could be important for evaluating the performance of \gls{FLAME GPU} against original PPSim
 
 %Approx 1000 words
 \section{Conclusion}
 %NB.. INTRODUCTION + CONCLUSION MUST MATCH AND REFERENCE EACH OTHER.
-%Establish a firm grounding for the future development of new tools to allow fast, parallel simulations of biological systems to be easily created by non-technical users.
-%   Explore the findings of the new implementation and discuss how these can be generalised to new simulations.
-%   Discuss techniques for allowing non-technical users to eas- ily create formal models that can be transformed into new simulation implementations.
+This project began with an ambitious set of goals, stated in Section \ref{aims}.
+%Review of the use of simulations, with a particular focus on computational biology. This review should explore the advantages that in-silico testing provides over in-vitro experimentation and the problems that must be overcome for the mass adoption of biological simulations.
+Over the course of the project, the use of simulations as well as its advantages over \gls{in-vitro} experimentation has been reviewed.
+The biggest problems affecting the adoption of \gls{abm} simulations have been identified.
+Most significantly is that fast simulations of complex models are far too difficult to create, meaning experienced software developers are required.
+This has fulfilled our Aim 3.
 
+%Explore the findings of the new implementation and discuss how these can be generalised between different simulations.
+The new implementation has shown that cell division \textit{can be generalised between different simulations}.
+Other general features such as random cell movement has been discussed as another suitable candidate for generalisation.
+This has met and exceeded this part of the original aim.
+
+%   Discuss techniques for allowing non-technical users to easily create formal models that can be transformed into new simulation implementations.
+\gls{mde} has been proposed as a \textit{[technique] for allowing non-technical users to easily create formal models that can be transformed into new simulation implementations}.
+The \gls{mde} approach, taken in this project, has already realised numerous benefits in this area.
+The new graphical tool allows non-technical users to easily transform parts of \textit{existing} platform models into \gls{FLAME GPU} structural models.
+The reuse of artefacts is a fundamental part of \gls{mde}.
+This has given domain experts the ability to modify key simulation parameters, such as the sizes of cells and cell input rates.
+This ability is very useful for experimentation and for refining the simulation if new biological knowledge is discovered.
+The adjusted parameters can be automatically realised in the simulation code, something which would have previously required a software developer.
+%significant resources, but MDE gains not normally realised until tool/model reuse
+
+%Establish a firm grounding for the future development of new tools to allow fast, parallel simulations of biological systems to be easily created by non-technical users.
+This is a \textit{firm grounding for the future development of new tools} that will allow non-technical users to easily create fast, parallel simulations of biological systems.
 
 %Develop a parallel implementation of an existing sequential simulation of Peyer’s Patch development and explore any speed increases that can be produced using General Purpose GPU programming (GPGPU) programming.
 An initial aim of this project was \textit{`to explore the speed increases that can be produced by using \gls{gpgpu} programming'}.
 A simulation has been created that displays the formation of \gls{PP}es, and while this has been shown to execute in less time that the original sequential \textit{PPSim} there are too many differences in their implementations to directly compare them.
-%faster.. but not yet complete-
-%94s to 19 is significant decrease..
-%further testing needed
-%combine this approach with others- parallism of different runs on multiple PC/GPUs..
-%Machine Learning approach- which requires training data?
+The runtime of \textit{PPSim v2} is still likely to be inconvenient if a great number of runs is needed.
+A sensible approach could be to use this faster simulation to generate training data for the machine learning approach described in \cite{kieran_machine_learning}.
+Alternatively, a further level of parallelism, where different executions are run across multiple \gls{gpu}s could be a way to ensure a more realistic total runtime.
 
-%Review of the use of simulations, with a particular focus on computational biology. This review should explore the advantages that in-silico testing provides over in-vitro experimentation and the problems that must be overcome for the mass adoption of biological simulations.
+In conclusion...
 
 \section{Further Work}
 \subsection{Peyer's Patch Case Study}
 While the simulations are not entirely comparable, I have shown that fast, parallel implementations can be created using \gls{FLAME GPU}.
-Further work on this topic is needed to show that these implementations can also produce results quickly when scaled up.
+Further work on this topic is needed to show that these implementations can still produce results in an acceptable time when scaled up.
 With this simulation in particular some options for increasing the scale include modelling in 3-dimensions, adding further cell types and biological factors and cell types into the model, and simulating the whole length of the gut rather than a small section.
-%SCALE- simulate the whole gut length,
-%       simulate in 3 dimensions
-%       see if runtime is still acceptable, does it scale, etc.
 
 While the two \gls{PP} simulations are both derived from the same domain model, there are clearly significant implementation differences between these, as is discussed earlier in this report.
 Future work will need to explore the meaning of the differences between simulations and whether that have any effect on their validity against the domain model.
@@ -1245,8 +1261,9 @@ While the use of Epsilon has allowed for domain experts to be kept involved with
 Further work will need to study general agent behaviour in these forms of biological simulation.
 The reuse of a previous simulation's implementation of cell division behaviour, has shown that at least some behaviour is common across different simulations.
 The power of \gls{mde} is such that this repeated behaviour should be generalised to reduce the time needed and prevent the mistakes that occur during reimplementation of the similar software features.
+%FUTURE WORK is needed to provide the ability to modify agent behaviour
 
-On top of this, with the current implementation, technical implementation details (layer functions and agent partitioning) have become part of the model.
+On top of this, with the current implementation, technical platform-specific implementation details (layer functions and agent partitioning) have become part of the model.
 Ideally these should be extracted from the model implementation and automated.
 
 \subsection{Hardware Availability}
