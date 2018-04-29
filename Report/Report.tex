@@ -1,4 +1,5 @@
 \documentclass{UoYCSproject}
+\usepackage{adjustbox}
 \usepackage{graphicx}
 \usepackage[nottoc,numbib]{tocbibind}
 \usepackage{subcaption}
@@ -15,7 +16,7 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{7525}
+\wordcount{7941}
 
 
 %Approx 500 Words
@@ -919,54 +920,24 @@ In this platform model there is a single \textit{active} \gls{LTo} cell in the c
 %cite for WHY single, WHEN was this done before?
 
 When in visualisation mode, the view is centred on the middle of the environment, with the environment bounds calculated from the position of the initial agents.
-In order to ensure that these bounds are calculated correctly, the simulation is initialised using an \gls{LTi} cell placed at the maximum bounds of the environment (7303, 254).
+In order to ensure that these bounds are calculated correctly, the simulation is initialised using an \gls{LTi} cell placed at the maximum bounds of the environment (\texttt{7303}, \texttt{254}).
 This single \gls{LTi} cell will have minimal impact on the overall simulation behaviour.
 
 \subsubsection{Testing}
 As the new simulation is a re-engineering of the existing PPSim, it can inherit the validation of the existing simulation.
 This requires the new simulation to be demonstrably similar with similar components, behaviours and results.
 
-
+%::CONCLUSION!
 The simulation produces much of the expected emergent behaviour from the domain.
 However, it has not been verified by a domain expert.
 
-\begin{figure}[htp]
-\begin{subfigure}{\textwidth}
-\centering
-\includegraphics[width=\textwidth]{Appendix/Sim/Start}
-\caption{Beginning of simulation, single central \gls{LTo} cell is present.}
-\label{fig:sim_start}
-\end{subfigure}
-\end{figure}
-
-\begin{figure}[htp]\ContinuedFloat
-\begin{subfigure}{\textwidth}
-\centering
-\includegraphics[width=\textwidth]{Appendix/Sim/Migration}
-\caption{\gls{LTin} \& \gls{LTi} cells migrate into the environment and activate \gls{LTo} cell.}
-\label{fig:sim_contact}
-\end{subfigure}
-\end{figure}
-
-\begin{figure}[htp]\ContinuedFloat
-\begin{subfigure}{\textwidth}
-\centering
-\includegraphics[width=\textwidth]{Appendix/Sim/Patch}
-\caption{Chemokine emission \& \gls{LTo} cell division causes \gls{PP} to form.}
-\label{fig:sim_patch}
-\end{subfigure}
-
-
-\caption{Visualisation of \textit{PPSim v2} produced using \gls{FLAME GPU}}
-\label{fig:ppsimv2_vis}
-\end{figure}
 %is this the case?
 
 Talk about how the model was tested to ensure correctness\\
 %flame gpu provides a visualisation which can be used to demonstrate the appearance of the expected emergent behaviour\ref{fig:ppsimv2_vis}
 
 In order to obtain a fair representation of runtime, the simulation was executed as a console application \texttt{500} times, the same number of runs that was used for each parameter set of the MASON \textit{PPSim} implementation.
-The simulation was run for its full length of 2880 steps (representing 72 hours).
+The simulation was run for its full length of \texttt{2880} steps (representing 72 hours).
 
 \section{Graphical Modelling Tool}
 In order to implement a tool to support my \gls{FLAME GPU} development, the Epsilon Modelling Framework was selected.
@@ -975,9 +946,6 @@ The aim was for the tool to \textit{directly} map the platform model structures 
 This should significantly improve the model design experience and allow for domain experts to be kept more involved with the simulation creation.
 This new process is shown as part of the \gls{cosmos} process in Fig. \ref{fig:flame_improved}.
 
-Figure \ref{fig:ppsim_gmf} shows the \gls{PP} simulation created within this graphical editor.
-The XML model used for the final simulation was automatically generated from this diagram.
-
 \begin{figure}[htp]
 \centering
 \includegraphics[width=0.7\textwidth]{Appendix/CoSMoS_FLAME}
@@ -985,29 +953,69 @@ The XML model used for the final simulation was automatically generated from thi
 \label{fig:flame_improved}
 \end{figure}
 
+Figure \ref{fig:ppsim_gmf} shows the \gls{PP} simulation created within this graphical editor.
+The XML model used for the final simulation was automatically generated from this diagram model.
+
 \subsection{Metamodel}
 The development of a metamodel was guided by the existing \gls{FLAME GPU} XML model schema.
 This model schema is itself a metamodel for the \gls{FLAME GPU} model file.
+The new metamodel was created using the Emfatic language, a convenience textual syntax for Ecore.
+This Emfatic text can be used to generate an Ecore model which, in turn, is used to generate the GMF Graphical Editor.
 
 %similarities:
 %top level simulation contains:
 %   variables
 Much of the new metamodel matches the \gls{FLAME GPU} schema.
-There is a top level simulation object which contains a list of agents, a list of messages that agents can send, a list of global variables, etc.
+There is a top level simulation object which contains a list of agents, a list of messages that agents can send, etc.
+One notable difference here, is that as simulations contain exactly one environment, the data contained in this tag (constants, step functions, etc.) is stored at the simulation level, and no Environment class exists.
 The main difference in the new metamodel is its ability to utilise references to objects.
 Using references to objects ensures that the objects being referred to exist, which must be the case for model to be valid.
+For instance, we do not want to allow an agent to have an initial state that does not exist, setting this attribute as a reference in the metamodel ensures that this is not the case.
 
-Due to the time constraints on this project, this metamodel is a not complete mapping of every \gls{FLAME GPU} feature.
-Some o
+Due to the time constraints on this project, this metamodel is not quite a complete mapping to every \gls{FLAME GPU} feature.
+Global Function Conditions, which act as a condition to determine whether a function should be applied to either all or none of the agents within a particular state, have not implemented.
+Additionally, global variable arrays cannot be created using the tool, these variables may only be of type int, float or double.
+Neither of these unimplemented features were required in the development of \textit{PPSim v2}.
 
 \subsection{EuGENia}
+A GMF editor was created by adding EuGENia annotations into the Emfatic metamodel.
+These annotations are used to automatically generate the \texttt{.gmfgraph}, \texttt{.gmftool} and \texttt{.gmfmap} models required for the GMF Graphical Editor.
+Implementing the Graphical Editor required a number of important decisions here, in order for the tool to provide a logical user experience to modellers.
 
-\subsection{Epsilon Generation Language}
-One final benefit of this new approach to model generation, is that it makes it far simpler to .
+%how/where to display variables
 
 
+A number of implementations for transition conditions were considered during development.
+Transitions not visible on GMF, tree-based editor is required.
+This was recommended as the best approach in personal communication with Dimitris Kolovos, one of the members of the Epsilon team.
+Due to the limitations in Epsilon
 
-\subsection{\acrlong{evl}}
+\subsection{\gls{egl}}
+\begin{wrapfigure}{r}{0.63\textwidth}
+\centering
+\begin{lstlisting}[language=XML, basicstyle=\tiny]
+<states>
+    [%for (state in agent.states){%]
+    <gpu:state>
+        <name>[%=state.name%]</name>
+    </gpu:state>
+    [%}%]
+    <initialState>[%=agent.initialState.name%]</initialState>
+</states>
+\end{lstlisting}
+\caption{Trivial Generation of \gls{FLAME GPU} XML Model}
+\label{fig:egl_example}
+\end{wrapfigure}
+
+\gls{egl} was used to implement the transformation of the Epsilon GMF models into a \gls{FLAME GPU} XML model.
+Since the tree structure of the GMF models already closely match the \gls{FLAME GPU} model schema, this process was trivial and simply involved adding in the required XML tags in between the model data and retrieving the correct identifiers for any object references.
+
+\subsection{\acrfull{evl}}
+The \gls{evl} has allowed well-formedness constraints to be implemented for the \gls{FLAME GPU} input model.
+This should provide intuitive feedback (Fig. \ref{fig:validation_gmf}) in cases where the model may be incorrect, ensuring that all generated XML models conform to the \gls{FLAME GPU} input model schema.
+Many of the \gls{evl} constraints have been used to cover shortcomings in the Ecore metamodel.
+In particular, Ecore allows any attribute to be null, whereas in the majority of cases XML tags are not optional in \gls{FLAME GPU}.
+Figs. \ref{fig:validation_gmf} \& \ref{fig:validation_quickfix_gmf} show how the \gls{evl} constraints would deal with a null initial state value for the \gls{LTin} agent.
 
 \begin{figure}[htp]
 \centering
@@ -1016,16 +1024,15 @@ One final benefit of this new approach to model generation, is that it makes it 
 \label{fig:validation_gmf}
 \end{figure}
 
-The \gls{evl} has allowed well-formedness constraints to be implemented for the \gls{FLAME GPU} input model.
-This should provide intuitive feedback (Fig. \ref{fig:validation_gmf}) in cases where the model may be incorrect, ensuring that all generated XML models conform to the \gls{FLAME GPU} input model schema.
-Many of the \gls{evl} constraints have been used to cover shortcomings in the Ecore metamodel.
-In particular, Ecore allows any attribute to be null, whereas in the majority of cases XML tags are not optional in \gls{FLAME GPU}.
-Figs. \ref{fig:validation_gmf} \& \ref{fig:validation_quickfix_gmf} show how the \gls{evl} constraints would deal with a null initial state value for the \gls{LTin} agent.
+As well preventing null values, preventing obviously nonsensical values has also been a key use for \gls{evl} constraints.
+An example of this is ensuring that agents select one of their own states as their initial state, rather than one belonging to another agent.
+This will help to reduce the number of model errors that reach the \gls{FLAME GPU} implementation stage.
 
-As well preventing null values, preventing obviously nonsensical values has also been a key use for \gls{evl}.
-Ensuring that agents select one of their own states as their initial state, rather than one belonging to another agent.
-
-
+%CRITIQUES ALSO USED?
+%boolean transition conditions:
+%critique allows users to ignore it
+%BUT generally, and particularly with biological models like this:
+%Transitions.. BETWEEN states require some form of external trigger?
 
 \begin{figure}[htp]
 \centering
@@ -1035,13 +1042,10 @@ Ensuring that agents select one of their own states as their initial state, rath
 \end{figure}
 
 Quick fixes (Fig. \ref{fig:validation_quickfix_gmf}) have also been implemented to guide the user through easily correcting their invalid model.
-The error feedback provided by these quick fixes is much more intuitive than that provided by \gls{FLAME GPU}.
+The error feedback provided by these quick fixes is much more intuitive to non-technical users than that provided by \gls{FLAME GPU}.
+%give example of FLAME GPU feedback
 
 
-%boolean transition conditions:
-%critique allows users to ignore it
-%BUT generally, and particularly with biological models like this:
-%Transitions.. BETWEEN states require some form of external trigger?
 
 %Approx 2500 words for results and evalution
 \chapter{Results and Evaluation}
@@ -1063,7 +1067,7 @@ An improved mapping, which abstracts away all implementation details, could brin
 
 %Mention missing link in (incorrect) model from Kieran's paper 
 %This difference is IMMEDIATELY obvious in the FLAME GPU implementation, we can correct the original model!
-\begin{figure}[htp]
+\begin{figure}[htbp]
 \begin{subfigure}{0.5\textwidth}
 \begin{subfigure}{\textwidth}
 \centering
@@ -1116,14 +1120,19 @@ An improved mapping, which abstracts away all implementation details, could brin
 \caption{Traceability of \texttt{Mature} transition from \gls{domain} to \gls{FLAME GPU} Implementation}
 \label{fig:traceability_condition}
 \end{figure}
+
 An additional benefit of this mapping, provides traceability from the domain model through to the simulation code.
 This can be clearly seen in Fig. \ref{fig:traceability_condition}, which shows how the transition from `Upregulation of Chemokines' to `Mature \gls{LTo}' is refined from the \gls{domain} to \gls{platform} and then implemented in \gls{FLAME GPU}.
 We can have greater certainty that the simulation is faithful to the domain and no bugs have been produced during the implementation.
 %MENTION THE MISSING LINK- discussed early
+%OTHER MDE benefits-
+%   changes to platform model (perhaps as a result of new biological knowledge found?) can be automatically realised in the simulation code
+%   previously a developer would have been needed to make this change!
 \\\\
 \textit{This work is ongoing.}
 
 \subsection{Speed Up}
+\subsubsection{Implementation Differences}
 %Model is too disimilar to Kieran's
 Unfortunately the differences between the \gls{MASON} and \gls{FLAME GPU} platforms have meant that it is not trivial to compare them.
 %WHY:
@@ -1131,10 +1140,49 @@ Unfortunately the differences between the \gls{MASON} and \gls{FLAME GPU} platfo
 %Mention difference between LTo cell division - force resolution step used
 This initial hypothesis of the platform models being comparable is untenable.
 
+
+
+%Message Passing gives rise to outdated variables-
+%adhesion_probability is the same for each collision that occurs in the same simstep
+%if multiple agents collide in the same step, this reacts differently to the MASON implementation
+%at the next timestep, a_p is decremented for EACH collision (impact is likely minimal?)
+
+\subsubsection{Comparison}
 %SPEED RESULTS..
 Instead, a new hypothesis is that the platform model for the \gls{FLAME GPU} implementation is comparable to the original biological model.
 If our new platform model can be shown to be similar to the original PPSim domain model, we can say that this simulation also shows Peyer's Patch development..?
 %model is abstract from domain already, makes more sense to compare this to domain
+
+\begin{figure}[htp]
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Appendix/Sim/Start}
+\caption{Beginning of simulation, single central \gls{LTo} cell is present.}
+\label{fig:sim_start}
+\end{subfigure}
+\end{figure}
+
+\begin{figure}[htp]\ContinuedFloat
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Appendix/Sim/Migration}
+\caption{\gls{LTin} \& \gls{LTi} cells migrate into the environment and activate \gls{LTo} cell.}
+\label{fig:sim_contact}
+\end{subfigure}
+\end{figure}
+
+\begin{figure}[htp]\ContinuedFloat
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=\textwidth]{Appendix/Sim/Patch}
+\caption{Chemokine emission \& \gls{LTo} cell division causes \gls{PP} to form.}
+\label{fig:sim_patch}
+\end{subfigure}
+
+
+\caption{Visualisation of \textit{PPSim v2} produced using \gls{FLAME GPU}}
+\label{fig:ppsimv2_vis}
+\end{figure}
 
 The new version of the simulation has an average runtime of 
 
@@ -1178,9 +1226,14 @@ Spartan is a tool for understanding relationships and providing novel biological
 Spartan was use for analysing the results of the original PPSim implementation\cite{spartan} and may provide an insight into validity of the parallel \textit{PPSim v2} implementation.
 
 \subsection{\gls{FLAME GPU}}
+A number of enhancements to the open-source \gls{FLAME GPU} framework would have made the implementation of \textit{PPSim v2} easier to create and faster to run.
+
+Firstly, a method to implement global agent `step' functions, that is to say, functions which are applied to every agent of a particular type, regardless of their current state.
+This would allow the environmental growth feature to be easily implemented, with a global step function used to update agent positions as the environment grows.
+
 %parallel step functions
 %better support for global "step" functions on agents for admin tasks, such as environmental growth
-%cell division, force resolution, etc.
+%cell division, stop hacky: force resolution, etc.
 
 %while TRUE resolve..
 
@@ -1248,7 +1301,7 @@ Future work could reevaluate whether the benefit of a cross-platform API, such a
 
 \begin{figure}[htp]
 
-\begin{center}
+\begin{adjustbox}{center}
 \begin{tabular}{|c|l|r|} 
 \hline
 & Parameter & Value \\
@@ -1269,7 +1322,7 @@ $\varpi$ & Hours Immature \gls{LTo} remains active & 72 hours \\
 \textphi & Chemokine Threshold & \textit{Unknown} \\ 
 \hline
 \end{tabular}
-\end{center}
+\end{adjustbox}
 
 \caption{Domain Model Biological Parameters\cite{kieran_thesis, kieran_methodology}}
 \label{table:domain_params}
@@ -1307,7 +1360,7 @@ $\varpi$ & Hours Immature \gls{LTo} remains active & 72 hours \\
 
 \begin{figure}[htp]
 
-\begin{center}
+\begin{adjustbox}{center}
 \begin{tabular}{|c p{3.5cm}|c|r|} 
 \hline
 & \textbf{Parameter} & \textbf{Simulation Variable} & \textbf{Value} \\ 
@@ -1350,7 +1403,7 @@ $\varsigma$ & \gls{LTin} Cell Input Rate & \textit{Calculated} & 79 cells / 100 
 \textRho & Length (Environment growth not implemented) & LENGTH & 7303 \\
 \hline
 \end{tabular}
-\end{center}
+\end{adjustbox}
 
 \caption{Platform Model Simulation Parameters\cite{kieran_thesis, kieran_methodology}}
 \label{table:simulation_params}
