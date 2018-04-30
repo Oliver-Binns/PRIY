@@ -16,7 +16,7 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{9179}
+\wordcount{9818}
 
 
 %Approx 500 Words
@@ -157,7 +157,9 @@ Finally, I would also like to thank the \gls{FLAME GPU} development team at the 
 While traditional mathematical-based models are generally much more efficient to compute and produce good results when exploring how biological factors effect populations as a whole, \gls{abm} is particularly useful when considering how individuals and their interactions produce emergent system behaviour.
 Mathematical-based models are limited in this aspect as they assume that each individual within the population is identical.
 \gls{abm} explicitly represents each individual, meaning these can have state and attributes and are independent and fully autonomous.
-Unfortunately, these agent-based simulations require significantly more compute resources, thus taking a long time to run, particularly as simulations become more and more complex.
+Often this behaviour is stochastic meaning that each execution of the simulation produces different outputs even with the same initialisation.
+This stochastic behaviour means that a large number of executions are required to ensure statistical significance.
+This means that as agent-based simulations become more complex, they require significantly more compute resources to produce results within a realistic period of time.
 
 Here, and throughout this report, the term complexity does not necessarily refer to simulations that contains several components that are difficult to engineer.
 Rather, we discuss simulations that are made up of lots of simple components that interact with each other and the environment in such a way that the system behaviour is so elaborate that it can only be predicted by running the simulation.
@@ -265,7 +267,7 @@ This report details the work done throughout the project and
 %Background, what are simulations used for generally
 Simulations are model-based imitations of a system which feature its key characteristics and behaviours.
 The system being modelled is referred to as the domain, while this simulation is known as the platform.
-Computer simulations are used in a wide range of disciplines on applications such as video games, medicine, product development and even nuclear weapons.
+Computer simulations are used in a wide range of disciplines on applications such as video games, medicine \cite{abm_case_studies_ycil, healthcare_population}, product development \cite{sim_manufacturing} and even nuclear weapons \cite{nuclear_simulation, gizmodo_nuclear}.
 
 The models of systems used in simulations may have a varying amounts of abstraction.
 Simulations used for teaching will likely have models which remove significant amounts of complexity from the system.
@@ -420,7 +422,7 @@ This is linked to, but not the same as, having insufficient domain knowledge.
 Both of these limitations will cause the simulations to fail silently, produce incorrect results with no immediately obvious failure.
 %Failing silently is interesting: no unexpected behaviour.. this should be discussed in more detail
 Third-party tools, such as \gls{abm} libraries, that may be relied on are not bug free.
-Indeed, no software can be shown to be bug-free.
+Indeed, no software can be shown to be bug-free as testing only shows the presence, not the absense of bugs \cite[p.16]{dijkstra}.
 As part of this project, a major bug which has been present in the code for the \gls{MASON} \gls{abm} library since February 2013 was discovered and fixed \cite{mason_pull_request}.
 
 
@@ -430,13 +432,16 @@ In real-world testing, poorly designed experimentation is often the only availab
 When gathering time-series data regarding immune-system development, the process of obtaining the data is destructive.
 At each point in the series, a mouse is dissected and the data gathered.
 The different animals used throughout the time-series have the potential to introduce a large element of unreliability in the results.
-%Furthermore, even when \gls{in-vitro} experiments are well designed, statistical analysis can lead to misleading results.
-%Comparisons using a t-test are common but almost always inva
-As such, these limitations are no reason to dismiss simulation by themselves.
+
+Furthermore, even when \gls{in-vitro} experiments are well designed, statistical analysis can lead to misleading results.
+Comparisons using a t-test are common but almost always invalid as they incorrectly assume that the results will fit a particular mathematical distribution.
+In reality it is almost imposible to demonstate that experimental data fits the criteria for a given distribution \footnote{Personal communication, \href{http://www.scm.keele.ac.uk/staff/f_polack/}{F. Polack}}.
+As such, errors in the simulation tests is no reason to dismiss simulation as an alternative to real world testing in general.
 
 %Here we are talking about refining from an initial model, which we have shown to be correct:
 %This is the same concept as MDE - discussed later!
 If the simulation needs to be safety-critical, developing it using formal methods and refinement may be a good way to ensure that no bugs are introduced in the code.
+This refinement is a similar in concept to the \gls{mde} techniques for model refinement that will be presented in Section \ref{methods} of this report.
 %CSP -> OccamPi/MASON -> Kieran is currently looking into this
 %Similar to the work described later in this report: model-driven engineering!
 %ensures that artefacts are inline with each other
@@ -513,6 +518,7 @@ Meanwhile, \gls{MASON} only supports \gls{cpu} parallelism, this will be discuss
 %also not easy to use
 
 \subsubsection{\gls{FLAME GPU}}
+\label{flame_gpu}
 The \gls{flame} project is an attempt to make \gls{gpu}-based \gls{abm} simulations more accessible.
 \gls{flame} simulations consist of two artefacts, an `XML Model File' containing the structure of agents and their channels of communication and C source code file of `Scripted Behaviour' which defines the actual behaviour of agents.
 \acrfull{flamegpu} is an extension of the original version of \acrshort{flame}, where the simulations that are created are compiled down to parallelised CUDA code.
@@ -575,6 +581,7 @@ In particular, this project focuses on two particular sections of which I believ
 This section discusses the potential solutions to each of these problems.
 
 \subsection{Ease of Creation}
+\label{ease-of-creation}
 A major constraint on the adoption of simulations is how difficult and time-consuming they are to create.
 This constraint is exacerbated by a current shortage of experienced programmers.
 Initial work to help overcome this skills shortage will likely come by providing tools that can automate work done undertaken by technical users in order to increase their productivity.
@@ -714,6 +721,11 @@ The remainder of this project will further explore \gls{FLAME GPU}'s ability to 
 
 \chapter{Tools and Platform}
 \label{tools}
+
+The remainder of this report explores the creation of a parallel \gls{FLAME GPU} implementation of the existing MASON \textit{PPSim} simulation.
+The research focuses on ease-of-creation for parallel programs-- one of the key challenges outlined in Section \ref{ease-of-creation}.
+The new simulation, \textit{PPSim v2}, still requires re-calibration and a comparison of results from a biological perspective which is clearly outside of the scope of this, a Computer Science project.
+
 \section{Tools}
 This project was developed on a machine running Ubuntu 16.04 with Intel i5 (650 @ 3.20 GHz) and 8GB of RAM.
 The GPU utilised was an NVIDIA GeForce GTX 1050.
@@ -736,7 +748,7 @@ If the scope of the project is to expand, it may become necessary to move the mo
 \section{\gls{PP} Case Study}
 \label{ppsim}
 This project focuses on simulation as a tool for exploring biological systems at cell level.
-This section is based on published research papers \cite{kieran_thesis, kieran_methodology, kieran_results, kieran_machine_learning, spartan} and discussion with \href{https://www.york.ac.uk/electronic-engineering/staff/kieran_alden/}{Kieran Alden}, who co-supervised the research for this project.
+This section is based on published research papers \cite{kieran_thesis, kieran_methodology, kieran_results, kieran_machine_learning, spartan} and discussion with \href{https://www.york.ac.uk/computational-immunology/members/kieran/}{K Alden}, who co-supervised the research for this project.
 It uses an existing sequential \gls{MASON} simulation of \gls{PP} development \cite{kieran_thesis, kieran_methodology, spartan} (\textit{PPSim}) and attempts to use parallel computer architectures in order to speed this simulation up.
 The sequential \textit{PPSim} had a runtime of \texttt{94.265} seconds and \texttt{585,000} executions were required for the statistical sampling technique being used.
 Even with a significant amount of \gls{cpu} parallelism (138 processors) available, the combined runtime of these executions is inconvenient and would be intractable for larger scale simulations \cite{kieran_machine_learning}.
@@ -828,7 +840,7 @@ Having previously established the current difficulties with biological simulatio
 \label{ppsim_v2}
 %HOW DOES THIS RELATE TO THE COSMOS PROCESS (ABOVE)
 %platform-specific model
-As previously mentioned a \gls{FLAME GPU} implementation requires the creation of two artefacts.
+A \gls{FLAME GPU} implementation requires the creation of two artefacts (See Section \ref{flame_gpu}).
 A structural `XML Model File' which defines the agents in the system and their allowed channels for communication.
 A C source code file of `Scripted Behaviour' defines the actual behaviour of agents.
 
@@ -897,8 +909,6 @@ Adding this GUI front end to \gls{FLAME GPU} is a major step towards ensuring th
 \caption{Autogeneration of \gls{FLAME GPU} Model File}
 \label{fig:gmf_flame_generation}
 \end{figure}
-
-%SHOULD THIS BE IN THE CONCLUSION?
 In addition to ensuring that only valid models can be produced, the graphical tool has a number of other benefits.
 The original platform model (Fig. \ref{fig:ltin_cropped}) and the \gls{FLAME GPU} implementation (Fig. \ref{fig:ltin_gmf}) can now be compared at a glance.
 For example, it is immediately clear that the platform model has been refined to include only two states in the final implementation.
@@ -914,7 +924,7 @@ The decision to only include a single central \gls{LTo} cell in the simulation m
 \label{missing_link}
 Both the domain and platform model diagrams for \gls{LTi} cells are missing a transition from the `random movement' to `contact' state.
 This is because \gls{LTi} cells may collide with \gls{LTo} cells, without having reacted to chemokine emission.
-This transition was present into the original \gls{MASON} implementation of \textit{PPSim}, but was never corrected in the state diagram \footnote{Personal communication, \href{https://www.york.ac.uk/electronic-engineering/staff/kieran_alden/}{Kieran Alden}}.
+This transition was present into the original \gls{MASON} implementation of \textit{PPSim}, but was never corrected in the state diagram \footnote{Personal communication, \href{https://www.york.ac.uk/computational-immunology/members/kieran/}{K. Alden}}.
 It has also been added into the new \gls{FLAME GPU} implementation.
 
 \subsection{Behavioural Model}
@@ -944,7 +954,7 @@ However, due to \gls{FLAME GPU}'s dependence on state machines, this transition 
 On top of this, in the current version of \gls{FLAME GPU}, these transitions, which would be identical for every state of each agent, would be classed as different functions, and thus each implemented sequentially.
 This would significantly increase the runtime of the simulation.
 %can I state this?:
-The original \textit{PPSim} produced the same statistical analysis results of with and without environmental growth\footnote{Personal communication, \href{https://www.york.ac.uk/electronic-engineering/staff/kieran_alden/}{Kieran Alden}}, therefore the impact of this on the emergent behaviour is likely minimal.
+The original \textit{PPSim} produced the same statistical analysis results of with and without environmental growth\footnote{Personal communication, \href{https://www.york.ac.uk/computational-immunology/members/kieran/}{K. Alden}}, therefore the impact of this on the emergent behaviour is likely minimal.
 
 Secondly, once \gls{LTo} cells transition into their `mature' state, they no longer divide.
 %May result in a smaller PP, but unlikely to have *significant effect*
@@ -964,10 +974,11 @@ This single \gls{LTi} cell will have minimal impact on the overall simulation be
 As the new simulation is a re-engineering of the existing PPSim, it can inherit the validation of the existing simulation.
 This requires the new simulation to be demonstrably similar with similar components, behaviours and results.
 
-Talk about how the model was tested to ensure correctness\\
-
 In order to obtain a fair representation of runtime, the simulation was executed as a console application \texttt{500} times, the same number of runs that was used for each parameter set of the MASON \textit{PPSim} implementation.
 The simulation was run for its full length of \texttt{4321} steps (representing 72 hours).
+
+%Talk about how the model was tested to ensure correctness
+%biological comparison?
 
 \section{Graphical Modelling Tool}
 In order to implement a tool to support my \gls{FLAME GPU} development, the Epsilon Modelling Framework was selected.
@@ -983,12 +994,13 @@ This new process is shown as part of the \gls{cosmos} process in Fig. \ref{fig:f
 \label{fig:flame_improved}
 \end{figure}
 
-The XML model used for the final simulation was automatically generated from a diagram model created within this graphical editor (Fig. \ref{fig:ppsim_gmf}).
+The full XML model used for the final simulation was automatically generated from a diagram model created within this graphical editor (Fig. \ref{fig:ppsim_gmf}).
 
 \subsection{Metamodel}
-The development of a metamodel was guided by the existing \gls{FLAME GPU} XML model schema.
+A metamodel is required to formalise how models can be represented in our graphical modelling tool.
+The development of the metamodel was guided by the existing \gls{FLAME GPU} XML model schema.
 This model schema is itself a metamodel for the \gls{FLAME GPU} model file.
-The new metamodel was created using the Emfatic language, a convenience textual syntax for Ecore.
+The new metamodel (See Section \ref{fig:gmf_metamodel}) was created using the Emfatic language, a convenience textual syntax for Ecore.
 This Emfatic text can be used to generate an Ecore model which, in turn, is used to generate the GMF Graphical Editor.
 
 %similarities:
@@ -1020,7 +1032,7 @@ A number of implementations for transition conditions were considered during dev
 Due to the limitations in the GMF Grapical Editor, values under containment cannot be edited unless they are displayed on the diagram.
 For obvious reasons, the transitions which are displayed as links, cannot display nodes on the diagram inside them, or link to them.
 In order to add edit the conditions on these transitions, the tree-based editor was used.
-This was recommended as the simplest approach by the lead developer of Epsilon team\footnote{Personal communication, \href{https://www-users.cs.york.ac.uk/dkolovos/}{Dimitris Kolovos}}.
+This was recommended as the simplest approach by the lead developer of Epsilon team\footnote{Personal communication, \href{https://www-users.cs.york.ac.uk/dkolovos/}{D. Kolovos}}.
 Other options that were considered include implementing the diagram as a Petri net where conditions are displayed as intermediary nodes in between two states.
 With additional time, more sophisticated tools could allow a more elegant graphical editor to be produced.
 
@@ -1081,9 +1093,8 @@ The error feedback provided by these quick fixes is much more intuitive to non-t
 
 \section{Summary}
 This chapter has described the implementation of a new \gls{FLAME GPU} simulation, \textit{PPSim v2}.
-%what you have achieved…
-%what this allows in terms of further support.
-
+The \gls{mde} tools that have been developed to aid this implementation allow the simulation parameter values to be adjusted at will by non-technical users.
+It has demonstrated proof-of-concept for automatically producing simulation artefacts from biological platform models and thus should allow future simulations to be implemented much more quickly.
 
 %Approx 2500 words for results and evaluation
 \chapter{Results}
@@ -1091,7 +1102,7 @@ This chapter has described the implementation of a new \gls{FLAME GPU} simulatio
 
 \section{Ease of Creation}
 The new Epsilon tool has shown that direct mappings from a biological platform model to a simulation code are possible.
-Based on this, further work is now being developed with \href{http://paulrichmond.shef.ac.uk/gpu/gpucomputingatsheffield/}{Paul Richmond's \gls{FLAME GPU} group}, to enhance the accessibility of \gls{FLAME GPU} for simulation developers.
+Based on this, further work is now being developed with \href{http://paulrichmond.shef.ac.uk/gpu/gpucomputingatsheffield/}{Paul Richmond's \gls{FLAME GPU} group} at the University of Sheffield, to enhance the accessibility of \gls{FLAME GPU} for simulation developers (See Section \ref{flame_further_work}).
 This should allow the simulation developer to focus ensuring domain details are correct, rather than battling the agent platform.
 An improved version of this mapping, which abstracts away all \gls{FLAME GPU} implementation details such as partitioning, could bring additional benefits in this area, including ensuring that the simulation code always supports the latest hardware features.
 
@@ -1100,7 +1111,7 @@ An improved version of this mapping, which abstracts away all \gls{FLAME GPU} im
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=\textwidth]{Appendix/LTo_Domain_Trace}
-\caption{Section of \gls{domain}}
+\caption{Section of \gls{domain} (See Fig. \ref{fig:domain_state_diagrams})}
 \bigskip
 \bigskip
 \end{subfigure}
@@ -1108,7 +1119,7 @@ An improved version of this mapping, which abstracts away all \gls{FLAME GPU} im
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=\textwidth]{Appendix/LTo_Platform_Trace}
-\caption{Section of \gls{platform}}
+\caption{Section of \gls{platform} (See Fig. \ref{fig:platform_state_diagrams})}
 \end{subfigure}
 
 \end{subfigure}
@@ -1143,7 +1154,7 @@ An improved version of this mapping, which abstracts away all \gls{FLAME GPU} im
 \end{lstlisting}
 \caption{Fragment of \gls{FLAME GPU} Model}
 \end{subfigure}
-\caption{Traceability of \texttt{Mature} transition from \gls{domain} to \gls{FLAME GPU} Implementation}
+\caption{Traceability of \texttt{Mature} transition from \gls{domain} through \gls{FLAME GPU} Implementation}
 \label{fig:traceability_condition}
 \end{figure}
 
@@ -1176,13 +1187,18 @@ The impact of this is likely minimal as multiple collisions are unlikely to occu
 %Mention difference between LTo cell division - force resolution step used
 This initial hypothesis of the two platform models being comparable is untenable.
 
-
+Within the scope of a Computer Science Masters' Degree project it has not been possible to replicate all the activities of the original \textit{PPSim} development.
+In particular, future work on this simulation will need to rerun simulation calibration, sensitivity analysis and the bio-comparable experimentation \cite{kieran_thesis, kieran_results}.
 
 \subsection{Comparison}
 %SPEED RESULTS..
 Instead, a new hypothesis is that the platform model for the \gls{FLAME GPU} implementation is comparable to the original biological model.
 If our new platform model can be shown to be refined from the original PPSim domain model, we can say that this simulation also shows Peyer's Patch development, and thus is a faster representation of this biological process.
 %Pragmatically, it makes more sense to compare this implementation to its original domain, as this is the entire aim of the process?
+In order to test this hypothesis, we will ensure that:
+\begin{itemize}
+    \item Emergent behaviour is present (\gls{PP} cell cluster forms around the original \gls{LTo} cell before the end of the simulation)
+\end{itemize}
 
 \begin{figure}[htpb]
 \begin{subfigure}{\textwidth}
@@ -1191,9 +1207,9 @@ If our new platform model can be shown to be refined from the original PPSim dom
 \caption{Beginning of simulation, single central \gls{LTo} cell is present.}
 \label{fig:sim_start}
 \end{subfigure}
-\end{figure}
+%\end{figure}
 
-\begin{figure}[htpb]\ContinuedFloat
+%\begin{figure}[htpb]\ContinuedFloat
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=\textwidth]{Appendix/Sim/Migration}
@@ -1202,6 +1218,8 @@ If our new platform model can be shown to be refined from the original PPSim dom
 \end{subfigure}
 \end{figure}
 
+\newpage
+
 \begin{figure}[htpb]\ContinuedFloat
 \begin{subfigure}{\textwidth}
 \centering
@@ -1209,7 +1227,6 @@ If our new platform model can be shown to be refined from the original PPSim dom
 \caption{Chemokine emission \& \gls{LTo} cell division causes \gls{PP} to form.}
 \label{fig:sim_patch}
 \end{subfigure}
-
 
 \caption{Visualisation of \textit{PPSim v2} produced using \gls{FLAME GPU}}
 \label{fig:ppsimv2_vis}
@@ -1245,7 +1262,6 @@ This has given domain experts the ability to modify key simulation parameters, s
 This ability is very useful for experimentation and for refining the simulation if new biological knowledge is discovered.
 The adjusted parameters can be automatically realised in the simulation code, something which would have previously required a software developer.
 %significant resources, but MDE gains not normally realised until tool/model reuse
-
 %Establish a firm grounding for the future development of new tools to allow fast, parallel simulations of biological systems to be easily created by non-technical users.
 This is a \textit{firm grounding for the future development of new tools} that will allow non-technical users to easily create fast, parallel simulations of biological systems.
 
@@ -1256,7 +1272,9 @@ The runtime of \textit{PPSim v2} is still likely to be inconvenient if a great n
 A sensible approach could be to use this faster simulation to generate training data for the machine learning approach described in \cite{kieran_machine_learning}.
 Alternatively, a further level of parallelism, where different executions are run across multiple \gls{gpu}s could be a way to ensure a more realistic total runtime.
 
-In conclusion...
+In conclusion, the goal of recreating \textit{PPSim} has been partly achieved: a working simulation exists and it recreates the basic visual behaviour of \textit{PPSim}. 
+The goal of ensuring parallel simulations are easier to create has been demonstrated, by capturing the inherent metamodel of the \gls{FLAME GPU} input language (XML) and developing a graphical tool for producing new models.
+The project provides a well-engineered and documented basis for further work on the efficient engineering of parallel simulations in \gls{FLAME GPU}\footnote{Personal communication, \href{http://www.scm.keele.ac.uk/staff/f_polack/}{F. Polack}, \href{https://www.york.ac.uk/computational-immunology/members/kieran/}{K. Alden}, co-supervisors}.
 
 \section{Further Work}
 \subsection{Peyer's Patch Case Study}
@@ -1264,7 +1282,11 @@ While the simulations are not yet fully comparable, I have shown that fast, para
 Further work on this topic is needed to show that these implementations can still produce results in an acceptable time when scaled up.
 With this simulation in particular some options for increasing the scale include modelling in 3-dimensions, adding further cell types and biological factors and cell types into the model, and simulating the whole length of the gut rather than a small section.
 
-%spend more time experimenting with FLAME GPU tips, i.e. turning off spatial partitioning, etc. for some messages, to see if this boosts runtime?
+\gls{FLAME GPU} provides some tips for ensuring that simulations are as efficient as possible\cite[p.37]{flame_doc}.
+In particular, the tips state that populations with low numbers (such as \gls{LTo} cells in \textit{PPSim v2}) will perform poorly.
+For populations of agents less than 2000, non-partitioned messages have less overhead than spatial partitioning.
+Due to the initially empty environment and gradual entry of \gls{LTin} and \gls{LTi} cells, for much of the \textit{PPSim v2}, this is the case.
+Different variations of the tips could be explored further with the intention of driving further performance improvements into \textit{PPSim v2}.
 
 While the two \gls{PP} simulations are both derived from the same domain model, there are clearly significant implementation differences between these, as is discussed earlier in this report.
 Future work will need to explore the meaning of the differences between simulations and whether that have any effect on their validity against the domain model.
@@ -1276,6 +1298,7 @@ Spartan is a tool for understanding relationships and providing novel biological
 Spartan was use for analysing the results of the original PPSim implementation \cite{spartan} and may provide an insight into validity of the parallel \textit{PPSim v2} implementation.
 
 \subsection{\gls{FLAME GPU}}
+\label{flame_further_work}
 A number of enhancements to the open-source \gls{FLAME GPU} framework would have made the implementation of \textit{PPSim v2} easier to create and faster to run.
 This further work section is being discussed with \href{http://paulrichmond.shef.ac.uk/gpu/gpucomputingatsheffield/}{Paul Richmond's \gls{FLAME GPU} group} at the University of Sheffield, however as \gls{FLAME GPU} is open-source, these enhancements could also be made by members outside the group.
 
