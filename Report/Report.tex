@@ -16,7 +16,7 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{8818}
+\wordcount{8908}
 
 
 %Approx 500 Words
@@ -779,9 +779,14 @@ Each successive contact with an \gls{LTin} cell increases the \gls{LTo}'s adhesi
 %platform-independent model
 The platform model (Figs. \ref{fig:platform_state_diagrams} \& \ref{table:simulation_params}) refines the domain model and states how unknown or non-deterministic biological behaviour can be modelled \gls{in-silico}.
 In particular, the platform model specifies models for adhesion between cells and how \gls{LTo} cells react to chemokine levels in their local environment\cite{kieran_thesis, kieran_methodology}.
-
 One notable \textit{unknown} domain value is the rate that \gls{LTi} and \gls{LTin} cells y migrate into the environment.
 In the \gls{platform} this is modelled at a constant rate, such that the \textit{known} correct number of cells is reached at the 12 hour time-step.
+
+The platform model will be implemented using the \gls{FLAME GPU} framework.
+This framework will be responsible for managing all data-structures and managing \gls{gpu} memory across different threads containing agent instances.
+Variables and constants that pertain to the environment will be stored using \gls{FLAME GPU}'s implementation of global variables declared in the model file.
+Variables that concern specific agents only will be stored as variables under these agents.
+Agent variables will be kept to a minimum with distinct states being used to separate different agent behaviours as far as possible.
 
 %Approx 2500 words for design and implementation
 \chapter{Methods}
