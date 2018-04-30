@@ -4,7 +4,7 @@
 
 The domain and platform models for this simulation has been developed using the [CoSMoS](https://www.cosmos-research.org) process, and are detailed [here](https://www.york.ac.uk/computational-immunology/software/ppsim/).
 
-Beginning of simulation, single central LTo cell is present:
+Beginning of simulation, a single, central LTo cell is present:
 ![Initialisation, single central LTo cell is present](https://github.com/Oliver-Binns/PRIY/raw/master/Report/Appendix/Sim/Start.png)
 
 LTin & LTi cells migrate into the environment and activate LTo cell:
