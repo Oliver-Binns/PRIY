@@ -16,13 +16,13 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{8477}
+\wordcount{8818}
 
 
 %Approx 500 Words
 \abstract{
 More powerful computers are paving the way for sophisticated simulations of complex biological systems which are inaccessible to live \gls{in-vitro} study.
-\acrlong{abm} has been previously used to implement this type of simulation, showing how the behaviour of a number of individual agents can contribute to the system as a whole.
+\acrlong{abm} has been previously used to implement this type of simulation\cite{kieran_thesis, kieran_methodology, flame_keratinocyte, stepney_abm}, showing how the behaviour of a number of individual agents can contribute to the system as a whole.
 
 The desire to create larger and more elaborate simulations, while still ensuring results can be obtained in a reasonable amount of time, makes it necessary to use parallel and distributed systems.
 Creating programs and simulations that make efficient use of this parallelism can be technically challenging.
@@ -52,7 +52,7 @@ Finally, I would also like to thank the \gls{FLAME GPU} development team at the 
 \makeglossaries
 \newacronym{abm}{ABM}{Agent-Based Modelling}
 \newacronym{cosmos}{CoSMoS}{Complex Systems Modelling and Simulation Infrastructure}
-\newacronym{cpu}{CPU}{Central Processsing Unit}
+\newacronym{cpu}{CPU}{Central Processing Unit}
 \newacronym{cuda}{CUDA}{Compute Unified Device Architecture}
 \newacronym{evl}{EVL}{Epsilon Validation Language}
 \newacronym{egl}{EGL}{Epsilon Generation Language}
@@ -142,7 +142,6 @@ Finally, I would also like to thank the \gls{FLAME GPU} development team at the 
 \pagenumbering{roman}
 \maketitle
 \listoffigures
-\listoftables
 \printglossary[type=\acronymtype]
 \printglossary
 
@@ -265,7 +264,7 @@ This report details the work done throughout the project and
 \label{simulation}
 %Background, what are simulations used for generally
 Simulations are model-based imitations of a system which feature its key characteristics and behaviours.
-The system being modelled is refered to as the domain, while this simulation is known as the platform.
+The system being modelled is referred to as the domain, while this simulation is known as the platform.
 Computer simulations are used in a wide range of disciplines on applications such as video games, medicine, product development and even nuclear weapons.
 
 The models of systems used in simulations may have a varying amounts of abstraction.
@@ -426,7 +425,7 @@ However, while these problems are specific to simulation, they are not dissimila
 If the simulation needs to be safety-critical, developing it using formal methods and refinement may be a good way to ensure that no bugs are introduced in the code.
 %CSP -> OccamPi/MASON -> Kieran is currently looking into this
 %Similar to the work described later in this report: model-driven engineering!
-%ensures that artifacts are inline with each other
+%ensures that artefacts are inline with each other
 
 \section{Existing Simulations}
 %Previous implementations of simulations and their problems:
@@ -542,7 +541,7 @@ Many other advantages come directly from \gls{FLAME GPU}'s use of \gls{mde}.
 \gls{FLAME GPU} simulations can always be certain of taking advantage of the latest hardware optimisations and portability features that the framework provides.
 Existing simulation models that are implemented on top of \gls{FLAME GPU} may receive these performance improvements without any major code changes.
 %In particular, it gives domain experts with limited programming knowledge the ability to understand and help design models.
-%Additionally, the auto-generation of artifacts, such as simulation code templates, significantly lowers the boundary to entry to less advanced programmers.
+%Additionally, the auto-generation of artefacts, such as simulation code templates, significantly lowers the boundary to entry to less advanced programmers.
 
 Some notable benefits of \gls{mde} are not exploited in the current implementation of \gls{FLAME GPU}.
 %TODO discuss these:
@@ -563,7 +562,6 @@ This section discusses the potential solutions to each of these problems.
 A major constraint on the adoption of simulations is how difficult and time-consuming they are to create.
 This constraint is exacerbated by a current shortage of experienced programmers.
 Initial work to help overcome this skills shortage will likely come by providing tools that can automate work done undertaken by technical users in order to increase their productivity.
-
 Eventually, if this technical work can be fully automated, non-technical users will be able to easily create advanced simulations.
 %person-centric healthcare, custom simulations may be needed
 
@@ -574,7 +572,7 @@ Eventually, if this technical work can be fully automated, non-technical users w
 \subsubsection{\acrlong{mde}}
 This project has already discussed abstractions with regards to modelling for simulations.
 Abstractions are also particularly useful in software engineering.
-As software gets more complex, addition abstraction is generally needed in order to extract the important details of the implementation\cite[p.24]{csapp}.
+As software gets more complex, additional abstraction is generally needed in order to extract the important details of the implementation\cite[p.24]{csapp}.
 
 \gls{mde} is a software abstraction for creating and exploiting domain models, such as those that have been previously discussed with regards to simulations.
 \gls{mde} has shown a promising increase in understanding between stakeholders and can produce productivity gains when models are reused across projects\cite{mde_industry_review}.
@@ -582,11 +580,12 @@ As software gets more complex, addition abstraction is generally needed in order
 %Domain specific modelling, etc.
 
 \paragraph{Epsilon} Epsilon is a set of tools and languages for supporting \gls{mde}.
-It provides tools for creating metamodels, model validation, model-to-model transformation, code generation and more.\cite{epsilon_book}
+Epsilon provides both the standardised modelling and metamodelling languages and model management technologies that are required for successful \gls{mde} projects\cite{eol}.
+It provides tools for creating metamodels for new domain specific languages.
+Epsilon facilitates model validation, model-to-model transformation and code generation to be performed on for models conforming to this metamodel.\cite{epsilon_book}
 
 %Tools are a particularly important feature of mde.
 %According to its website, Epsilon has a wide range of industry support.
-
 
 \paragraph{Flexible Modelling}
 Flexible Modelling tools could be a good method for allowing new simulations to be created more easily.
@@ -622,10 +621,10 @@ This technique also requires expertise in machine learning which conflicts with 
 %Complex to program, need to bear in mind:
 %   Radius of the agent messages, data transfer cost is HIGH
 %   Mindful of multi-thread data manipulation
-Parallelism fundamentally changes the game and allows computers to keep following Moore's law even as engineers are struggling to make transisters ever smaller and smaller\cite{concurrency_revolution}.
+Parallelism fundamentally changes the game and allows computers to keep following Moore's law even as engineers are struggling to make transistors ever smaller and smaller\cite{concurrency_revolution}.
 As modern computers tend further towards parallelism to keep providing the speed-ups that have been inherent in the industry over recent years, new parallel algorithms need developing in order to take full advantage of the computing power available.
 
-Managing parallel implementations of algorithms has significant overheads due to the need to ensure memory integrity when transfering data between parallel tasks.
+Managing parallel implementations of algorithms has significant overheads due to the need to ensure memory integrity when transferring data between parallel tasks.
 The different approaches to parallelism make different trade-offs, meaning some may be more suited to a particularly task than others.
 In order to ensure that the gains made by parallelising the task are not overshadowed by the overheads of managing a parallel implementation, the simulation programmer must have sufficient knowledge of the approach being used.
 %Different approaches to parallelism have different tradeoffs- we need to ensure that any gains here are not overshadowed by the overheads of managing a parallel implementation- programming difficulties, data transfer costs, partitioning, reduce phase, etc;
@@ -642,7 +641,7 @@ DMASON can also be set up to run on a compute cluster.
 \paragraph{\acrshort{cpu} vs \acrshort{gpu}}
 \label{cpu_v_gpu}
 Modern computers provide two main means for parallelising code.
-We are building on a previous project\cite{phil_diss} which laid the groudwork for this.
+We are building on a previous project\cite{phil_diss} which laid the groundwork for this.
 This previous project outlined the choice between \acrshort{cpu} and \acrshort{gpu} parallelism and makes the case for exploring \acrshort{gpu}s- simplisitically put, this is due to the significantly greater speed ups that can be achieved.
 Indeed it has been shown that \acrshort{gpu} simulation on a standard desktop computer can easily produce performance rates that are better than those of a high-performance computing cluster\cite{flame_simulation}.
 One case study even reduced the time taken for a simulation to be computed from hours on a \acrshort{cpu} to just seconds on a \acrshort{gpu}\cite{flame_keratinocyte}.
@@ -796,7 +795,7 @@ Having previously established the current difficulties with biological simulatio
 \section{\gls{FLAME GPU} Simulation}
 %HOW DOES THIS RELATE TO THE COSMOS PROCESS (ABOVE)
 %platform-specific model
-As previously mentioned a \gls{FLAME GPU} implementation requires the creation of two artifacts.
+As previously mentioned a \gls{FLAME GPU} implementation requires the creation of two artefacts.
 A structural `XML Model File' which defines the agents in the system and their allowed channels for communication.
 A C source code file of `Scripted Behaviour' defines the actual behaviour of agents.
 
@@ -893,7 +892,7 @@ Code may be run on the \gls{Host} between simulation steps, or on the \gls{Devic
 The only two tasks handled by the \gls{Host} are tracking the current simulation time (by incrementing \texttt{SIM\_STEP} between each step) and managing the migration of cells into the environment.
 The ability to create agents from a host function is currently only available in a pre-release version of \gls{FLAME GPU}, which is why this version of the software was selected.
 Previously, agents could only be created during the simulation by other existing agents.
-Creating another agent type solely to manage \gls{LTo} and \gls{LTin} migration would needlessly complicate our platform model, which is highly underdesirable.
+Creating another agent type solely to manage \gls{LTo} and \gls{LTin} migration would needlessly complicate our platform model, which is highly undesirable.
 Furthermore, this implementation is very unintuitive and thus conflicts with our aim of simulations being simple to create.
 
 %Host cell creation into the system is a work in progress for next \gls{FLAME GPU} release?
@@ -932,14 +931,7 @@ This single \gls{LTi} cell will have minimal impact on the overall simulation be
 As the new simulation is a re-engineering of the existing PPSim, it can inherit the validation of the existing simulation.
 This requires the new simulation to be demonstrably similar with similar components, behaviours and results.
 
-%::CONCLUSION!
-The simulation produces much of the expected emergent behaviour from the domain.
-However, it has not been verified by a domain expert.
-
-%is this the case?
-
 Talk about how the model was tested to ensure correctness\\
-%flame gpu provides a visualisation which can be used to demonstrate the appearance of the expected emergent behaviour\ref{fig:ppsimv2_vis}
 
 In order to obtain a fair representation of runtime, the simulation was executed as a console application \texttt{500} times, the same number of runs that was used for each parameter set of the MASON \textit{PPSim} implementation.
 The simulation was run for its full length of \texttt{2880} steps (representing 72 hours).
@@ -954,7 +946,7 @@ This new process is shown as part of the \gls{cosmos} process in Fig. \ref{fig:f
 \begin{figure}[htp]
 \centering
 \includegraphics[width=0.7\textwidth]{Appendix/CoSMoS_FLAME}
-\caption{Autogeneration of \gls{FLAME GPU} Artifact as part of the \gls{cosmos} Development Process}
+\caption{Autogeneration of \gls{FLAME GPU} Artefact as part of the \gls{cosmos} Development Process}
 \label{fig:flame_improved}
 \end{figure}
 
@@ -985,15 +977,19 @@ Neither of these unimplemented features were required in the development of \tex
 \subsection{EuGENia}
 A GMF editor was created by adding EuGENia annotations into the Emfatic metamodel.
 These annotations are used to automatically generate the \texttt{.gmfgraph}, \texttt{.gmftool} and \texttt{.gmfmap} models required for the GMF Graphical Editor.
-Implementing the Graphical Editor required a number of important decisions here, in order for the tool to provide a logical user experience to modellers.
+EuGENiA provide a flexible range of options for displaying model data in different ways in the graphical editor\cite{epsilon_book}.
+Implementing the graphical editor required a number of important decisions here, in order for the tool to provide a logical user experience to modellers.
 
-%how/where to display variables
-
+The majority of the graphical editor design was straightforward, with top level items such as agents, global variables and messages being displayed as nodes on the diagram.
+Variables and states that belong to agents are displayed as inner nodes in containers within these nodes.
+EuGENiA allows transitions between states to be displayed as directional links, meaning the state diagrams for each agent can be displayed in the same way as they appear on the domain diagram (Fig. \ref{fig:ltin_gmf}).
 
 A number of implementations for transition conditions were considered during development.
-Transitions not visible on GMF, tree-based editor is required.
-This was recommended as the best approach in personal communication with Dimitris Kolovos, one of the members of the Epsilon team.
-Due to the limitations in Epsilon
+Due to the limitations in the GMF Grapical Editor, values under containment cannot be edited unless they are displayed on the diagram.
+For obvious reasons, the transitions which are displayed as links, cannot display nodes on the diagram inside them, or link to them.
+In order to add edit the conditions on these transitions, the tree-based editor was used.
+This was recommended as the simplest approach in personal communication with Dimitris Kolovos, one of the members of the Epsilon team.
+Other options that were considered include implementing the diagram as a Petri net where conditions are displayed as intermediary nodes in between two states.
 
 \subsection{\acrfull{egl}}
 \begin{wrapfigure}{r}{0.63\textwidth}
@@ -1052,7 +1048,7 @@ The error feedback provided by these quick fixes is much more intuitive to non-t
 
 
 
-%Approx 2500 words for results and evalution
+%Approx 2500 words for results and evaluation
 \chapter{Results and Evaluation}
 \label{results}
 
@@ -1120,9 +1116,9 @@ An additional benefit of this mapping, provides traceability from the domain mod
 This can be clearly seen in Fig. \ref{fig:traceability_condition}, which shows how the transition from `Upregulation of Chemokines' to `Mature \gls{LTo}' is refined from the \gls{domain} to \gls{platform} and then implemented in \gls{FLAME GPU}.
 This traceability results in greater certainty that the simulation is faithful to the domain and no bugs have been produced during the implementation.
 
-Furthermore, additional traceability helps to ensure that all artifacts contained in the domain model, platform model and simulation code are kept up-to-date with new information.
+Furthermore, additional traceability helps to ensure that all artefacts contained in the domain model, platform model and simulation code are kept up-to-date with new information.
 In Section \ref{missing_link}, a transition which was missing in the original domain and platform models was discussed.
-In the new process, where \gls{FLAME GPU} model implementations are generated from the platform model, this transition could not be added into the implementation without first being aded to the platform model.
+In the new process, where \gls{FLAME GPU} model implementations are generated from the platform model, this transition could not be added into the implementation without first being added to the platform model.
 
 This also tool aids development by finding and correcting model mistakes using \gls{evl}, this reduce the amount of time that developers spend debugging their code and increase productivity.
 Clearly this shows that the new process could help to detect mistakes in both the domain and platform models.
@@ -1131,19 +1127,21 @@ Clearly this shows that the new process could help to detect mistakes in both th
 
 \subsection{Speed Up}
 \subsubsection{Implementation Differences}
-%Model is too disimilar to Kieran's
-Unfortunately the differences between the \gls{MASON} and \gls{FLAME GPU} platforms have meant that it is not trivial to compare them.
+Unfortunately a number of differences between the \gls{MASON} and \gls{FLAME GPU} platforms have meant that it is not trivial to compare them.
+
+\gls{FLAME GPU}'s use of Message Passing to send adhesion probabilities in parallel has given rise to the possibility of outdated variables.
+In order to ensure maximum parallelism, the implementation used means that the probability of adhesion is the same for each collision that occurs in the same step of the simulation.
+If multiple \gls{LTi} cells collide with an \gls{LTo} cell in the same step, the behaviour will be somewhat different to that of the \gls{MASON} implementation.
+Before the next step, the adhesion probability emitted by the \gls{LTo} is updated for each collision, so the first collision of each step behaves the same as the \gls{MASON} implementation.
+%is it ok to say this?
+The impact of this is likely minimal as multiple collisions are unlikely to occur in the same timestep, due to the sparse population of the environment.
+
 %WHY:
 %Different hardware used for running? RUN on YARCC for results..?
 %Mention difference between LTo cell division - force resolution step used
-This initial hypothesis of the platform models being comparable is untenable.
+This initial hypothesis of the two platform models being comparable is untenable.
 
 
-
-%Message Passing gives rise to outdated variables-
-%adhesion_probability is the same for each collision that occurs in the same simstep
-%if multiple agents collide in the same step, this reacts differently to the MASON implementation
-%at the next timestep, a_p is decremented for EACH collision (impact is likely minimal?)
 
 \subsubsection{Comparison}
 %SPEED RESULTS..
@@ -1160,7 +1158,7 @@ If our new platform model can be shown to be refined from the original PPSim dom
 \end{subfigure}
 \end{figure}
 
-\begin{figure}[htp]\ContinuedFloat
+\begin{figure}[htpb]\ContinuedFloat
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=\textwidth]{Appendix/Sim/Migration}
@@ -1169,7 +1167,7 @@ If our new platform model can be shown to be refined from the original PPSim dom
 \end{subfigure}
 \end{figure}
 
-\begin{figure}[htp]\ContinuedFloat
+\begin{figure}[htpb]\ContinuedFloat
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=\textwidth]{Appendix/Sim/Patch}
@@ -1182,12 +1180,11 @@ If our new platform model can be shown to be refined from the original PPSim dom
 \label{fig:ppsimv2_vis}
 \end{figure}
 
-The expected emergent behaviour of the simulation is that the \gls{PP} cell clusters form around the initial \gls{LTo} cell.
-This behaviour is clearly present in the \textit{PPSim v2} simulation, as shown by Fig. \ref{fig:ppsimv2_vis}.
+\gls{FLAME GPU} provides a visualisation which can be used to demonstrate the appearance of the expected emergent behaviour.
+The expected behaviour of the simulation is that the \gls{PP} cell clusters form around the initial \gls{LTo} cell.
+This behaviour seems to be present in the \textit{PPSim v2} simulation, as shown by Fig. \ref{fig:ppsimv2_vis}, however this has not been verified by a domain expert.
 
 The new version of the simulation has an average runtime of 19.352.
-
-%\cite{statistical_tests} could be important for evaluating the performance of \gls{FLAME GPU} against original PPSim
 
 %Approx 1000 words
 \section{Conclusion}
