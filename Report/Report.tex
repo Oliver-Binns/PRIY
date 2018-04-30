@@ -16,7 +16,7 @@
 \MEng
 \date{\today}
 \supervisor{Dr. Fiona Polack, Dr. Kieran Alden}
-\wordcount{9818}
+\wordcount{9931}
 
 
 %Approx 500 Words
@@ -423,7 +423,7 @@ Both of these limitations will cause the simulations to fail silently, produce i
 %Failing silently is interesting: no unexpected behaviour.. this should be discussed in more detail
 Third-party tools, such as \gls{abm} libraries, that may be relied on are not bug free.
 Indeed, no software can be shown to be bug-free as testing only shows the presence, not the absense of bugs \cite[p.16]{dijkstra}.
-As part of this project, a major bug which has been present in the code for the \gls{MASON} \gls{abm} library since February 2013 was discovered and fixed \cite{mason_pull_request}.
+As part of this project, a major bug which has been present in the code for the \gls{MASON} \gls{abm} framework since February 2013 was discovered and fixed \cite{mason_pull_request}.
 
 
 However, while these problems are specific to simulation, they are not dissimilar from the issues that can occur from poorly designed real-world testing.
@@ -463,8 +463,12 @@ As previously mentioned, \gls{abm} models the autonomous behaviour of individual
 %Write comparison of AGENTS vs OBJECTS (OOP)
 Agents are often confused with objects, a commonly-used programming concept.
 However, it is important to emphasize the differences between them.
-In particular, while both agents and objects recognise the importance of interactions, objects are totally obedient to their method calls whereas agents have autonomy.
+
+In particular, while both agents and objects recognise the importance of interactions, objects are totally obedient to their method calls whereas agents have autonomy \cite{abm_v_objects}.
 This means that agents can interact and react to communications according to their own agenda.
+Moreover, agents and objects persist differently.
+Agents, like biological cells, may evolve into a different state to take on different behaviour.
+In contract, in order to follow the single responsibility principle \cite[p.95]{srp}, when object behaviour needs to change, the object will generally be deleted and replaced with an object of a new class.
 
 %WHY IS AGENT BASED MODELLING THE MOST RELEVANT FOR THIS PROJECT
 While, \acrlong{abm} is more computationally expensive than top-down mathematical modelling, it is also more natural to model and intuitive to parallelise \cite{flame_simulation}.
@@ -508,18 +512,15 @@ Biocellion's closed source approach rules out the ability for us to build on thi
 \subsubsection{\gls{MASON}}
 %mason usage
 \gls{MASON} is a multi-agent simulation library for Java.
+%REMEMBER, this section is on EXISTING SIMULATIONS: discuss what MASON has been used for!
+Many of the simulations developed by \gls{ycil} for exploring the immune system have used \gls{mason} \cite{kieran_thesis, leishmaniasis, leukocyte, abm_case_studies_ycil}.
 \gls{MASON} has been previously evaluated as the one of the fastest ABM libraries available \cite{abm_platforms_review}, however this evaluation took place over a decade ago and does not factor in any of the recent work into \acrshort{gpu} parallelism \cite{flame_simulation, biocellion_paper, physicell}.
 Meanwhile, \gls{MASON} only supports \gls{cpu} parallelism, this will be discussed in more detail in Section \ref{cpu_v_gpu}.
-
-%REMEMBER, this section is on EXISTING SIMULATIONS: discuss what MASON has been used for!
-
-%peyers patch?
-%particularly well suited for these cell-based simulations as can be visualised..
-%also not easy to use
 
 \subsubsection{\gls{FLAME GPU}}
 \label{flame_gpu}
 The \gls{flame} project is an attempt to make \gls{gpu}-based \gls{abm} simulations more accessible.
+This framework is covered here in more detail because it is a key tool used in this project.
 \gls{flame} simulations consist of two artefacts, an `XML Model File' containing the structure of agents and their channels of communication and C source code file of `Scripted Behaviour' which defines the actual behaviour of agents.
 \acrfull{flamegpu} is an extension of the original version of \acrshort{flame}, where the simulations that are created are compiled down to parallelised CUDA code.
 %flame is built on top of CUDA, why?
@@ -538,6 +539,8 @@ This means the simulation can take full advantage of the power of modern NVIDIA 
 %Other specifications of FLAME GPU?
 
 %REMEMBER, this section is on EXISTING SIMULATIONS: discuss what FLAME has been used for!
+\gls{FLAME GPU} has previously been used for a number of large-scale simulations \cite{flame_pedestrian, flame_largescale}.
+It has also been used in \gls{in-silico} biological experiments \cite{sperm_3d, maternal_interactions}, including an example at cellular level \cite{flame_keratinocyte}.
 
 %Disadvantages
 While relying on a framework such as \gls{FLAME GPU} can cause problems if support is stopped, this should be slightly less of a concern as \gls{FLAME GPU} is an open source project.
