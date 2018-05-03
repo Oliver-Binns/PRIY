@@ -1335,10 +1335,6 @@ Currently each distinct agent transition function is run sequentially, despite \
 Future improvements to \gls{FLAME GPU} should run these transitions in parallel using the new NVIDIA hardware feature--  multiple \acrshort{cuda} cores.
 This should have a measurable positive impact on existing \gls{FLAME GPU} simulations.
 
-%better support for global "step" functions on agents for admin tasks, such as environmental growth
-Another \gls{FLAME GPU} addition would be the ability to add \gls{gpu}-based step functions, that can be applied to an agent, regardless of its current state.
-This would make key biological features, such as environmental growth far simpler to implement.
-
 %cell division, stop hacky: force resolution, etc.
 %while TRUE resolve..
 
