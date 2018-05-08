@@ -161,29 +161,37 @@
     </states>
     <states name="matured"/>
     <states name="lto_resolve">
-      <transitions name="resolve" inputs="//@messages.1" reallocate="true" randomGenerator="false" nextState="//@agents.2/@states.3"/>
+      <transitions name="resolve" inputs="//@messages.1" reallocate="true" randomGenerator="false" nextState="//@agents.2/@states.3">
+        <condition>
+          <lhs xsi:type="FLAME:ConditionEval">
+            <value operator="Subtract">
+              <lhs xsi:type="FLAME:VariableEval" value="//@variables.21"/>
+              <rhs xsi:type="FLAME:VariableEval" value="//@agents.2/@memory.5"/>
+            </value>
+          </lhs>
+          <rhs xsi:type="FLAME:LiteralEval" is_float="false" value="1.0"/>
+        </condition>
+      </transitions>
       <transitions name="resolved" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.1"/>
       <transitions name="output_force" outputs="//@messages.1" reallocate="false" randomGenerator="false" nextState="//@agents.2/@states.3"/>
     </states>
     <differentiation agent="//@agents.2" state="//@agents.2/@states.3"/>
   </agents>
-  <messages name="lto_location" description="A message holding the type and location of a cell" partitioning="//@partitions.0" bufferSize="1024">
+  <messages name="lto_location" description="A message holding the type and location of a cell" bufferSize="1024">
     <variables name="x" type="Float"/>
     <variables name="y" type="Float"/>
-    <variables name="z" type="Float"/>
     <variables name="adhesion_probability" type="Float"/>
   </messages>
-  <messages name="force" description="" partitioning="//@partitions.1" bufferSize="1024">
+  <messages name="force" description="" bufferSize="1024">
     <variables name="x"/>
     <variables name="y"/>
-    <variables name="z"/>
   </messages>
   <messages name="chemokine" description="The LTo Cells express chemokine to whole environment." bufferSize="1024">
     <variables name="x" type="Float"/>
     <variables name="y" type="Float"/>
     <variables name="linear_adjust" type="Float"/>
   </messages>
-  <messages name="ltin_location" partitioning="//@partitions.2" bufferSize="5530">
+  <messages name="ltin_location" partitioning="//@partitions.0" bufferSize="5530">
     <variables name="x"/>
     <variables name="y"/>
     <variables name="z"/>
@@ -201,7 +209,5 @@
   <layers order="7" functions="//@agents.1/@states.0/@transitions.0"/>
   <layers order="8" functions="//@agents.1/@states.0/@transitions.1"/>
   <layers order="9" functions="//@agents.1/@states.1/@transitions.0"/>
-  <partitions xsi:type="FLAME:SpatialPartition" radius="4" xmin="0" xmax="7304" ymin="0" ymax="256" zmin="0" zmax="4"/>
-  <partitions xsi:type="FLAME:SpatialPartition" radius="4" xmin="0" xmax="7304" ymin="0" ymax="256" zmin="0" zmax="4"/>
   <partitions xsi:type="FLAME:SpatialPartition" radius="4" xmin="0" xmax="7304" ymin="0" ymax="256" zmin="0" zmax="4"/>
 </FLAME:Simulation>

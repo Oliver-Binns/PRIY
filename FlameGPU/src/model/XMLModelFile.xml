@@ -446,6 +446,7 @@
 							<messageName>force</messageName>
 						</gpu:input>
 					</inputs>
+						<condition><lhs><condition><lhs><value>SIM_STEP</value></lhs><operator>-</operator><rhs><agentVariable>created_at</agentVariable></rhs></condition></lhs><operator>==</operator><rhs><value>1</value></rhs></condition>
 					<gpu:reallocate>true</gpu:reallocate>
 					<gpu:RNG>false</gpu:RNG>
 				</gpu:function>
@@ -505,22 +506,10 @@
 				</gpu:variable>
 				<gpu:variable>
 					<type>float</type>
-					<name>z</name>
-				</gpu:variable>
-				<gpu:variable>
-					<type>float</type>
 					<name>adhesion_probability</name>
 				</gpu:variable>
 			</variables>
-			<gpu:partitioningSpatial>
-				<gpu:radius>4</gpu:radius>
-				<gpu:xmin>0</gpu:xmin>
-				<gpu:xmax>7304</gpu:xmax>
-				<gpu:ymin>0</gpu:ymin>
-				<gpu:ymax>256</gpu:ymax>
-				<gpu:zmin>0</gpu:zmin>
-				<gpu:zmax>4</gpu:zmax>
-			</gpu:partitioningSpatial>
+			<gpu:partitioningNone/>
 			<gpu:bufferSize>1024</gpu:bufferSize>
 		</gpu:message>
 		<gpu:message>
@@ -535,20 +524,8 @@
 					<type>int</type>
 					<name>y</name>
 				</gpu:variable>
-				<gpu:variable>
-					<type>int</type>
-					<name>z</name>
-				</gpu:variable>
 			</variables>
-			<gpu:partitioningSpatial>
-				<gpu:radius>4</gpu:radius>
-				<gpu:xmin>0</gpu:xmin>
-				<gpu:xmax>7304</gpu:xmax>
-				<gpu:ymin>0</gpu:ymin>
-				<gpu:ymax>256</gpu:ymax>
-				<gpu:zmin>0</gpu:zmin>
-				<gpu:zmax>4</gpu:zmax>
-			</gpu:partitioningSpatial>
+			<gpu:partitioningNone/>
 			<gpu:bufferSize>1024</gpu:bufferSize>
 		</gpu:message>
 		<gpu:message>

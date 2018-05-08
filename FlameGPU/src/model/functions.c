@@ -80,6 +80,10 @@ __device__ float chemokineLevel(float distanceToLTo, float lto_expression_level)
     return 1 / value;
 }
 
+__device__ float distanceBetween(glm::vec2 a, glm::vec2 b){
+    return fabs(glm::distance(a, b));
+}
+
 /*
  * This method returns a random value within 0-1
  */
@@ -249,7 +253,7 @@ __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* agent,
         const glm::vec2 lto_position = glm::vec2(message->x, message->y);
         const float linear_adjust = message->linear_adjust;
 
-        const float distance_to_lto = fabs(glm::distance(lto_position, init_position)); 
+        const float distance_to_lto = distanceBetween(lto_position, init_position); 
         const float level = chemokineLevel(distance_to_lto, linear_adjust);
 
         if(threshold < level){
@@ -306,7 +310,7 @@ __FLAME_GPU_FUNC__ int direct_move(xmachine_memory_LTi* agent, RNG_rand48* rand4
     const glm::vec2 current = glm::vec2(agent->x, agent->y);
     const float dist_between = glm::distance(target, current);
    
-    if(dist_between < ADHESION_DISTANCE_THRESHOLD){
+    if(dist_between <= ADHESION_DISTANCE_THRESHOLD){
         agent->stable_contact = 1;
         //printf("LTi Contact\n");
         return 0;
@@ -342,20 +346,25 @@ __FLAME_GPU_FUNC__ int contact(xmachine_memory_LTi* agent){
  */
 __FLAME_GPU_FUNC__ int check_escape(xmachine_memory_LTi* agent,
     xmachine_message_lto_location_list* lto_location_messages,
-    xmachine_message_lto_location_PBM* partition_matrix,
     RNG_rand48* rand48){
     //Move locally around the LTo cell.
-    xmachine_message_lto_location* message = get_first_lto_location_message(
-        lto_location_messages, partition_matrix,
-        agent->x, agent->y, 0
-    );
+    xmachine_message_lto_location* message = get_first_lto_location_message(lto_location_messages);
+
+    glm::vec2 agent_location = glm::vec2(agent->x, agent->y);
+
     while(message){
-        //If escape becomes more likely
-        if(rnd<CONTINUOUS>(rand48) < adhesionProbability(message->adhesion_probability)){
-            agent->respond_x = NULL;
-            agent->respond_y = NULL;
+        glm::vec2 message_location = glm::vec2(agent->x, agent->y);
+
+        //In contact with LTo
+        if(distanceBetween(agent_location, message_location) <= ADHESION_DISTANCE_THRESHOLD){
+           //If escape becomes more likely
+            if(rnd<CONTINUOUS>(rand48) < adhesionProbability(message->adhesion_probability)){
+                agent->respond_x = NULL;
+                agent->respond_y = NULL;
+            } 
         }
-        message = get_next_lto_location_message(message, lto_location_messages, partition_matrix);
+        
+        message = get_next_lto_location_message(message, lto_location_messages);
     }
 
     return 0;
@@ -373,24 +382,28 @@ __FLAME_GPU_FUNC__ int lti_escape(xmachine_memory_LTi* agent){
  * The agent is in the random movement state.
  * It should move in a random direction at the predefined speed.
  */
+
 __FLAME_GPU_FUNC__ int ltin_random_move(xmachine_memory_LTin* xmemory,
                                         xmachine_message_lto_location_list* lto_location_messages,
-                                        xmachine_message_lto_location_PBM* partition_matrix, 
                                         RNG_rand48* rand48)
 {
-    xmachine_message_lto_location* message = get_first_lto_location_message(lto_location_messages, partition_matrix,
-    	xmemory->x, xmemory->y, 0.0);
+    xmachine_message_lto_location* message = get_first_lto_location_message(lto_location_messages);
+
+    glm::vec2 agent_location = glm::vec2(xmemory->x, xmemory->y);
+
     while(message){
+        glm::vec2 message_location = glm::vec2(message->x, message->y);
+
         //Check if BIND is SUFFICIENT - 50% is THRESHOLD BIND PROBABILITY
-   		if(rnd<CONTINUOUS>(rand48) < 0.5){
-   			//Transition to STABLE CONTACT
-   			xmemory->stable_contact = 1;
-            //TODO: Here we should ALSO message LTo
-            //to begin upregulation of adhesion molecules
-   		}
+        if(distanceBetween(agent_location, message_location) <= ADHESION_DISTANCE_THRESHOLD){
+       		if(rnd<CONTINUOUS>(rand48) < 0.5){
+       			//Transition to STABLE CONTACT
+       			xmemory->stable_contact = 1;
+       		}
+        }
 
 
-    	message = get_next_lto_location_message(message, lto_location_messages, partition_matrix);
+    	message = get_next_lto_location_message(message, lto_location_messages);
     }
 
 	glm::vec2 init_position = glm::vec2(xmemory->x, xmemory->y);
@@ -429,19 +442,22 @@ __FLAME_GPU_FUNC__ int ltin_escape(xmachine_memory_LTin* agent){
 
 __FLAME_GPU_FUNC__ int ltin_localised_move(xmachine_memory_LTin* agent,
     xmachine_message_lto_location_list* lto_location_messages,
-    xmachine_message_lto_location_PBM* partition_matrix,
     RNG_rand48* rand48){
     //Move locally around the LTo cell.
-    xmachine_message_lto_location* message = get_first_lto_location_message(
-        lto_location_messages, partition_matrix,
-        agent->x, agent->y, 0
-    );
+    xmachine_message_lto_location* message = get_first_lto_location_message(lto_location_messages);
+
+    glm::vec2 agent_location = glm::vec2(agent->x, agent->y);
+
     while(message){
+        glm::vec2 message_location = glm::vec2(message->x, message->y);
+
+        if(distanceBetween(agent_location, message_location) <= ADHESION_DISTANCE_THRESHOLD){
         //If escape becomes more likely
-        if(rnd<CONTINUOUS>(rand48) < adhesionProbability(message->adhesion_probability)){
-            agent->stable_contact = 0;
+            if(rnd<CONTINUOUS>(rand48) < adhesionProbability(message->adhesion_probability)){
+                agent->stable_contact = 0;
+            }
         }
-        message = get_next_lto_location_message(message, lto_location_messages, partition_matrix);
+        message = get_next_lto_location_message(message, lto_location_messages);
     }
 
 	return 0;
@@ -453,7 +469,6 @@ __FLAME_GPU_FUNC__ int output_location(xmachine_memory_LTo* agent,
 	add_lto_location_message(lto_location_messages,
         agent->x,
         agent->y,
-        0.0,
         agent->adhesion_probability
     );
     
@@ -466,7 +481,6 @@ __FLAME_GPU_FUNC__ int output_location2(xmachine_memory_LTo* agent,
     add_lto_location_message(lto_location_messages,
         agent->x,
         agent->y,
-        0.0,
         agent->adhesion_probability
     );
     
@@ -554,8 +568,7 @@ __FLAME_GPU_FUNC__ int mature(xmachine_memory_LTo* agent){
 __FLAME_GPU_FUNC__ int output_force(xmachine_memory_LTo* agent, xmachine_message_force_list* force_messages){
     add_force_message(force_messages,
         agent->x,
-        agent->y,
-        0.0
+        agent->y
     );
 
     return 0;
@@ -565,27 +578,28 @@ __FLAME_GPU_FUNC__ int output_force(xmachine_memory_LTo* agent, xmachine_message
  *  Resolve overlapping states
  */
 __FLAME_GPU_FUNC__ int resolve(xmachine_memory_LTo* agent,
-    xmachine_message_force_list* force_messages,
-    xmachine_message_force_PBM* partition_matrix){
+    xmachine_message_force_list* force_messages){
 
     int cells_above = 0;
     int cells_below = 0;
 
-    xmachine_message_force* message = get_first_force_message(
-        force_messages, partition_matrix,
-        agent->x, agent->y, 0
-    );
+    xmachine_message_force* message = get_first_force_message(force_messages);
 
+    glm::vec2 agent_location = glm::vec2(agent->x, agent->y);
     //Iterate through these messages:
     while(message){
         //calculate how to resolve the positions!
-        if(agent->y < message->y){
-            cells_above++;
-        }else{
-            cells_below++;
+        glm::vec2 message_location = glm::vec2(message->x, message->y);
+
+        if(distanceBetween(agent_location, message_location) <= ADHESION_DISTANCE_THRESHOLD){
+            if(agent->y < message->y){
+                cells_above++;
+            }else{
+                cells_below++;
+            }
         }
 
-        message = get_next_force_message(message, force_messages, partition_matrix);
+        message = get_next_force_message(message, force_messages);
     }
 
     float y_diff = (cells_below * LTO_CELL_SIZE) - (cells_above * LTO_CELL_SIZE);
