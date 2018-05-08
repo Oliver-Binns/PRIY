@@ -167,7 +167,15 @@
 							<gpu:type>single_message</gpu:type>
 						</gpu:output>
 					</outputs>
-						<condition><lhs><value>1.0</value></lhs><operator>==</operator><rhs><agentVariable>stable_contact</agentVariable></rhs></condition>
+						<condition>
+							<lhs>
+								<value>1.0</value>
+							</lhs>
+							<operator>==</operator>
+							<rhs>
+								<agentVariable>stable_contact</agentVariable>
+							</rhs>
+						</condition>
 					<gpu:reallocate>true</gpu:reallocate>
 					<gpu:RNG>true</gpu:RNG>
 				</gpu:function>
@@ -199,7 +207,15 @@
 					<name>ltin_escape</name>
 					<currentState>localised_movement</currentState>
 					<nextState>ltin_random_movement</nextState>
-						<condition><lhs><agentVariable>stable_contact</agentVariable></lhs><operator>==</operator><rhs><value>0</value></rhs></condition>
+						<condition>
+							<lhs>
+								<agentVariable>stable_contact</agentVariable>
+							</lhs>
+							<operator>==</operator>
+							<rhs>
+								<value>0</value>
+							</rhs>
+						</condition>
 					<gpu:reallocate>false</gpu:reallocate>
 					<gpu:RNG>false</gpu:RNG>
 				</gpu:function>
@@ -266,7 +282,31 @@
 					<name>direction</name>
 					<currentState>lti_random_movement</currentState>
 					<nextState>chemotaxis</nextState>
-						<condition><lhs><condition><lhs><agentVariable>respond_x</agentVariable></lhs><operator>!=</operator><rhs><value>NULL</value></rhs></condition></lhs><operator>&amp;&amp;</operator><rhs><condition><lhs><agentVariable>respond_y</agentVariable></lhs><operator>!=</operator><rhs><value>NULL</value></rhs></condition></rhs></condition>
+						<condition>
+							<lhs>
+								<condition>
+									<lhs>
+										<agentVariable>respond_x</agentVariable>
+									</lhs>
+									<operator>!=</operator>
+									<rhs>
+										<value>NULL</value>
+									</rhs>
+								</condition>
+							</lhs>
+							<operator>&amp;&amp;</operator>
+							<rhs>
+								<condition>
+									<lhs>
+										<agentVariable>respond_y</agentVariable>
+									</lhs>
+									<operator>!=</operator>
+									<rhs>
+										<value>NULL</value>
+									</rhs>
+								</condition>
+							</rhs>
+						</condition>
 					<gpu:reallocate>false</gpu:reallocate>
 					<gpu:RNG>false</gpu:RNG>
 				</gpu:function>
