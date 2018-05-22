@@ -162,8 +162,6 @@ __FLAME_GPU_STEP_FUNC__ void migrateNewCells(){
 			agents[i]->y = randomUniform() * *get_CIRCUMFERENCE();
 			agents[i]->colour = *get_LTI_AGENT_TYPE();
             agents[i]->velocity = randomGaussian();
-            //agents[i]->respond_x = NULL;
-            //agents[i]->respond_y = NULL;
 		}
         h_add_agents_LTi_lti_random_movement(agents, count);
         h_free_agent_LTi_array(&agents, count);
@@ -253,6 +251,7 @@ __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* agent,
         const glm::vec2 lto_position = glm::vec2(message->x, message->y);
         const float linear_adjust = message->linear_adjust;
 
+
         const float distance_to_lto = distanceBetween(lto_position, init_position); 
         const float level = chemokineLevel(distance_to_lto, linear_adjust);
 
@@ -265,7 +264,6 @@ __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* agent,
         message = get_next_chemokine_message(message, chemokine_messages);
     }
 
-    //if(distance_to_lto < 50){
     if(CHEMO_THRESHOLD < threshold){
         //Calculate 3x3 grid for movement direction from Kieran's thesis..
         //Or even something more accurate?
@@ -293,7 +291,6 @@ __FLAME_GPU_FUNC__ int lti_random_move(xmachine_memory_LTi* agent,
  * It transitions to the chemotaxis state (see model file)
  */
 __FLAME_GPU_FUNC__ int direction(xmachine_memory_LTi* agent){
-    //printf("Chemotaxis\n");
     return 0;
 }
 
@@ -312,7 +309,6 @@ __FLAME_GPU_FUNC__ int direct_move(xmachine_memory_LTi* agent, RNG_rand48* rand4
    
     if(dist_between <= ADHESION_DISTANCE_THRESHOLD){
         agent->stable_contact = 1;
-        //printf("LTi Contact\n");
         return 0;
     }
 
@@ -396,14 +392,18 @@ __FLAME_GPU_FUNC__ int ltin_random_move(xmachine_memory_LTin* xmemory,
 
         //Check if BIND is SUFFICIENT - 50% is THRESHOLD BIND PROBABILITY
         if(distanceBetween(agent_location, message_location) <= ADHESION_DISTANCE_THRESHOLD){
+
        		if(rnd<CONTINUOUS>(rand48) < 0.5){
        			//Transition to STABLE CONTACT
        			xmemory->stable_contact = 1;
        		}
         }
 
-
     	message = get_next_lto_location_message(message, lto_location_messages);
+    }
+
+    if(xmemory->stable_contact){
+        return 0;
     }
 
 	glm::vec2 init_position = glm::vec2(xmemory->x, xmemory->y);
@@ -425,12 +425,10 @@ __FLAME_GPU_FUNC__ int ltin_adhesion(xmachine_memory_LTin* agent,
 {
     //Placeholder transition for movement between states
     //This transition logic is performed in the XMLModelFile.xml
-
     //Alert LTo cell of collision:
     add_ltin_location_message(ltin_location_messages,
         agent->x,
-        agent->y,
-        0.0
+        agent->y
     );
 
 	return 0;
@@ -514,18 +512,24 @@ __FLAME_GPU_FUNC__ int begin_chemokine(xmachine_memory_LTo* agent){
 
 __FLAME_GPU_FUNC__ int express_chemokine(xmachine_memory_LTo* agent,
     xmachine_message_ltin_location_list* ltin_location_messages,
-    xmachine_message_ltin_location_PBM* partition_matrix,
     xmachine_message_chemokine_list* chemokine_messages)
 {
     //Update linear curve value:
     xmachine_message_ltin_location* message = get_first_ltin_location_message(
-        ltin_location_messages, partition_matrix,
-        agent->x, agent->y, 0
+        ltin_location_messages
     );
+
+    glm::vec2 agent_location = glm::vec2(agent->x, agent->y);
+
     while(message){
-        agent->linear_adjust -= INCREASE_CHEMO_EXPRESSION;
-        agent->adhesion_probability += ADHESION_INCREMENT;
-        message = get_next_ltin_location_message(message, ltin_location_messages, partition_matrix);
+        glm::vec2 message_location = glm::vec2(message->x, message->y);
+
+        if(distanceBetween(agent_location, message_location) <= ADHESION_DISTANCE_THRESHOLD){
+            agent->linear_adjust -= INCREASE_CHEMO_EXPRESSION;
+            agent->adhesion_probability += ADHESION_INCREMENT;
+        }
+
+        message = get_next_ltin_location_message(message, ltin_location_messages);
     }
 
     add_chemokine_message(chemokine_messages,
@@ -538,21 +542,25 @@ __FLAME_GPU_FUNC__ int express_chemokine(xmachine_memory_LTo* agent,
 }
 
 __FLAME_GPU_FUNC__ int detect_collision(xmachine_memory_LTo* agent,
-    xmachine_message_ltin_location_list* ltin_location_messages,
-    xmachine_message_ltin_location_PBM* partition_matrix)
+    xmachine_message_ltin_location_list* ltin_location_messages)
 {
     //Check for location message:
-    //If true, begin chemokine emission.
     xmachine_message_ltin_location* message = get_first_ltin_location_message(
-        ltin_location_messages, partition_matrix,
-        agent->x, agent->y, 0
+        ltin_location_messages
     );
 
+    glm::vec2 agent_location = glm::vec2(agent->x, agent->y);
     //Iterate through these messages:
     while(message){
-        //calculate how to resolve the positions!
-        agent->linear_adjust = CHEMO_UPPER_ADJUST;
-        message = get_next_ltin_location_message(message, ltin_location_messages, partition_matrix);
+        glm::vec2 message_location = glm::vec2(message->x, message->y);
+        //If true, begin chemokine emission.
+        float dist = distanceBetween(agent_location, message_location);
+
+        if(distanceBetween(agent_location, message_location) <= ADHESION_DISTANCE_THRESHOLD){
+            agent->linear_adjust = CHEMO_UPPER_ADJUST;
+        }
+
+        message = get_next_ltin_location_message(message, ltin_location_messages);
     }
 
     return 0;

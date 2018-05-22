@@ -191,10 +191,9 @@
     <variables name="y" type="Float"/>
     <variables name="linear_adjust" type="Float"/>
   </messages>
-  <messages name="ltin_location" partitioning="//@partitions.0" bufferSize="5530">
+  <messages name="ltin_location" bufferSize="5530">
     <variables name="x"/>
     <variables name="y"/>
-    <variables name="z"/>
   </messages>
   <layers order="2" functions="//@agents.0/@states.0/@transitions.1 //@agents.1/@states.2/@transitions.1"/>
   <layers order="1" functions="//@agents.2/@states.0/@transitions.0 //@agents.1/@states.1/@transitions.1 //@agents.0/@states.1/@transitions.1 //@agents.2/@states.1/@transitions.3"/>
@@ -209,5 +208,4 @@
   <layers order="7" functions="//@agents.1/@states.0/@transitions.0"/>
   <layers order="8" functions="//@agents.1/@states.0/@transitions.1"/>
   <layers order="9" functions="//@agents.1/@states.1/@transitions.0"/>
-  <partitions xsi:type="FLAME:SpatialPartition" radius="4" xmin="0" xmax="7304" ymin="0" ymax="256" zmin="0" zmax="4"/>
 </FLAME:Simulation>
