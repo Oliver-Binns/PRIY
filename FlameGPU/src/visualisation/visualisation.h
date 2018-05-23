@@ -19,8 +19,8 @@
 #define SIMULATION_DELAY 1
 
 // constants
-const unsigned int WINDOW_WIDTH = 1920;
-const unsigned int WINDOW_HEIGHT = 500;
+const unsigned int WINDOW_WIDTH = 1400;
+const unsigned int WINDOW_HEIGHT = 508;
 
 //frustrum
 const double NEAR_CLIP = 0.1;
