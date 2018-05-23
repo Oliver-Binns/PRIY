@@ -32,7 +32,7 @@ const int SPHERE_STACKS = 8;
 const double SPHERE_RADIUS = 2;
 
 //Viewing Distance
-const double VIEW_DISTANCE = 300;
+const double VIEW_DISTANCE = 150;
 
 //light position
 GLfloat LIGHT_POSITION[] = {10.0f, 10.0f, 10.0f, 1.0f};
