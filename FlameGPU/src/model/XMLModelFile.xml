@@ -4,28 +4,28 @@
 	
 	<gpu:environment>
 		<gpu:constants>
-				<gpu:variable><type>int</type><name>LTI_AGENT_TYPE</name><defaultValue>1</defaultValue><description>Int ID as enum for LTi cells</description></gpu:variable>
-				<gpu:variable><type>int</type><name>LTIN_AGENT_TYPE</name><defaultValue>7</defaultValue><description>Int ID as enum for LTin cells</description></gpu:variable>
-				<gpu:variable><type>int</type><name>LTO_AGENT_TYPE</name><defaultValue>0</defaultValue><description>Int ID as enum for LTo cells</description></gpu:variable>
-				<gpu:variable><type>int</type><name>LTI_CELL_SIZE</name><defaultValue>2</defaultValue><description>Diameter of the LTin and LTi cells</description></gpu:variable>
-				<gpu:variable><type>int</type><name>LTO_CELL_SIZE</name><defaultValue>6</defaultValue><description>Diameter of the LTo cells</description></gpu:variable>
+				<gpu:variable><type>int</type><name>LTI_AGENT_TYPE</name><description>Int ID as enum for LTi cells</description><defaultValue>1</defaultValue></gpu:variable>
+				<gpu:variable><type>int</type><name>LTIN_AGENT_TYPE</name><description>Int ID as enum for LTin cells</description><defaultValue>7</defaultValue></gpu:variable>
+				<gpu:variable><type>int</type><name>LTO_AGENT_TYPE</name><description>Int ID as enum for LTo cells</description><defaultValue>0</defaultValue></gpu:variable>
+				<gpu:variable><type>int</type><name>LTI_CELL_SIZE</name><description>Diameter of the LTin and LTi cells</description><defaultValue>2</defaultValue></gpu:variable>
+				<gpu:variable><type>int</type><name>LTO_CELL_SIZE</name><description>Diameter of the LTo cells</description><defaultValue>6</defaultValue></gpu:variable>
 				<gpu:variable><type>int</type><name>ADHESION_DISTANCE_THRESHOLD</name><description>(lti_cell_size + lto_cell_size) / 2 : Used for calculating the distance between cells to determine adhesion</description></gpu:variable>
-				<gpu:variable><type>float</type><name>CHEMO_THRESHOLD</name><defaultValue>0.3f</defaultValue><description>Chemokine Threshold, must be in the range 0-1</description></gpu:variable>
-				<gpu:variable><type>float</type><name>CHEMO_CURVE_ADJUST</name><defaultValue>3.0f</defaultValue><description>Sigmoid Curve Adjustment</description></gpu:variable>
-				<gpu:variable><type>float</type><name>CHEMO_UPPER_ADJUST</name><defaultValue>0.2f</defaultValue><description>Initial Curve Value</description></gpu:variable>
-				<gpu:variable><type>float</type><name>CHEMO_LOWER_ADJUST</name><defaultValue>0.04f</defaultValue><description>Lower Curve Value</description></gpu:variable>
-				<gpu:variable><type>float</type><name>INCREASE_CHEMO_EXPRESSION</name><defaultValue>0.005f</defaultValue><description>Increase in expression with stable contact</description></gpu:variable>
-				<gpu:variable><type>float</type><name>INITIAL_ADHESION</name><defaultValue>0.0f</defaultValue><description>Initial expression of Adhesion Factors</description></gpu:variable>
-				<gpu:variable><type>float</type><name>ADHESION_SLOPE</name><defaultValue>1.0f</defaultValue><description>Linear Equation Slope</description></gpu:variable>
-				<gpu:variable><type>float</type><name>ADHESION_INCREMENT</name><defaultValue>0.05f</defaultValue><description>Increase in Adhesion with each stable contact</description></gpu:variable>
-				<gpu:variable><type>float</type><name>MAX_ADHESION_PROBABILITY</name><defaultValue>0.65f</defaultValue><description>Adhesion Level Threshold</description></gpu:variable>
-				<gpu:variable><type>int</type><name>MAX_CELL_SPEED</name><defaultValue>10</defaultValue><description>The maximum number of pixels that a cell can move in a single iteration</description></gpu:variable>
-				<gpu:variable><type>int</type><name>CIRCUMFERENCE</name><defaultValue>254</defaultValue><description>Circumference of the Gut</description></gpu:variable>
-				<gpu:variable><type>int</type><name>LENGTH</name><defaultValue>700</defaultValue><description>Length of the Gut</description></gpu:variable>
-				<gpu:variable><type>float</type><name>STROMAL_CELL_DENSITY</name><defaultValue>0.2f</defaultValue><description></description></gpu:variable>
-				<gpu:variable><type>float</type><name>PERCENT_LTIN_FROM_FACS</name><defaultValue>0.0045f</defaultValue><description>Percentage of area occupied by LTin cells at E15.5</description></gpu:variable>
-				<gpu:variable><type>float</type><name>PERCENT_LTI_FROM_FACS</name><defaultValue>0.0037f</defaultValue><description>Percentage of area occupied by LTi cells at E15.5</description></gpu:variable>
-				<gpu:variable><type>int</type><name>SIM_STEP</name><defaultValue>1</defaultValue><description>The current step of the simulation.</description></gpu:variable>
+				<gpu:variable><type>float</type><name>CHEMO_THRESHOLD</name><description>Chemokine Threshold, must be in the range 0-1</description><defaultValue>0.3</defaultValue></gpu:variable>
+				<gpu:variable><type>float</type><name>CHEMO_CURVE_ADJUST</name><description>Sigmoid Curve Adjustment</description><defaultValue>3.0</defaultValue></gpu:variable>
+				<gpu:variable><type>float</type><name>CHEMO_UPPER_ADJUST</name><description>Initial Curve Value</description><defaultValue>0.2</defaultValue></gpu:variable>
+				<gpu:variable><type>float</type><name>CHEMO_LOWER_ADJUST</name><description>Lower Curve Value</description><defaultValue>0.04</defaultValue></gpu:variable>
+				<gpu:variable><type>float</type><name>INCREASE_CHEMO_EXPRESSION</name><description>Increase in expression with stable contact</description><defaultValue>0.005</defaultValue></gpu:variable>
+				<gpu:variable><type>float</type><name>INITIAL_ADHESION</name><description>Initial expression of Adhesion Factors</description><defaultValue>0.0</defaultValue></gpu:variable>
+				<gpu:variable><type>float</type><name>ADHESION_SLOPE</name><description>Linear Equation Slope</description><defaultValue>1.0</defaultValue></gpu:variable>
+				<gpu:variable><type>float</type><name>ADHESION_INCREMENT</name><description>Increase in Adhesion with each stable contact</description><defaultValue>0.05</defaultValue></gpu:variable>
+				<gpu:variable><type>float</type><name>MAX_ADHESION_PROBABILITY</name><description>Adhesion Level Threshold</description><defaultValue>0.65</defaultValue></gpu:variable>
+				<gpu:variable><type>int</type><name>MAX_CELL_SPEED</name><description>The maximum number of pixels that a cell can move in a single iteration</description><defaultValue>10</defaultValue></gpu:variable>
+				<gpu:variable><type>int</type><name>CIRCUMFERENCE</name><description>Circumference of the Gut</description><defaultValue>254</defaultValue></gpu:variable>
+				<gpu:variable><type>int</type><name>LENGTH</name><description>Length of the Gut</description><defaultValue>700</defaultValue></gpu:variable>
+				<gpu:variable><type>float</type><name>STROMAL_CELL_DENSITY</name><description></description><defaultValue>0.2</defaultValue></gpu:variable>
+				<gpu:variable><type>float</type><name>PERCENT_LTIN_FROM_FACS</name><description>Percentage of area occupied by LTin cells at E15.5</description><defaultValue>0.0045</defaultValue></gpu:variable>
+				<gpu:variable><type>float</type><name>PERCENT_LTI_FROM_FACS</name><description>Percentage of area occupied by LTi cells at E15.5</description><defaultValue>0.0037</defaultValue></gpu:variable>
+				<gpu:variable><type>int</type><name>SIM_STEP</name><description>The current step of the simulation.</description><defaultValue>1</defaultValue></gpu:variable>
 		</gpu:constants>
 		<gpu:functionFiles>
 				<file>functions.c</file>
