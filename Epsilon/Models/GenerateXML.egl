@@ -5,11 +5,7 @@
 	<gpu:environment>
 		<gpu:constants>
 			[%for (variable in flame.variables){%]
-			<gpu:variable>
-				<type>[%=variable.type.toString().toLowerCase()%]</type>
-				<name>[%=variable.name%]</name>
-				<description>[%=variable.description%]</description>
-			</gpu:variable>
+				[%=variable.toXML(true)%]
 			[%}%]
 		</gpu:constants>
 		<gpu:functionFiles>
@@ -40,10 +36,7 @@
 			<description>[%=agent.description%]</description>
 			<memory>
 				[%for (variable in agent.memory){%]
-				<gpu:variable>
-					<type>[%=variable.type.toString().toLowerCase()%]</type>
-					<name>[%=variable.name%]</name>
-				</gpu:variable>
+					[%=variable.toXML(false)%]
 				[%}%]
 			</memory>
 			<functions>
@@ -156,6 +149,29 @@
 </gpu:xmodel>
 
 [%
+operation Variable toXML(description: Boolean){
+	var output = "<type>" + self.type.toString().toLowerCase() + "</type>";
+	output += "<name>" + self.name + "</name>";
+	
+	if(self.defaultValue.isDefined()){
+		output += "<defaultValue>";
+		switch(self.type){
+			case DataType#Int:
+				output += self.defaultValue.floor().toString();
+			case DataType#Double:
+				output += self.defaultValue.toString();
+			case DataType#Float:
+				output += self.defaultValue.toString() + "f";
+		}
+		output += "</defaultValue>";
+	}
+	
+	if(description){
+		output += "<description>" + self.description + "</description>";
+	}
+
+	return "<gpu:variable>" + output + "</gpu:variable>";
+}
 operation Condition toXML(agent: Agent){
 	var str = "<condition><lhs>" + self.lhs.toXML(agent)
 	+ "</lhs><operator>";

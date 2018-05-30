@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FLAME:Simulation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:FLAME="FLAME" name="PPSim">
-  <variables name="LTI_AGENT_TYPE" description="Int ID as enum for LTi cells"/>
-  <variables name="LTIN_AGENT_TYPE" description="Int ID as enum for LTin cells"/>
-  <variables name="LTO_AGENT_TYPE" description="Int ID as enum for LTo cells"/>
-  <variables name="LTI_CELL_SIZE" description="Diameter of the LTin and LTi cells"/>
-  <variables name="LTO_CELL_SIZE" description="Diameter of the LTo cells"/>
+  <variables name="LTI_AGENT_TYPE" description="Int ID as enum for LTi cells" defaultValue="1.0"/>
+  <variables name="LTIN_AGENT_TYPE" description="Int ID as enum for LTin cells" defaultValue="7.0"/>
+  <variables name="LTO_AGENT_TYPE" description="Int ID as enum for LTo cells" defaultValue="0.0"/>
+  <variables name="LTI_CELL_SIZE" description="Diameter of the LTin and LTi cells" defaultValue="2.0"/>
+  <variables name="LTO_CELL_SIZE" description="Diameter of the LTo cells" defaultValue="6.0"/>
   <variables name="ADHESION_DISTANCE_THRESHOLD" description="(lti_cell_size + lto_cell_size) / 2 : Used for calculating the distance between cells to determine adhesion"/>
-  <variables name="CHEMO_THRESHOLD" description="Chemokine Threshold, must be in the range 0-1" type="Float"/>
-  <variables name="CHEMO_CURVE_ADJUST" description="Sigmoid Curve Adjustment"/>
-  <variables name="CHEMO_UPPER_ADJUST" description="Initial Curve Value" type="Float"/>
-  <variables name="CHEMO_LOWER_ADJUST" description="Lower Curve Value" type="Float"/>
-  <variables name="INCREASE_CHEMO_EXPRESSION" description="Increase in expression with stable contact" type="Float"/>
-  <variables name="INITIAL_ADHESION" description="Initial expression of Adhesion Factors" type="Float"/>
-  <variables name="ADHESION_SLOPE" description="Linear Equation Slope" type="Float"/>
-  <variables name="ADHESION_INCREMENT" description="Increase in Adhesion with each stable contact" type="Float"/>
-  <variables name="MAX_ADHESION_PROBABILITY" description="Adhesion Level Threshold" type="Float"/>
-  <variables name="MAX_CELL_SPEED" description="The maximum number of pixels that a cell can move in a single iteration"/>
-  <variables name="CIRCUMFERENCE" description="Circumference of the Gut"/>
-  <variables name="LENGTH" description="Length of the Gut"/>
-  <variables name="STROMAL_CELL_DENSITY" type="Float"/>
-  <variables name="PERCENT_LTIN_FROM_FACS" description="Percentage of area occupied by LTin cells at E15.5" type="Float"/>
-  <variables name="PERCENT_LTI_FROM_FACS" description="Percentage of area occupied by LTi cells at E15.5" type="Float"/>
-  <variables name="SIM_STEP" description="The current step of the simulation."/>
+  <variables name="CHEMO_THRESHOLD" description="Chemokine Threshold, must be in the range 0-1" type="Float" defaultValue="0.3"/>
+  <variables name="CHEMO_CURVE_ADJUST" description="Sigmoid Curve Adjustment" type="Float" defaultValue="3.0"/>
+  <variables name="CHEMO_UPPER_ADJUST" description="Initial Curve Value" type="Float" defaultValue="0.2"/>
+  <variables name="CHEMO_LOWER_ADJUST" description="Lower Curve Value" type="Float" defaultValue="0.04"/>
+  <variables name="INCREASE_CHEMO_EXPRESSION" description="Increase in expression with stable contact" type="Float" defaultValue="0.005"/>
+  <variables name="INITIAL_ADHESION" description="Initial expression of Adhesion Factors" type="Float" defaultValue="0.0"/>
+  <variables name="ADHESION_SLOPE" description="Linear Equation Slope" type="Float" defaultValue="1.0"/>
+  <variables name="ADHESION_INCREMENT" description="Increase in Adhesion with each stable contact" type="Float" defaultValue="0.05"/>
+  <variables name="MAX_ADHESION_PROBABILITY" description="Adhesion Level Threshold" type="Float" defaultValue="0.65"/>
+  <variables name="MAX_CELL_SPEED" description="The maximum number of pixels that a cell can move in a single iteration" defaultValue="10.0"/>
+  <variables name="CIRCUMFERENCE" description="Circumference of the Gut" defaultValue="254.0"/>
+  <variables name="LENGTH" description="Length of the Gut" defaultValue="700.0"/>
+  <variables name="STROMAL_CELL_DENSITY" type="Float" defaultValue="0.2"/>
+  <variables name="PERCENT_LTIN_FROM_FACS" description="Percentage of area occupied by LTin cells at E15.5" type="Float" defaultValue="0.0045"/>
+  <variables name="PERCENT_LTI_FROM_FACS" description="Percentage of area occupied by LTi cells at E15.5" type="Float" defaultValue="0.0037"/>
+  <variables name="SIM_STEP" description="The current step of the simulation." defaultValue="1.0"/>
   <functionFiles>functions.c</functionFiles>
   <initFunctions>setConstants</initFunctions>
   <stepFunctions>migrateNewCells</stepFunctions>

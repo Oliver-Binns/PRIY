@@ -31,9 +31,10 @@ enum DataType{
 @gmf.node(label="name")
 class Variable extends Named{
 	attr String description;
-	
 	attr DataType type;
+	attr Float defaultValue;
 }
+
 
 enum AgentType{
 	Continuous = 0;
